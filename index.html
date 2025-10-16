@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KuppyCloaker V1.7</title>
+<style>
+:root {
+  --bg: #0f1724;
+  --card: #0b1220;
+  --muted: #93a3b8;
+  --accent: #007bff;
+  --text: #e6eef8;
+}
+* {
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px;
+  transition: background-color 0.5s, color 0.5s, opacity 2s ease;
+  opacity: 0;
+  overflow-y: scroll;
+}
+body.loaded { opacity: 1; }
+
+.shell {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 22px 30px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+}
+header { display: flex; align-items: center; justify-content: space-between; }
+
+/* Gear icon animation */
+.gear {
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--accent);
+  transition: transform 0.4s ease, color 0.3s ease;
+  display: inline-block;
+}
+
+.gear:hover {
+  transform: rotate(90deg) scale(1.1);
+  color: var(--text);
+}
+
+/* When menu is opening, gear spins briefly */
+.gear.spin {
+  animation: spinOnce 0.5s ease;
+}
+
+@keyframes spinOnce {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Settings menu slide + fade */
+#settingsMenu {
+  position: absolute;
+  top: 36px;
+  right: 36px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 9999;
+}
+
+#settingsMenu.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Each button inside menu gently slides in */
+#settingsMenu.show button {
+  animation: slideIn 0.25s ease forwards;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(10px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+#settingsMenu button {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+#settingsMenu button:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+}
+
+#typedTitle::after {
+  content: "|";
+  display: inline-block;
+  margin-left: 4px;
+  animation: blink 1s step-start 5, hideCursor 0s 4s forwards;
+  color: var(--accent);
+}
+/* Gear spin animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Settings gear styling */
+#settingsIcon {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 22px;
+  color: var(--accent, #007bff);
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Spin when hovered or active */
+#settingsIcon:hover {
+  animation: spin 1s linear infinite;
+  color: var(--text, #fff);
+}
+
+/* Settings menu base */
+.settings-menu {
+  position: absolute;
+  top: 50px;
+  right: 20px;
+  background: var(--card, #111a2a);
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+/* Visible state */
+.settings-menu.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+@keyframes hideCursor { to { opacity: 0; } }
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+}
+
+.slide-out {
+  animation: slideOut 0.4s ease forwards;
+}
+
+.topbar { display: flex; margin-top: 16px; gap: 10px; }
+input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg);
+  color: var(--text);
+}
+.btn {
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn:hover { opacity: 0.9; }
+
+footer {
+  margin-top: 20px;
+  color: var(--muted);
+  position: relative;
+}
+footer .why {
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 6px;
+}
+#whyText { display: none; margin-top: 6px; color: var(--muted); max-width: 400px; }
+
+#unblockerSelect {
+  position: absolute;
+  right:10px;
+  bottom:10px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  position: relative;
+  min-width: 180px;
+  min-height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card span {
+  pointer-events: none;
+  font-weight: 600; /* makes text bold */
+  text-shadow: 0 0 4px var(--accent), 0 0 5px rgba(0, 123, 255, 0.1); /* glowing effect */
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0,0,0,0.3); }
+
+.starBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.gmail-icon img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-left: 8px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  filter: invert(1); /* makes it white for dark mode */
+}
+
+.gmail-icon img:hover {
+  transform: scale(1.1);
+  filter: brightness(1.3);
+}
+
+.forms-icon img {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-left: 8px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.starBtn.starred { color: gold; }
+
+.deleteBtn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--muted);
+}
+.deleteBtn:hover { color: red; }
+
+.presets-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#gamesPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+#gamesPage.show { display: flex; opacity: 1; }
+
+#fadeOverlay {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.5s;
+  z-index:9999;
+}
+#fadeOverlay.active { opacity:1; pointer-events:auto; }
+</style>
+</head>
+<body>
+<div class="shell" id="homePage">
+  <header>
+    <div>
+      <h1 id="typedTitle"></h1>
+      <p style="color:var(--muted);font-size:14px;">Lightweight, seamless cloaker. Paste a URL or click a button to start playing instantly.</p>
+    </div>
+    <div style="position:absolute;top:12px;right:12px;">
+      <div class="gear" id="gear">⚙️</div>
+      <div id="settingsMenu">
+        <button id="lightToggle">💡</button>
+        <button id="colorToggle">🎨</button>
+        <button id="renameTab">✏️</button>
+        <button id="setPanicKey">🚨</button>
+        <button id="faviconToggle">📚</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="topbar">
+    <input id="websiteInput" type="text" placeholder="Enter a website or game URL" />
+    <button id="loadWebsite" class="btn">Open</button>
+    <button id="saveWebsite" class="btn">Save</button>
+  </div>
+  <!-- Home Page Tabs + Containers -->
+  <div id="homeTabs" style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
+    <button class="btn" id="allGamesBtn">🎮 All Games</button>
+    <button class="btn" id="recentGamesBtn">🕓 Recent</button>
+    <button class="btn" id="dailyGameBtn">📅 Daily Game</button>
+    <button class="btn" id="randomGameBtn">🎲 Random Game</button>
+  </div>
+
+  <!-- Main content sections -->
+  <div id="homeTab" class="tabContent" style="margin-top:20px;">
+    <p id="quote" style="color:var(--muted);text-align:center;"></p>
+  </div>
+
+<footer>
+  <div>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <span>Made by Kuppy</span>
+      <a href="https://mail.google.com/mail/u/0/?fs=1&to=30brkupperman@gapps.brrsd.k12.nj.us&su=KuppyCloaker%20Feedback&body=&tf=cm" 
+         target="_blank" 
+         title="Send Feedback">
+        <img src="https://www.gstatic.com/images/icons/material/system/2x/mail_outline_black_24dp.png" 
+             alt="Gmail" 
+             style="width:24px; height:24px; vertical-align:middle; border:none;"/>
+      </a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfJDMVpKyTUI2vJoUUcEjCRgWS39s8Yai-5KmWawSi15l0r8Q/viewform?usp=header" 
+         target="_blank" 
+         title="Send Feedback">
+        <img src="https://www.gstatic.com/images/branding/product/1x/forms_2020q4_48dp.png" 
+             alt="Forms" 
+             style="width:24px; height:24px; vertical-align:middle; border:none;"/>
+      </a>
+    </div>
+
+    <div class="why" id="whyBtn" style="cursor:pointer;">Why use?</div>
+    <div id="whyText" style="max-width:400px; font-size:0.9em; opacity:0.8;">
+      KuppyCloaker helps you browse or play games seamlessly while staying private. GoGuardian and similar filters cannot detect or block it easily.
+    </div>
+
+    <select id="unblockerSelect" style="margin-top:6px; padding:4px;">
+      <option value="">Unblockers</option>
+      <option value="https://basicallyjustaserverrrr.luismedeiros.pt/">Unblocker 1</option>
+    </select>
+  </div>
+</footer></div>
+
+<div id="gamesPage">
+  <h2>All Games</h2>
+  <div class="presets-grid" id="allGamesGrid"></div>
+  <button id="backBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
+</div>
+
+<div id="fadeOverlay"></div>
+
+<script>
+const defaultGames = [
+  {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
+  {name: "Adventure Capitalist", url: "https://seraph-bi6hosts.vercel.app/games/adventurecapitalist/index.html"},
+  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
+  {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
+  {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
+  {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html"},
+  {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
+  {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/"},
+  {name: "BitLife", url: "https://monkeygg2.github.io/games/bit-life/"},
+  {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
+  {name: "Cookie Clicker", url: "https://monkeygg2.github.io/games/cookie-clicker/"},
+  {name: "Crossy Road", url: "https://monkeygg2.github.io/games/crossy-road/"},
+  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html"},
+  {name: "Crazy Cattle 3D", url: "https://crazycattle.club/"},
+  {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
+  {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
+  {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/"},
+  {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/"},
+  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
+  {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html"},
+  {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html"},
+  {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html"},
+  {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
+  {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html"},
+  {name: "Knife Hit", url: "https://seraph-bi6hosts.vercel.app/games/knifehit/index.html"},
+  {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html"},
+  {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html"},
+  {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/"},
+  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html"},
+  {name: "Roblox Obby", url: "https://storage.googleapis.com/test-41376.appspot.com/obby.html"},
+  {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html"},
+  {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
+  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
+  {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html"},
+  {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html"},
+  {name: "Papa's Pancakeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspancakeria/index.html"},
+  {name: "Papa's Freezeria", url: "https://seraph-bi6hosts.vercel.app/games/papasfreezeria/index.html"},
+  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html"},
+  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html"},
+  {name: "Papa's Pastaria", url: "https://seraph-bi6hosts.vercel.app/games/papaspastaria/index.html"},
+  {name: "Papa's Tacomia", url: "https://seraph-bi6hosts.vercel.app/games/papastacomia/index.html"},
+  {name: "Paper.io 2", url: "https://studyschool.netlify.app/g/paperio2/"},
+  {name: "Precision Client", url: "https://milkywaygg.github.io/assets/games/eagler/precision/"},
+  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+  {name: "Retro Bowl College", url: "https://maddox05.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
+  {name: "Run 3", url: "https://monkeygg2.github.io/games/run-3/"},
+  {name: "Slope", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/slope/index.html"},
+  {name: "SnowBall.io", url: "https://seraph-bi6hosts.vercel.app/games/snowbattleio/index.html"},
+  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html"},
+  {name: "Stair Race 3D", url: "https://seraph-bi6hosts.vercel.app/games/stairrace3d/index.html"},
+  {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/"},
+  {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/"},
+  {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html"},
+  {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html"},
+  {name: "Tiny Fishing", url: "https://seraph-bi6hosts.vercel.app/games/tinyfishing/index.html"},
+  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
+  {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
+  {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/"},
+];
+
+const quotes = [
+  "Stealth isn’t hiding. It’s blending in.",
+  "You can’t block what you can’t detect.",
+  "Freedom starts with a tab.",
+  "Kuppy is watching you… but in a friendly way.",
+  "I told my computer a joke. It laughed in binary.",
+  "Remember: Every button has consequences.",
+  "This isn’t a bug. It’s a feature.",
+  "If this page was a sandwich, it’d be extra cheesy.",
+  "KuppyCloaker: Making procrastination look productive.",
+  "Click responsibly. Or don’t. Whatever.",
+  "Somebody call tech support. Or maybe not.",
+  "Your Wi-Fi secretly judges you.",
+  "Clicking random things builds character.",
+  "Click here… actually don’t, maybe.",
+  "This page self-destructs in 3… 2… just kidding.",
+  "Don’t ask me how this works. I don’t know either.",
+  "Don’t read this aloud. Unless you want to.",
+  "Kuppy believes in you. Mostly.",
+  "Fun fact: This page contains 0 calories.",
+  "Smiles are contagious. So are pop-ups.",
+  "Do not try to hack this… unless you’re me.",
+  "Cloak smart. Play smarter.",
+  "The web, unfiltered.",
+  "No limits, no traces, no problem."
+];
+document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+window.addEventListener('load',()=>{
+  document.body.classList.add('loaded');
+  setTimeout(startTyping,1000);
+
+  const savedTabName = localStorage.getItem('kuppyTabName');
+  if(savedTabName) document.title = savedTabName;
+
+  const savedTheme = JSON.parse(localStorage.getItem('kuppyTheme')) || {accent:'#007bff', bg:'#0f1724', card:'#0b1220'};
+  const isLight = localStorage.getItem('kuppyLightMode') === 'true';
+
+  document.documentElement.style.setProperty('--accent', savedTheme.accent);
+  document.documentElement.style.setProperty('--bg', isLight ? lighten(savedTheme.bg) : savedTheme.bg);
+  document.documentElement.style.setProperty('--card', isLight ? lighten(savedTheme.card) : savedTheme.card);
+  document.documentElement.style.setProperty('--text', isLight ? '#111' : '#e6eef8');
+
+  if(isLight) document.body.classList.add('light');
+});
+
+const text="KuppyCloaker V1.7"; let i=0;
+
+function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
+
+function typeTitle(){if(i<text.length){document.getElementById("typedTitle").textContent+=text.charAt(i);i++;setTimeout(typeTitle,120);}}
+
+function lighten(hex){
+  const c = parseInt(hex.slice(1),16);
+  const r = Math.min(255, ((c>>16)+51));
+  const g = Math.min(255, (((c>>8)&0x00FF)+51));
+  const b = Math.min(255, ((c&0x0000FF)+51));
+  return `rgb(${r},${g},${b})`;
+}
+
+function openWebsite(url) {
+  if (!url) return;
+  if (!url.startsWith('http')) url = 'https://' + url;
+
+  const overlay = document.getElementById('fadeOverlay');
+  overlay.classList.add('active');
+
+  setTimeout(() => {
+    const win = window.open('', '_blank');
+    win.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name='referrer' content='no-referrer'>
+  <title>New Tab</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: black;
+    }
+
+    embed {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    #backBtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      transition: background 0.2s;
+    }
+
+    #backBtn:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Fade-to-black overlay */
+    #fadeOverlay {
+      position: fixed;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+      z-index: 2000;
+    }
+
+    #fadeOverlay.active {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <button id="backBtn">⬅</button>
+  <div id="fadeOverlay"></div>
+  <embed src='${url}'></embed>
+
+  <script>
+    const backBtn = document.getElementById('backBtn');
+    const fadeOverlay = document.getElementById('fadeOverlay');
+
+    backBtn.onclick = () => {
+      fadeOverlay.classList.add('active');
+      setTimeout(() => {
+        window.close();
+      }, 600);
+    };
+  <\/script>
+</body>
+</html>
+`);
+overlay.classList.remove('active');
+}, 500);
+}
+
+function rememberRecentGame(game) {
+  // game = { name: "Game Name", url: "https://..." }
+  localStorage.setItem('recentGame', JSON.stringify(game));
+}
+
+document.getElementById('randomGameBtn').onclick = () => {
+  const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+  const allGames = [...defaultGames, ...saved];
+  if (allGames.length === 0) return alert('No games available!');
+  const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
+  openWebsite(randomGame.url);
+  rememberRecentGame(randomGame);
+};
+
+document.getElementById('recentGamesBtn').onclick = () => {
+  const recent = JSON.parse(localStorage.getItem('recentGame'));
+  if (!recent) return alert('No recent game yet!');
+  openWebsite(recent.url);
+};
+
+function loadGamesPage(){
+  const grid=document.getElementById('allGamesGrid');
+  grid.innerHTML='';
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
+  const allGames = [...defaultGames,...saved];
+
+  allGames.sort((a,b)=>{
+    const aStar=starred.includes(a.name);
+    const bStar=starred.includes(b.name);
+    if(aStar && !bStar) return -1;
+    if(!aStar && bStar) return 1;
+    return 0;
+  });
+
+  allGames.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = g.name;
+    div.appendChild(nameSpan);
+
+    const starBtn=document.createElement('button');
+    starBtn.className='starBtn';
+    if(starred.includes(g.name)) starBtn.classList.add('starred');
+    starBtn.innerHTML='★';
+    starBtn.onclick = (e)=>{
+      e.stopPropagation();
+      let s=JSON.parse(localStorage.getItem('starredGames')||'[]');
+      if(s.includes(g.name)){
+        s=s.filter(x=>x!==g.name);
+        starBtn.classList.remove('starred');
+      } else {
+        s.push(g.name);
+        starBtn.classList.add('starred');
+      }
+      localStorage.setItem('starredGames',JSON.stringify(s));
+      loadGamesPage();
+    };
+    div.appendChild(starBtn);
+
+    if(idx>=defaultGames.length){
+      const del=document.createElement('button');
+      del.className='deleteBtn';
+      del.textContent='❌';
+      del.onclick=(e)=>{
+        e.stopPropagation();
+        const updated=saved.filter(x=>x.name!==g.name);
+        localStorage.setItem('customPresets',JSON.stringify(updated));
+        loadGamesPage();
+      };
+      div.appendChild(del);
+    }
+
+    div.onclick=()=>openWebsite(g.url);
+    
+    grid.appendChild(div);
+  });
+}
+
+function showGamesPage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  home.style.opacity='1';
+  games.style.display='flex';
+  requestAnimationFrame(()=>{
+    home.style.transition='opacity 0.5s';
+    home.style.opacity='0';
+    setTimeout(()=>{
+      home.style.display='none';
+      games.classList.add('show');
+      loadGamesPage();
+    },500);
+  });
+}
+function showHomePage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  games.classList.remove('show');
+  setTimeout(()=>{
+    games.style.display='none';
+    home.style.display='block';
+    requestAnimationFrame(()=>home.style.opacity='1');
+  },500);
+}
+
+document.getElementById('loadWebsite').onclick=()=>{
+  const url=document.getElementById('websiteInput').value.trim();
+  openWebsite(url);
+};
+document.getElementById('saveWebsite').onclick=()=>{
+  const url=document.getElementById('websiteInput').value.trim();
+  if(!url)return alert('Enter a URL first');
+  const name=prompt('Enter a name for this site:');
+  if(!name)return;
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  saved.push({name,url});
+  localStorage.setItem('customPresets',JSON.stringify(saved));
+  alert('Saved!');
+};
+document.getElementById('allGamesBtn').onclick=showGamesPage;
+document.getElementById('backBtn').onclick=showHomePage;
+document.getElementById('unblockerSelect').onchange=function(){if(this.value)openWebsite(this.value); this.value='';};
+
+const gear=document.getElementById('gear'),menu=document.getElementById('settingsMenu');
+gear.onclick=()=>menu.classList.toggle('show');
+document.addEventListener('click',e=>{if(!menu.contains(e.target)&&e.target!==gear)menu.classList.remove('show');});
+
+document.getElementById('lightToggle').onclick = () => {
+  const isLight = document.body.classList.toggle('light');
+  localStorage.setItem('kuppyLightMode', isLight);
+  const savedTheme = JSON.parse(localStorage.getItem('kuppyTheme')) || {bg:'#0f1724', card:'#0b1220'};
+  if(isLight){
+    document.documentElement.style.setProperty('--bg', lighten(savedTheme.bg));
+    document.documentElement.style.setProperty('--card', lighten(savedTheme.card));
+    document.documentElement.style.setProperty('--text', '#111');
+  } else {
+    document.documentElement.style.setProperty('--bg', savedTheme.bg);
+    document.documentElement.style.setProperty('--card', savedTheme.card);
+    document.documentElement.style.setProperty('--text', '#e6eef8');
+  }
+};
+
+let themeIndex = 0;
+const themes = [
+  { accent: '#FF0000', bg: '#2b0a0a', card: '#1b0505' },
+  { accent: '#FF7F00', bg: '#2c1400', card: '#1f0a00' },
+  { accent: '#FFFF00', bg: '#2b2b00', card: '#1a1a00' },
+  { accent: '#00FF00', bg: '#002b00', card: '#001a00' },
+  { accent: '#BFFF00', bg: '#1a2b00', card: '#0d1500' },
+  { accent: '#00FFFF', bg: '#002b2b', card: '#001a1a' },
+  { accent: '#0000FF', bg: '#00002b', card: '#00001a' },
+  { accent: '#4B0082', bg: '#10002b', card: '#080015' },
+  { accent: '#8B00FF', bg: '#1a002b', card: '#100015' },
+  { accent: '#FFD700', bg: '#2b2200', card: '#1a1600' },
+  { accent: '#C0C0C0', bg: '#2b2b2b', card: '#1a1a1a' },
+  { accent: '#50C878', bg: '#002b1a', card: '#00140d' },
+  { accent: '#9B111E', bg: '#2b0005', card: '#1a0002' },
+  { accent: '#CCCCFF', bg: '#1a1a2b', card: '#0d0d15' },
+  { accent: '#B87333', bg: '#2b1a0f', card: '#1a0d08' },
+  { accent: '#B9F2FF', bg: '#1a2b2b', card: '#0d1515' }
+];
+document.getElementById('colorToggle').onclick=()=>{
+  themeIndex=(themeIndex+1)%themes.length;
+  const t=themes[themeIndex];
+  localStorage.setItem('kuppyTheme', JSON.stringify(t));
+  const isLight = document.body.classList.contains('light');
+  document.documentElement.style.setProperty('--accent', t.accent);
+  document.documentElement.style.setProperty('--bg', isLight ? lighten(t.bg) : t.bg);
+  document.documentElement.style.setProperty('--card', isLight ? lighten(t.card) : t.card);
+};
+
+document.getElementById('renameTab').onclick=()=>{
+  const newName=prompt('New tab name:');
+  if(newName){
+    document.title=newName;
+    localStorage.setItem('kuppyTabName',newName);
+  }
+};
+
+let panicKey=localStorage.getItem('kuppyPanicKey')||null;
+document.getElementById('setPanicKey').onclick=()=>{
+  const key=prompt('Press a single key:');
+  if(key&&key.length===1){
+    panicKey=key.toLowerCase();
+    localStorage.setItem('kuppyPanicKey',panicKey);
+    alert(`Panic key set to ${panicKey.toUpperCase()}`);
+  }
+};
+document.addEventListener('keydown',e=>{
+  if(panicKey&&e.key.toLowerCase()===panicKey)
+    window.location.href='https://classroom.google.com';
+});
+
+document.getElementById('whyBtn').onclick=()=>{
+  const t=document.getElementById('whyText');
+  t.style.display=t.style.display==='block'?'none':'block';
+};
+
+function getDailyGame() {
+  const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+  const allGames = [...defaultGames, ...saved];
+  if (allGames.length === 0) return alert('No games available!');
+
+  const date = new Date();
+  const dayOfYear = Math.floor(
+    (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) -
+     Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000
+  );
+
+  const index = dayOfYear % allGames.length;
+  const dailyGame = allGames[index];
+
+  openWebsite(dailyGame.url);
+}
+
+document.getElementById('dailyGameBtn').onclick = getDailyGame;
+
+const favicons = [
+  'https://www.google.com/favicon.ico',
+  'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
+  'https://ssl.gstatic.com/classroom/favicon.ico',
+];
+let currentFaviconIndex = parseInt(localStorage.getItem('kuppyFaviconIndex')) || 0;
+
+function setFavicon(index) {
+  let link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = favicons[index];
+  localStorage.setItem('kuppyFaviconIndex', index);
+}
+
+setFavicon(currentFaviconIndex);
+
+document.getElementById('faviconToggle').onclick = () => {
+  currentFaviconIndex = (currentFaviconIndex + 1) % favicons.length;
+  setFavicon(currentFaviconIndex);
+};
+
+</script>
+</body>
+</html>
