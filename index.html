@@ -864,7 +864,13 @@ document.getElementById('faviconToggle').onclick = () => {
 };
 
 const defaultURL = "https://braykup.github.io/KuppyCloaker/"; // <- replace with the site you want
-openWebsite(defaultURL);
+const delayBeforeOpen = 100; // delay in milliseconds (2000ms = 2 seconds)
+
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    openWebsite(defaultURL);
+  }, delayBeforeOpen);
+});
 
 </script>
 </body>
