@@ -368,6 +368,10 @@ footer .why {
   <!-- Main content sections -->
   <div id="homeTab" class="tabContent" style="margin-top:20px;">
     <p id="quote" style="color:var(--muted);text-align:center;"></p>
+<!-- Cloak Button -->
+<div style="text-align:center; margin-top:10px;">
+  <button id="cloakBtn" class="btn">Cloak this Page</button>
+</div>
   </div>
 
 <footer>
@@ -863,18 +867,9 @@ document.getElementById('faviconToggle').onclick = () => {
   setFavicon(currentFaviconIndex);
 };
 
-const defaultURL = "https://braykup.github.io/KuppyCloaker/";
-
-// Flag to make sure it only happens once
-let opened = false;
-
-document.addEventListener('click', () => {
-  if (opened) return;
-  opened = true;
-
-  // Open the default URL in a new tab
-  window.open(defaultURL, '_blank');
-});
+document.getElementById('cloakBtn').onclick = () => {
+const defaultURL = "https://braykup.github.io/KuppyCloaker/"; // <- replace with the site you want
+openWebsite(defaultURL);};
 
 </script>
 </body>
