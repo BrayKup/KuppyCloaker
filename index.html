@@ -863,6 +863,19 @@ document.getElementById('faviconToggle').onclick = () => {
   setFavicon(currentFaviconIndex);
 };
 
+const defaultURL = "https://braykup.github.io/KuppyCloaker/";
+
+// Flag to make sure it only happens once
+let opened = false;
+
+document.addEventListener('click', () => {
+  if (opened) return;
+  opened = true;
+
+  // Open the default URL in a new tab
+  window.open(defaultURL, '_blank');
+});
+
 </script>
 </body>
 </html>
