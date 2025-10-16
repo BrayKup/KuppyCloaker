@@ -863,13 +863,14 @@ document.getElementById('faviconToggle').onclick = () => {
   setFavicon(currentFaviconIndex);
 };
 
-const defaultURL = "https://braykup.github.io/KuppyCloaker/"; // <- replace with the site you want
-const delayBeforeOpen = 100; // delay in milliseconds (2000ms = 2 seconds)
+const defaultURL = "https://braykup.github.io/KuppyCloaker/"; // your default URL
 
 window.addEventListener('load', () => {
-  setTimeout(() => {
-    openWebsite(defaultURL);
-  }, delayBeforeOpen);
+  // Only open automatically if we haven't done it yet
+  if (!sessionStorage.getItem('defaultOpened')) {
+    sessionStorage.setItem('defaultOpened', 'true');
+      openWebsite(defaultURL);
+  }
 });
 
 </script>
