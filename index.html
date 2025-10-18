@@ -43,7 +43,7 @@ body.loaded { opacity: 1; }
   box-shadow: 0 10px 30px rgba(2,6,23,0.6);
   position: relative;
   width: 100%;
-  max-width: 1000px;
+  max-width: 800px;
 }
 header { display: flex; align-items: center; justify-content: space-between; }
 
@@ -361,7 +361,6 @@ footer .why {
   <div id="homeTab" class="tabContent" style="margin-top:20px;">
     <p id="quote" style="color:var(--muted);text-align:center;"></p>
 <div style="text-align:center; margin-top:10px;">
-  <button id="cloakBtn" class="btn">Cloak this Page</button>
 </div>
   </div>
 
@@ -846,10 +845,6 @@ document.getElementById('faviconToggle').onclick = () => {
   currentFaviconIndex = (currentFaviconIndex + 1) % favicons.length;
   setFavicon(currentFaviconIndex);
 };
-
-document.getElementById('cloakBtn').onclick = () => {
-const defaultURL = "https://braykup.github.io/KuppyCloaker/";
-openWebsite(defaultURL);};
 
   const loginShell = document.getElementById('loginShell');
   const homePage = document.getElementById('homePage');
