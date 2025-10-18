@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V1.7</title>
+<title>KuppyCloaker V2.0</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -14,6 +14,10 @@
 }
 * {
   transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+#homePage {
+  display: none; /* hide initially */
 }
 
 body {
@@ -124,10 +128,10 @@ header { display: flex; align-items: center; justify-content: space-between; }
   animation: blink 1s step-start 5, hideCursor 0s 4s forwards;
   color: var(--accent);
 }
-/* Gear spin animation */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+
+#typedTitle {
+  text-align: center;
+  width: 185%;
 }
 
 /* Settings gear styling */
@@ -147,45 +151,9 @@ header { display: flex; align-items: center; justify-content: space-between; }
   color: var(--text, #fff);
 }
 
-/* Settings menu base */
-.settings-menu {
-  position: absolute;
-  top: 50px;
-  right: 20px;
-  background: var(--card, #111a2a);
-  padding: 12px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
-  pointer-events: none;
-}
-
-/* Visible state */
-.settings-menu.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
 @keyframes blink { 50% { opacity: 0; } }
 
 @keyframes hideCursor { to { opacity: 0; } }
-
-@keyframes slideOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-}
-
-.slide-out {
-  animation: slideOut 0.4s ease forwards;
-}
 
 .topbar { display: flex; margin-top: 16px; gap: 10px; }
 input {
@@ -265,13 +233,22 @@ footer .why {
   color: var(--muted);
 }
 
+  /* Add this CSS for fade animation */
+  .fade {
+    transition: opacity 0.5s ease;
+  }
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
 .gmail-icon img {
   width: 20px;
   height: 20px;
   vertical-align: middle;
   margin-left: 8px;
   transition: transform 0.25s ease, filter 0.25s ease;
-  filter: invert(1); /* makes it white for dark mode */
+  filter: invert(21%) sepia(98%) saturate(7474%) hue-rotate(0deg) brightness(103%) contrast(104%);
 }
 
 .gmail-icon img:hover {
@@ -334,19 +311,35 @@ footer .why {
 </style>
 </head>
 <body>
+<div class="shell" id="loginShell" style="display:flex; justify-content:center; align-items:center; height:100vh;">
+
+  <div class="login-card" style="background:var(--card); padding:30px; border-radius:16px; box-shadow:0 0 20px rgba(0,0,0,0.5); width:320px; text-align:center;">
+    <h1 style="color:var(--accent); margin-bottom:5px;">KuppyCloaker</h1>
+    <p id="loginMsg" style="color:red; font-size:12px; height:16px;"></p>
+    
+    <input id="loginUsername" type="text" placeholder="Username" style="width:80%; padding:10px; margin-bottom:10px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif;" />
+    <input id="loginPassword" type="password" placeholder="Password" style="width:80%; padding:10px; margin-bottom:20px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif;" />
+    <button id="loginBtn" style="width:100%; padding:12px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-weight:bold; cursor:pointer;">
+      Log In
+    </button>
+  </div>
+</div>
+
 <div class="shell" id="homePage">
-  <header>
-    <div>
-      <h1 id="typedTitle"></h1>
-      <p style="color:var(--muted);font-size:14px;">Lightweight, seamless cloaker. Paste a URL or click a button to start playing instantly.</p>
-    </div>
+<header style="position: relative;">
+  <div id="userDisplay" style="position:absolute; top:12px; left:12px; color:var(--accent); font-weight:bold; text-shadow: 0 0 6px var(--accent); font-size:18px;"></div>
+  <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+    <h1 id="typedTitle"></h1>
+    <p style="color:var(--muted); font-size:14px; text-align:center;">
+      Lightweight, seamless cloaker. Paste a URL or click a button to start playing instantly.
+    </p>
+  </div>
     <div style="position:absolute;top:12px;right:12px;">
       <div class="gear" id="gear">⚙️</div>
       <div id="settingsMenu">
         <button id="lightToggle">💡</button>
         <button id="colorToggle">🎨</button>
         <button id="renameTab">✏️</button>
-        <button id="setPanicKey">🚨</button>
         <button id="faviconToggle">📚</button>
       </div>
     </div>
@@ -357,7 +350,7 @@ footer .why {
     <button id="loadWebsite" class="btn">Open</button>
     <button id="saveWebsite" class="btn">Save</button>
   </div>
-  <!-- Home Page Tabs + Containers -->
+
   <div id="homeTabs" style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
     <button class="btn" id="allGamesBtn">🎮 All Games</button>
     <button class="btn" id="recentGamesBtn">🕓 Recent</button>
@@ -365,10 +358,8 @@ footer .why {
     <button class="btn" id="randomGameBtn">🎲 Random Game</button>
   </div>
 
-  <!-- Main content sections -->
   <div id="homeTab" class="tabContent" style="margin-top:20px;">
     <p id="quote" style="color:var(--muted);text-align:center;"></p>
-<!-- Cloak Button -->
 <div style="text-align:center; margin-top:10px;">
   <button id="cloakBtn" class="btn">Cloak this Page</button>
 </div>
@@ -449,6 +440,7 @@ const defaultGames = [
   {name: "Roblox Obby", url: "https://storage.googleapis.com/test-41376.appspot.com/obby.html"},
   {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html"},
   {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
+  {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html"},
   {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
   {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html"},
   {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html"},
@@ -503,6 +495,7 @@ const quotes = [
   "The web, unfiltered.",
   "No limits, no traces, no problem."
 ];
+
 document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
 window.addEventListener('load',()=>{
@@ -523,7 +516,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V1.7"; let i=0;
+const text="KuppyCloaker V2.0"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -805,20 +798,6 @@ document.getElementById('renameTab').onclick=()=>{
   }
 };
 
-let panicKey=localStorage.getItem('kuppyPanicKey')||null;
-document.getElementById('setPanicKey').onclick=()=>{
-  const key=prompt('Press a single key:');
-  if(key&&key.length===1){
-    panicKey=key.toLowerCase();
-    localStorage.setItem('kuppyPanicKey',panicKey);
-    alert(`Panic key set to ${panicKey.toUpperCase()}`);
-  }
-};
-document.addEventListener('keydown',e=>{
-  if(panicKey&&e.key.toLowerCase()===panicKey)
-    window.location.href='https://classroom.google.com';
-});
-
 document.getElementById('whyBtn').onclick=()=>{
   const t=document.getElementById('whyText');
   t.style.display=t.style.display==='block'?'none':'block';
@@ -869,8 +848,66 @@ document.getElementById('faviconToggle').onclick = () => {
 };
 
 document.getElementById('cloakBtn').onclick = () => {
-const defaultURL = "https://braykup.github.io/KuppyCloaker/"; // <- replace with the site you want
+const defaultURL = "https://braykup.github.io/KuppyCloaker/";
 openWebsite(defaultURL);};
+
+  const loginShell = document.getElementById('loginShell');
+  const homePage = document.getElementById('homePage');
+  const loginUsername = document.getElementById('loginUsername');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginMsg = document.getElementById('loginMsg');
+  const userDisplay = document.getElementById('userDisplay');
+
+  const users = {
+    "Kuppy": "ILoveKat",
+    "Katvq": "Rose1013.",
+    "GUEST": "guestpass",
+  };
+
+  loginShell.classList.add('fade');
+  homePage.classList.add('fade');
+
+  loginBtn.onclick = () => {
+    const user = loginUsername.value.trim();
+    const pass = loginPassword.value.trim();
+    if(!user || !pass){
+      loginMsg.textContent = "Enter username & password";
+      return;
+    }
+
+if(users[user] !== pass){
+  loginMsg.textContent = "Incorrect username or password";
+  return;
+}
+
+  loginShell.classList.add('hidden');
+
+  setTimeout(() => {
+    loginShell.style.display = 'none';
+
+    homePage.style.display = 'block';
+    setTimeout(() => homePage.classList.remove('hidden'), 10);
+    userDisplay.textContent = user;
+  }, 500);
+};
+
+  userDisplay.addEventListener('click', () => {
+    const confirmSignOut = confirm("Are you sure you want to log out?");
+    if(!confirmSignOut) return;
+
+  homePage.classList.add('hidden');
+
+  setTimeout(() => {
+    homePage.style.display = 'none';
+
+    loginShell.style.display = 'flex';
+    setTimeout(() => loginShell.classList.remove('hidden'), 10);
+
+    loginUsername.value = '';
+    loginPassword.value = '';
+  }, 500);
+});
 
 </script>
 </body>
