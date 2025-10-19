@@ -339,14 +339,12 @@ footer .why {
       <div id="settingsMenu">
         <button id="lightToggle">💡</button>
         <button id="colorToggle">🎨</button>
-        <button id="renameTab">✏️</button>
-        <button id="faviconToggle">📚</button>
       </div>
     </div>
   </header>
 
   <div class="topbar">
-    <input id="websiteInput" type="text" placeholder="Enter a website or game URL" />
+    <input id="websiteInput" type="text" placeholder="Enter a game URL" />
     <button id="loadWebsite" class="btn">Open</button>
     <button id="saveWebsite" class="btn">Save</button>
   </div>
@@ -789,14 +787,6 @@ document.getElementById('colorToggle').onclick=()=>{
   document.documentElement.style.setProperty('--card', isLight ? lighten(t.card) : t.card);
 };
 
-document.getElementById('renameTab').onclick=()=>{
-  const newName=prompt('New tab name:');
-  if(newName){
-    document.title=newName;
-    localStorage.setItem('kuppyTabName',newName);
-  }
-};
-
 document.getElementById('whyBtn').onclick=()=>{
   const t=document.getElementById('whyText');
   t.style.display=t.style.display==='block'?'none':'block';
@@ -820,31 +810,6 @@ function getDailyGame() {
 }
 
 document.getElementById('dailyGameBtn').onclick = getDailyGame;
-
-const favicons = [
-  'https://www.google.com/favicon.ico',
-  'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico',
-  'https://ssl.gstatic.com/classroom/favicon.ico',
-];
-let currentFaviconIndex = parseInt(localStorage.getItem('kuppyFaviconIndex')) || 0;
-
-function setFavicon(index) {
-  let link = document.querySelector("link[rel~='icon']");
-  if (!link) {
-    link = document.createElement('link');
-    link.rel = 'icon';
-    document.head.appendChild(link);
-  }
-  link.href = favicons[index];
-  localStorage.setItem('kuppyFaviconIndex', index);
-}
-
-setFavicon(currentFaviconIndex);
-
-document.getElementById('faviconToggle').onclick = () => {
-  currentFaviconIndex = (currentFaviconIndex + 1) % favicons.length;
-  setFavicon(currentFaviconIndex);
-};
 
   const loginShell = document.getElementById('loginShell');
   const homePage = document.getElementById('homePage');
