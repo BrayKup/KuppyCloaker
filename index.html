@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V2.0</title>
+<title>KuppyCloaker V2.1</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -406,17 +406,19 @@ footer .why {
 const defaultGames = [
   {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
   {name: "Adventure Capitalist", url: "https://seraph-bi6hosts.vercel.app/games/adventurecapitalist/index.html"},
-  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
-  {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
+  {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
   {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html"},
   {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
   {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/"},
   {name: "BitLife", url: "https://monkeygg2.github.io/games/bit-life/"},
+  {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
+  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
+  {name: "Bridge Race 3D", url: "https://maddox05.github.io/basic-ruffle-player/html/bridge_race/index.html"},
+  {name: "Clash Royale", url: "https://maddox05.github.io/basic-ruffle-player/html/clash_royale/index.html"},
   {name: "Cookie Clicker", url: "https://monkeygg2.github.io/games/cookie-clicker/"},
   {name: "Crossy Road", url: "https://monkeygg2.github.io/games/crossy-road/"},
-  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html"},
   {name: "Crazy Cattle 3D", url: "https://crazycattle.club/"},
   {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
   {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
@@ -428,27 +430,30 @@ const defaultGames = [
   {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html"},
   {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
   {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html"},
+  {name: "Infinity Craft", url: "https://maddox05.github.io/basic-ruffle-player/html/nova_craft/index.html"},
   {name: "Knife Hit", url: "https://seraph-bi6hosts.vercel.app/games/knifehit/index.html"},
   {name: "Magic Tiles", url: "https://script.google.com/macros/s/AKfycbzsriooEqdtLu3zcG2AUjtLNeqgETUcTv5duzFgEKlIZAZZsYlq49sR2aN6nSwsAjcs/exec"},
   {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html"},
   {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html"},
   {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/"},
-  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html"},
-  {name: "Roblox Obby", url: "https://storage.googleapis.com/test-41376.appspot.com/obby.html"},
   {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html"},
   {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
   {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html"},
-  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
+  {name: "Papa Louie 2", url: "https://maddox05.github.io/basic-ruffle-player/html/papalouie2/index.html"},
+  {name: "Papa Louie 3", url: "https://seraph-bi6hosts.vercel.app/games/papalouie3/index.html"},
   {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html"},
+  {name: "Papa's Freezeria", url: "https://seraph-bi6hosts.vercel.app/games/papasfreezeria/index.html"},
   {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html"},
   {name: "Papa's Pancakeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspancakeria/index.html"},
-  {name: "Papa's Freezeria", url: "https://seraph-bi6hosts.vercel.app/games/papasfreezeria/index.html"},
-  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html"},
-  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html"},
   {name: "Papa's Pastaria", url: "https://seraph-bi6hosts.vercel.app/games/papaspastaria/index.html"},
+  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
+  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html"},
   {name: "Papa's Tacomia", url: "https://seraph-bi6hosts.vercel.app/games/papastacomia/index.html"},
+  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html"},
   {name: "Paper.io 2", url: "https://studyschool.netlify.app/g/paperio2/"},
   {name: "Precision Client", url: "https://milkywaygg.github.io/assets/games/eagler/precision/"},
+  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html"},
+  {name: "Roblox Obby", url: "https://storage.googleapis.com/test-41376.appspot.com/obby.html"},
   {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
   {name: "Retro Bowl College", url: "https://maddox05.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
   {name: "Run 3", url: "https://monkeygg2.github.io/games/run-3/"},
@@ -458,10 +463,11 @@ const defaultGames = [
   {name: "Stair Race 3D", url: "https://seraph-bi6hosts.vercel.app/games/stairrace3d/index.html"},
   {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/"},
   {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/"},
+  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
   {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html"},
   {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html"},
   {name: "Tiny Fishing", url: "https://seraph-bi6hosts.vercel.app/games/tinyfishing/index.html"},
-  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
+  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
   {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/"},
 ];
@@ -513,7 +519,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V2.0"; let i=0;
+const text="KuppyCloaker V2.1"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
