@@ -615,7 +615,6 @@ overlay.classList.remove('active');
 }
 
 function rememberRecentGame(game) {
-  // game = { name: "Game Name", url: "https://..." }
   localStorage.setItem('recentGame', JSON.stringify(game));
 }
 
@@ -823,6 +822,7 @@ document.getElementById('dailyGameBtn').onclick = getDailyGame;
     "Kuppy": "ILoveKat",
     "Katvq": "Rose1013.",
     "GUEST": "guestpass",
+    "Parody": "*****",   
   };
 
   loginShell.classList.add('fade');
