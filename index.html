@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V2.2</title>
+<title>KuppyCloaker V2.3</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -424,6 +424,7 @@ const defaultGames = [
   {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
   {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
   {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/"},
+  {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
   {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/"},
   {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
   {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html"},
@@ -438,6 +439,7 @@ const defaultGames = [
   {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html"},
   {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/"},
   {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html"},
+  {name: "Climb Simulator", url: "https://script.google.com/macros/s/AKfycbzUPEYWyiXAsI-wbbg-NbWW6ZAZF1FlSqACKLaEQMvPbnqP5zeGHck2VpwfJ9yoO3o7/exec"},
   {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
   {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html"},
   {name: "Papa Louie 2", url: "https://maddox05.github.io/basic-ruffle-player/html/papalouie2/index.html"},
@@ -472,6 +474,16 @@ const defaultGames = [
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
   {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/"},
 ];
+
+defaultGames.sort((a, b) => {
+  // Compare names case-insensitively
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
 
 const quotes = [
   "Stealth isn’t hiding. It’s blending in.",
@@ -520,7 +532,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V2.2"; let i=0;
+const text="KuppyCloaker V2.3"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -844,16 +856,13 @@ loginBtn.onclick = () => {
     return;
   }
 
-  // ✅ check if username exists
   const userExists = users.hasOwnProperty(user);
 
-  // ✅ verify password or master password (only valid if username exists)
   if(!userExists || (users[user] !== pass && pass !== weeklyPassword)){
     loginMsg.textContent = "Incorrect username or password";
     return;
   }
 
-  // hide login
   loginShell.classList.add('hidden');
   setTimeout(() => {
     loginShell.style.display = 'none';
@@ -882,52 +891,41 @@ loginBtn.onclick = () => {
 
 let inactivityTimer;
 
-// Function to handle user being kicked
 function kickUser() {
   alert("You have been inactive for 30 minutes. You will be signed out.");
-  // Redirect or clear page — choose one:
-  window.location.href = "about:blank"; // blank page
-  // OR replace with your logout page:
-  // window.location.href = "logout.html";
+  window.location.href = "about:blank";
 }
 
-// Reset the timer whenever the user interacts
 function resetInactivityTimer() {
   clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(kickUser, 30 * 60 * 1000); // 30 minutes
+  inactivityTimer = setTimeout(kickUser, 30 * 60 * 1000);
 }
 
-// List of activity events that reset the timer
 ["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(evt => {
   document.addEventListener(evt, resetInactivityTimer, false);
 });
 
-// Start the timer when the page loads
 resetInactivityTimer();
 
 function getWeeklyPassword() {
   const date = new Date();
 
-  // Calculate the ISO week number (same across all devices)
   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
   const days = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
   const week = Math.ceil((days + firstDayOfYear.getDay() + 1) / 7);
 
-  const seed = date.getFullYear() + "-W" + week; // e.g., "2025-W43"
+  const seed = date.getFullYear() + "-W" + week;
 
-  // Simple hash-like generator based on week
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
     hash = (hash * 31 + seed.charCodeAt(i)) % 999999;
   }
 
-  return "Kuppy" + hash.toString(16).toUpperCase(); // example: "Kuppy9AF2B"
+  return "Kuppy" + hash.toString(16).toUpperCase();
 }
 
-// CHANGE THIS to your real secret code:
 const secretCode = "KupCloakPass";
 const weeklyPassword = getWeeklyPassword();
-// When user clicks the icon
 document.getElementById("passwordUnlock").addEventListener("click", () => {
   const entered = prompt("Enter special code:");
   if (entered === secretCode) {
