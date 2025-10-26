@@ -928,13 +928,8 @@ const weeklyPassword = getWeeklyPassword();
 document.getElementById("passwordUnlock").addEventListener("click", () => {
   const entered = prompt("Enter special code:");
   if (entered === secretCode) {
-    navigator.clipboard.writeText(weeklyPassword)
-      .then(() => {
-        alert("✅ Password copied to clipboard!");
-      })
-      .catch(() => {
-        alert("❌ Failed to copy password.");
-      });
+    // Show the weekly password in an alert instead of copying
+    alert(`✅ Your weekly password is:\n\n${weeklyPassword}`);
   } else if (entered !== null) {
     alert("❌ Wrong code.");
   }
