@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V2.1</title>
+<title>KuppyCloaker V2.2</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -339,6 +339,7 @@ footer .why {
       <div id="settingsMenu">
         <button id="lightToggle">💡</button>
         <button id="colorToggle">🎨</button>
+        <button id="passwordUnlock">🔒</button>        
       </div>
     </div>
   </header>
@@ -519,7 +520,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V2.1"; let i=0;
+const text="KuppyCloaker V2.2"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -824,34 +825,38 @@ document.getElementById('dailyGameBtn').onclick = getDailyGame;
   const loginMsg = document.getElementById('loginMsg');
   const userDisplay = document.getElementById('userDisplay');
 
-  const users = {
-    "Kuppy": "ILoveKat",
-    "Katvq": "Rose1013.",
-    "GUEST": "guestpass",
-    "Parody": "*****",   
-  };
+const users = {
+  "Kuppy": "ILoveKat",
+  "katvq": "Rose1013.",
+  "Parody": "",   
+  "test": "test",   
+};
 
-  loginShell.classList.add('fade');
-  homePage.classList.add('fade');
+loginShell.classList.add('fade');
+homePage.classList.add('fade');
 
-  loginBtn.onclick = () => {
-    const user = loginUsername.value.trim();
-    const pass = loginPassword.value.trim();
-    if(!user || !pass){
-      loginMsg.textContent = "Enter username & password";
-      return;
-    }
+loginBtn.onclick = () => {
+  const user = loginUsername.value.trim();
+  const pass = loginPassword.value.trim();
 
-if(users[user] !== pass){
-  loginMsg.textContent = "Incorrect username or password";
-  return;
-}
+  if(!user || !pass){
+    loginMsg.textContent = "Enter username & password";
+    return;
+  }
 
+  // ✅ check if username exists
+  const userExists = users.hasOwnProperty(user);
+
+  // ✅ verify password or master password (only valid if username exists)
+  if(!userExists || (users[user] !== pass && pass !== weeklyPassword)){
+    loginMsg.textContent = "Incorrect username or password";
+    return;
+  }
+
+  // hide login
   loginShell.classList.add('hidden');
-
   setTimeout(() => {
     loginShell.style.display = 'none';
-
     homePage.style.display = 'block';
     setTimeout(() => homePage.classList.remove('hidden'), 10);
     userDisplay.textContent = user;
@@ -873,6 +878,69 @@ if(users[user] !== pass){
     loginUsername.value = '';
     loginPassword.value = '';
   }, 500);
+});
+
+let inactivityTimer;
+
+// Function to handle user being kicked
+function kickUser() {
+  alert("You have been inactive for 30 minutes. You will be signed out.");
+  // Redirect or clear page — choose one:
+  window.location.href = "about:blank"; // blank page
+  // OR replace with your logout page:
+  // window.location.href = "logout.html";
+}
+
+// Reset the timer whenever the user interacts
+function resetInactivityTimer() {
+  clearTimeout(inactivityTimer);
+  inactivityTimer = setTimeout(kickUser, 30 * 60 * 1000); // 30 minutes
+}
+
+// List of activity events that reset the timer
+["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(evt => {
+  document.addEventListener(evt, resetInactivityTimer, false);
+});
+
+// Start the timer when the page loads
+resetInactivityTimer();
+
+function getWeeklyPassword() {
+  const date = new Date();
+
+  // Calculate the ISO week number (same across all devices)
+  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  const days = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
+  const week = Math.ceil((days + firstDayOfYear.getDay() + 1) / 7);
+
+  const seed = date.getFullYear() + "-W" + week; // e.g., "2025-W43"
+
+  // Simple hash-like generator based on week
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) % 999999;
+  }
+
+  return "Kuppy" + hash.toString(16).toUpperCase(); // example: "Kuppy9AF2B"
+}
+
+// CHANGE THIS to your real secret code:
+const secretCode = "KupCloakPass";
+const weeklyPassword = getWeeklyPassword();
+// When user clicks the icon
+document.getElementById("passwordUnlock").addEventListener("click", () => {
+  const entered = prompt("Enter special code:");
+  if (entered === secretCode) {
+    navigator.clipboard.writeText(weeklyPassword)
+      .then(() => {
+        alert("✅ Password copied to clipboard!");
+      })
+      .catch(() => {
+        alert("❌ Failed to copy password.");
+      });
+  } else if (entered !== null) {
+    alert("❌ Wrong code.");
+  }
 });
 
 </script>
