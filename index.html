@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V2.3</title>
+<title>KuppyCloaker V3</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -269,6 +269,118 @@ footer {
   opacity: 1;
 }
 
+.multiplayer-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#multigamesPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
+}
+#multigamesPage.show {
+  display: flex;
+  opacity: 1;
+}
+
+.arcade-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#arcadegamesPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
+}
+#arcadegamesPage.show {
+  display: flex;
+  opacity: 1;
+}
+
+.puzzle-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#puzzlegamesPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
+}
+#puzzlegamesPage.show {
+  display: flex;
+  opacity: 1;
+}
+
+.obby-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+#obbygamesPage {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
+}
+#obbygamesPage.show {
+  display: flex;
+  opacity: 1;
+}
+
 #fadeOverlay {
   position: fixed;
   top:0;
@@ -334,12 +446,23 @@ footer {
     <button id="saveWebsite" class="btn">Save</button>
   </div>
 
-  <div id="homeTabs" style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
+<div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:10px; margin-top:20px; margin-bottom:10px;">
+
+  <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px;">
     <button class="btn" id="allGamesBtn">🎮 All Games</button>
+    <button class="btn" id="multiGamesBtn">🧑‍🤝‍🧑 Multiplayer</button>
+    <button class="btn" id="arcadeGamesBtn">🕹️ Arcade</button>
+    <button class="btn" id="puzzleGamesBtn">🧩 Puzzle</button>    
+    <button class="btn" id="obbyGamesBtn">🏃 Obby</button>     
+  </div>
+
+  <div style="display:flex; justify-content:center; gap:10px;">
     <button class="btn" id="recentGamesBtn">🕓 Recent</button>
     <button class="btn" id="dailyGameBtn">📅 Daily Game</button>
     <button class="btn" id="randomGameBtn">🎲 Random Game</button>
   </div>
+
+</div>
 
   <div id="homeTab" class="tabContent" style="margin-top:20px;">
     <p id="quote" style="color:var(--muted);text-align:center;"></p>
@@ -369,6 +492,30 @@ footer {
   <button id="backBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
 </div>
 
+<div id="multigamesPage">
+  <h2>Multiplayer Games</h2>
+  <div class="multiplayer-grid" id="multiGamesGrid"></div>
+  <button id="multiBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
+</div>
+
+<div id="arcadegamesPage">
+  <h2>Arcade Games</h2>
+  <div class="arcade-grid" id="arcadeGamesGrid"></div>
+  <button id="arcadeBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
+</div>
+
+<div id="puzzlegamesPage">
+  <h2>Puzzle Games</h2>
+  <div class="puzzle-grid" id="puzzleGamesGrid"></div>
+  <button id="puzzleBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
+</div>
+
+<div id="obbygamesPage">
+  <h2>Obby Games</h2>
+  <div class="obby-grid" id="obbyGamesGrid"></div>
+  <button id="obbyBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
+</div>
+
 <div id="fadeOverlay"></div>
 
 <script>
@@ -387,17 +534,21 @@ const defaultGames = [
   {name: "Bridge Race 3D", url: "https://maddox05.github.io/basic-ruffle-player/html/bridge_race/index.html"},
   {name: "Clash Royale", url: "https://maddox05.github.io/basic-ruffle-player/html/clash_royale/index.html"},
   {name: "Cookie Clicker", url: "https://monkeygg2.github.io/games/cookie-clicker/"},
+  {name: "Tag", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/tag/index.html"},  
   {name: "Crossy Road", url: "https://monkeygg2.github.io/games/crossy-road/"},
   {name: "Crazy Cattle 3D", url: "https://crazycattle.club/"},
   {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
   {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
   {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/"},
+  {name: "Table Tennis World Tour", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/table-tennis-world-tour/index.html"},  
   {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
   {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/"},
   {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
   {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html"},
   {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html"},
+  {name: "Idle Mining Empire", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/idle-mining-empire/index.html"},  
   {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html"},
+  {name: "Steve Parkour", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/noob-steve-parkour/index.html"},  
   {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
   {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html"},
   {name: "Infinity Craft", url: "https://maddox05.github.io/basic-ruffle-player/html/nova_craft/index.html"},
@@ -452,6 +603,131 @@ defaultGames.sort((a, b) => {
   return 0;
 });
 
+const multiGames = [
+  {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
+  {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
+  {name: "Tag", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/tag/index.html"},  
+  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
+  {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
+  {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html"},
+  {name: "Precision Client", url: "https://milkywaygg.github.io/assets/games/eagler/precision/"},
+  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+];
+
+multiGames.sort((a, b) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
+
+const arcadeGames = [
+  {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
+  {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
+  {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
+  {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
+  {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/"},
+  {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
+  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
+  {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
+  {name: "Bridge Race 3D", url: "https://maddox05.github.io/basic-ruffle-player/html/bridge_race/index.html"},
+  {name: "Clash Royale", url: "https://maddox05.github.io/basic-ruffle-player/html/clash_royale/index.html"},
+  {name: "Tag", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/tag/index.html"},  
+  {name: "Crossy Road", url: "https://monkeygg2.github.io/games/crossy-road/"},
+  {name: "Crazy Cattle 3D", url: "https://crazycattle.club/"},
+  {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
+  {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
+  {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/"},
+  {name: "Table Tennis World Tour", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/table-tennis-world-tour/index.html"},  
+  {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
+  {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/"},
+  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
+  {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html"},
+  {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html"},
+  {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html"},
+  {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
+  {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html"},
+  {name: "Knife Hit", url: "https://seraph-bi6hosts.vercel.app/games/knifehit/index.html"},
+  {name: "Magic Tiles", url: "https://script.google.com/macros/s/AKfycbzsriooEqdtLu3zcG2AUjtLNeqgETUcTv5duzFgEKlIZAZZsYlq49sR2aN6nSwsAjcs/exec"},
+  {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html"},
+  {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/"},
+  {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
+  {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html"},
+  {name: "Papa Louie 2", url: "https://maddox05.github.io/basic-ruffle-player/html/papalouie2/index.html"},
+  {name: "Papa Louie 3", url: "https://seraph-bi6hosts.vercel.app/games/papalouie3/index.html"},
+  {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html"},
+  {name: "Papa's Freezeria", url: "https://seraph-bi6hosts.vercel.app/games/papasfreezeria/index.html"},
+  {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html"},
+  {name: "Papa's Pancakeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspancakeria/index.html"},
+  {name: "Papa's Pastaria", url: "https://seraph-bi6hosts.vercel.app/games/papaspastaria/index.html"},
+  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
+  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html"},
+  {name: "Papa's Tacomia", url: "https://seraph-bi6hosts.vercel.app/games/papastacomia/index.html"},
+  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html"},
+  {name: "Paper.io 2", url: "https://studyschool.netlify.app/g/paperio2/"},
+  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html"},
+  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+  {name: "Retro Bowl College", url: "https://maddox05.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
+  {name: "Run 3", url: "https://monkeygg2.github.io/games/run-3/"},
+  {name: "Slope", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/slope/index.html"},
+  {name: "SnowBall.io", url: "https://seraph-bi6hosts.vercel.app/games/snowbattleio/index.html"},
+  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html"},
+  {name: "Stair Race 3D", url: "https://seraph-bi6hosts.vercel.app/games/stairrace3d/index.html"},
+  {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/"},
+  {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/"},
+  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
+  {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html"},
+  {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html"},
+  {name: "Tiny Fishing", url: "https://seraph-bi6hosts.vercel.app/games/tinyfishing/index.html"},
+  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html"},
+  {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/"},
+];
+
+arcadeGames.sort((a, b) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
+
+const puzzleGames = [
+  {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
+  {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
+  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
+  {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
+  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
+  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
+  {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
+];
+
+puzzleGames.sort((a, b) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
+
+const obbyGames = [
+  {name: "Steve Parkour", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/noob-steve-parkour/index.html"},  
+  {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html"},
+  {name: "Roblox Obby", url: "https://storage.googleapis.com/test-41376.appspot.com/obby.html"},
+];
+
+obbyGames.sort((a, b) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
+
 const quotes = [
   "Stealth isn’t hiding. It’s blending in.",
   "You can’t block what you can’t detect.",
@@ -498,7 +774,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V2.3"; let i=0;
+const text="KuppyCloaker V3"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -687,11 +963,263 @@ function loadGamesPage(){
   });
 }
 
+function loadarcadeGamesPage(){
+  const grid=document.getElementById('arcadeGamesGrid');
+  grid.innerHTML='';
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
+  const allGames = [...arcadeGames,...saved];
+
+  allGames.sort((a,b)=>{
+    const aStar=starred.includes(a.name);
+    const bStar=starred.includes(b.name);
+    if(aStar && !bStar) return -1;
+    if(!aStar && bStar) return 1;
+    return 0;
+  });
+
+  allGames.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = g.name;
+    div.appendChild(nameSpan);
+
+    const starBtn=document.createElement('button');
+    starBtn.className='starBtn';
+    if(starred.includes(g.name)) starBtn.classList.add('starred');
+    starBtn.innerHTML='★';
+    starBtn.onclick = (e)=>{
+      e.stopPropagation();
+      let s=JSON.parse(localStorage.getItem('starredGames')||'[]');
+      if(s.includes(g.name)){
+        s=s.filter(x=>x!==g.name);
+        starBtn.classList.remove('starred');
+      } else {
+        s.push(g.name);
+        starBtn.classList.add('starred');
+      }
+      localStorage.setItem('starredGames',JSON.stringify(s));
+      loadGamesPage();
+    };
+    div.appendChild(starBtn);
+
+    if(idx>=arcadeGames.length){
+      const del=document.createElement('button');
+      del.className='deleteBtn';
+      del.textContent='❌';
+      del.onclick=(e)=>{
+        e.stopPropagation();
+        const updated=saved.filter(x=>x.name!==g.name);
+        localStorage.setItem('customPresets',JSON.stringify(updated));
+        loadGamesPage();
+      };
+      div.appendChild(del);
+    }
+
+    div.onclick=()=>openWebsite(g.url);
+    
+    grid.appendChild(div);
+  });
+}
+
+function loadpuzzleGamesPage(){
+  const grid=document.getElementById('puzzleGamesGrid');
+  grid.innerHTML='';
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
+  const allGames = [...puzzleGames,...saved];
+
+  allGames.sort((a,b)=>{
+    const aStar=starred.includes(a.name);
+    const bStar=starred.includes(b.name);
+    if(aStar && !bStar) return -1;
+    if(!aStar && bStar) return 1;
+    return 0;
+  });
+
+  allGames.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = g.name;
+    div.appendChild(nameSpan);
+
+    const starBtn=document.createElement('button');
+    starBtn.className='starBtn';
+    if(starred.includes(g.name)) starBtn.classList.add('starred');
+    starBtn.innerHTML='★';
+    starBtn.onclick = (e)=>{
+      e.stopPropagation();
+      let s=JSON.parse(localStorage.getItem('starredGames')||'[]');
+      if(s.includes(g.name)){
+        s=s.filter(x=>x!==g.name);
+        starBtn.classList.remove('starred');
+      } else {
+        s.push(g.name);
+        starBtn.classList.add('starred');
+      }
+      localStorage.setItem('starredGames',JSON.stringify(s));
+      loadGamesPage();
+    };
+    div.appendChild(starBtn);
+
+    if(idx>=puzzleGames.length){
+      const del=document.createElement('button');
+      del.className='deleteBtn';
+      del.textContent='❌';
+      del.onclick=(e)=>{
+        e.stopPropagation();
+        const updated=saved.filter(x=>x.name!==g.name);
+        localStorage.setItem('customPresets',JSON.stringify(updated));
+        loadGamesPage();
+      };
+      div.appendChild(del);
+    }
+
+    div.onclick=()=>openWebsite(g.url);
+    
+    grid.appendChild(div);
+  });
+}
+
+function loadobbyGamesPage(){
+  const grid=document.getElementById('obbyGamesGrid');
+  grid.innerHTML='';
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
+  const allGames = [...obbyGames,...saved];
+
+  allGames.sort((a,b)=>{
+    const aStar=starred.includes(a.name);
+    const bStar=starred.includes(b.name);
+    if(aStar && !bStar) return -1;
+    if(!aStar && bStar) return 1;
+    return 0;
+  });
+
+  allGames.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = g.name;
+    div.appendChild(nameSpan);
+
+    const starBtn=document.createElement('button');
+    starBtn.className='starBtn';
+    if(starred.includes(g.name)) starBtn.classList.add('starred');
+    starBtn.innerHTML='★';
+    starBtn.onclick = (e)=>{
+      e.stopPropagation();
+      let s=JSON.parse(localStorage.getItem('starredGames')||'[]');
+      if(s.includes(g.name)){
+        s=s.filter(x=>x!==g.name);
+        starBtn.classList.remove('starred');
+      } else {
+        s.push(g.name);
+        starBtn.classList.add('starred');
+      }
+      localStorage.setItem('starredGames',JSON.stringify(s));
+      loadGamesPage();
+    };
+    div.appendChild(starBtn);
+
+    if(idx>=obbyGames.length){
+      const del=document.createElement('button');
+      del.className='deleteBtn';
+      del.textContent='❌';
+      del.onclick=(e)=>{
+        e.stopPropagation();
+        const updated=saved.filter(x=>x.name!==g.name);
+        localStorage.setItem('customPresets',JSON.stringify(updated));
+        loadGamesPage();
+      };
+      div.appendChild(del);
+    }
+
+    div.onclick=()=>openWebsite(g.url);
+    
+    grid.appendChild(div);
+  });
+}
+
+function loadmultiGamesPage(){
+  const grid=document.getElementById('multiGamesGrid');
+  grid.innerHTML='';
+  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
+  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
+  const allGames = [...multiGames,...saved];
+
+  allGames.sort((a,b)=>{
+    const aStar=starred.includes(a.name);
+    const bStar=starred.includes(b.name);
+    if(aStar && !bStar) return -1;
+    if(!aStar && bStar) return 1;
+    return 0;
+  });
+
+  allGames.forEach((g,idx)=>{
+    const div=document.createElement('div');
+    div.className='card';
+    
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = g.name;
+    div.appendChild(nameSpan);
+
+    const starBtn=document.createElement('button');
+    starBtn.className='starBtn';
+    if(starred.includes(g.name)) starBtn.classList.add('starred');
+    starBtn.innerHTML='★';
+    starBtn.onclick = (e)=>{
+      e.stopPropagation();
+      let s=JSON.parse(localStorage.getItem('starredGames')||'[]');
+      if(s.includes(g.name)){
+        s=s.filter(x=>x!==g.name);
+        starBtn.classList.remove('starred');
+      } else {
+        s.push(g.name);
+        starBtn.classList.add('starred');
+      }
+      localStorage.setItem('starredGames',JSON.stringify(s));
+      loadGamesPage();
+    };
+    div.appendChild(starBtn);
+
+    if(idx>=multiGames.length){
+      const del=document.createElement('button');
+      del.className='deleteBtn';
+      del.textContent='❌';
+      del.onclick=(e)=>{
+        e.stopPropagation();
+        const updated=saved.filter(x=>x.name!==g.name);
+        localStorage.setItem('customPresets',JSON.stringify(updated));
+        loadGamesPage();
+      };
+      div.appendChild(del);
+    }
+
+    div.onclick=()=>openWebsite(g.url);
+    
+    grid.appendChild(div);
+  });
+}
+
 function showGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
   home.style.opacity='1';
   games.style.display='flex';
+  multi.style.display='1';
+  arcade.style.display='1';
+  puzzle.style.display='1';
+  obby.style.display='1';
   requestAnimationFrame(()=>{
     home.style.transition='opacity 0.5s';
     home.style.opacity='0';
@@ -702,12 +1230,121 @@ function showGamesPage(){
     },500);
   });
 }
+
+function showMultiGamesPage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
+  home.style.opacity='1';
+  games.style.display='1';
+  multi.style.display='flex';
+  arcade.style.display='1';
+  puzzle.style.display='1';
+  obby.style.display='1';
+  requestAnimationFrame(()=>{
+    home.style.transition='opacity 0.5s';
+    home.style.opacity='0';
+    setTimeout(()=>{
+      home.style.display='none';
+      multi.classList.add('show');
+      loadmultiGamesPage();
+    },500);
+  });
+}
+
+function showArcadeGamesPage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
+  home.style.opacity='1';
+  games.style.display='1';
+  multi.style.display='1';
+  arcade.style.display='flex';
+  puzzle.style.display='1';
+  obby.style.display='1';
+  requestAnimationFrame(()=>{
+    home.style.transition='opacity 0.5s';
+    home.style.opacity='0';
+    setTimeout(()=>{
+      home.style.display='none';
+      arcade.classList.add('show');
+      loadarcadeGamesPage();
+    },500);
+  });
+}
+
+function showPuzzleGamesPage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
+  home.style.opacity='1';
+  games.style.display='1';
+  multi.style.display='1';
+  arcade.style.display='1';
+  puzzle.style.display='flex';
+  obby.style.display='1';
+  requestAnimationFrame(()=>{
+    home.style.transition='opacity 0.5s';
+    home.style.opacity='0';
+    setTimeout(()=>{
+      home.style.display='none';
+      puzzle.classList.add('show');
+      loadpuzzleGamesPage();
+    },500);
+  });
+}
+
+function showObbyGamesPage(){
+  const home=document.getElementById('homePage');
+  const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
+  home.style.opacity='1';
+  games.style.display='1';
+  multi.style.display='1';
+  arcade.style.display='1';
+  puzzle.style.display='1';
+  obby.style.display='flex';
+  requestAnimationFrame(()=>{
+    home.style.transition='opacity 0.5s';
+    home.style.opacity='0';
+    setTimeout(()=>{
+      home.style.display='none';
+      obby.classList.add('show');
+      loadobbyGamesPage();
+    },500);
+  });
+}
+
 function showHomePage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
+  const multi=document.getElementById('multigamesPage');
+  const arcade=document.getElementById('arcadegamesPage');
+  const puzzle=document.getElementById('puzzlegamesPage');
+  const obby=document.getElementById('obbygamesPage');
   games.classList.remove('show');
+  multi.classList.remove('show');
+  arcade.classList.remove('show');
+  puzzle.classList.remove('show');
+  obby.classList.remove('show');
   setTimeout(()=>{
     games.style.display='none';
+    multi.style.display='none';
+    arcade.style.display='none';
+    puzzle.style.display='none';
+    obby.style.display='none';
     home.style.display='block';
     requestAnimationFrame(()=>home.style.opacity='1');
   },500);
@@ -728,7 +1365,18 @@ document.getElementById('saveWebsite').onclick=()=>{
   alert('Saved!');
 };
 document.getElementById('allGamesBtn').onclick=showGamesPage;
+document.getElementById('multiGamesBtn').onclick=showMultiGamesPage;
+document.getElementById('arcadeGamesBtn').onclick=showArcadeGamesPage;
+document.getElementById('puzzleGamesBtn').onclick=showPuzzleGamesPage;
+document.getElementById('obbyGamesBtn').onclick=showObbyGamesPage;
 document.getElementById('backBtn').onclick=showHomePage;
+document.getElementById('multiBackBtn').onclick=showHomePage;
+document.getElementById('arcadeBackBtn').onclick=showHomePage;
+document.getElementById('puzzleBackBtn').onclick=showHomePage;
+document.getElementById('obbyBackBtn').onclick=showHomePage;
+
+
+
 
 const gear=document.getElementById('gear'),menu=document.getElementById('settingsMenu');
 gear.onclick=()=>menu.classList.toggle('show');
