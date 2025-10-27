@@ -25,7 +25,7 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* completely removes scrollbars */
+  overflow: hidden;
 }
 
 body {
@@ -257,12 +257,12 @@ footer {
   transition: opacity 0.5s;
   overflow-y: auto;
   overflow-x: hidden;
-  position: fixed;   /* pin to viewport */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;      /* make it stretch full width */
-  height: 100vh;     /* fill the screen height */
-  padding-bottom: 40px; /* little breathing room at bottom */
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 40px;
 }
 #gamesPage.show {
   display: flex;
@@ -444,7 +444,6 @@ const defaultGames = [
 ];
 
 defaultGames.sort((a, b) => {
-  // Compare names case-insensitively
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
 
@@ -594,7 +593,6 @@ function openWebsite(url) {
     }
   });
 
-  // Back button still fades then closes
   backBtn.onclick = () => {
     fadeOverlay.classList.add('active');
     setTimeout(() => {
@@ -810,8 +808,8 @@ document.getElementById('dailyGameBtn').onclick = getDailyGame;
 const users = {
   "Kuppy": "ILoveKat",
   "katvq": "Rose1013.",
-  "Parody": "*****",   
-  "test": "test",   
+  "Parody": "*****",
+  "test": "test",
 };
 
 loginShell.classList.add('fade');
@@ -821,42 +819,37 @@ loginBtn.onclick = () => {
   const user = loginUsername.value.trim();
   const pass = loginPassword.value.trim();
 
-  if(!user || !pass){
+  if (!user || !pass) {
     loginMsg.textContent = "Enter username & password";
     return;
   }
 
-  const userExists = users.hasOwnProperty(user);
-
-  if(!userExists || (users[user] !== pass && pass !== weeklyPassword)){
+  if (!(users[user] === pass || pass === weeklyPassword)) {
     loginMsg.textContent = "Incorrect username or password";
     return;
   }
 
-loginShell.classList.add('hidden');
-setTimeout(() => {
-  loginShell.style.display = 'none';
-  homePage.style.display = 'block';
+  loginShell.classList.add('hidden');
   setTimeout(() => {
-    homePage.classList.remove('hidden');
-    startTyping(); // <-- start typing here
-  }, 10);
-  userDisplay.textContent = user;
-}, 500);
+    loginShell.style.display = 'none';
+    homePage.style.display = 'block';
+    setTimeout(() => {
+      homePage.classList.remove('hidden');
+      startTyping();
+    }, 10);
+    userDisplay.textContent = user;
+  }, 500);
 };
 
-  userDisplay.addEventListener('click', () => {
-    const confirmSignOut = confirm("Are you sure you want to log out?");
-    if(!confirmSignOut) return;
+userDisplay.addEventListener('click', () => {
+  const confirmSignOut = confirm("Are you sure you want to log out?");
+  if (!confirmSignOut) return;
 
   homePage.classList.add('hidden');
-
   setTimeout(() => {
     homePage.style.display = 'none';
-
     loginShell.style.display = 'flex';
     setTimeout(() => loginShell.classList.remove('hidden'), 10);
-
     loginUsername.value = '';
     loginPassword.value = '';
   }, 500);
@@ -902,7 +895,6 @@ const weeklyPassword = getWeeklyPassword();
 document.getElementById("passwordUnlock").addEventListener("click", () => {
   const entered = prompt("Enter special code:");
   if (entered === secretCode) {
-    // Show the weekly password in an alert instead of copying
     alert(`✅ Your weekly password is:\n\n${weeklyPassword}`);
   } else if (entered !== null) {
     alert("❌ Wrong code.");
@@ -915,7 +907,7 @@ const togglePassword = document.getElementById('togglePassword');
 togglePassword.addEventListener('click', () => {
   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
   passwordInput.setAttribute('type', type);
-  togglePassword.textContent = type === 'password' ? '👁️' : '🙈'; // optional: change icon when showing password
+  togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
 });
 
 const bgButton = document.getElementById('bgButton');
@@ -930,9 +922,7 @@ bgUpload.addEventListener('change', (event) => {
   const reader = new FileReader();
   reader.onload = function(e) {
     const dataURL = e.target.result;
-    // Save in localStorage
     localStorage.setItem('customBackground', dataURL);
-    // Apply it immediately
     document.body.style.backgroundImage = `url(${dataURL})`;
   };
   reader.readAsDataURL(file);
