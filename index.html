@@ -217,18 +217,38 @@ footer {
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: rgba(0,0,0,0.45);
+  background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.6));
   opacity: 0;
-  transition: opacity 0.18s ease;
-  font-weight: 700;
+  transform: translateY(8px);
+  transition: opacity 180ms ease, transform 200ms cubic-bezier(.2,.9,.3,1);
+  font-weight: 800;
   text-align: center;
   padding: 8px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
-.card:hover .card-title { opacity: 1; }
-.starBtn, .deleteBtn { z-index: 3; }
-.card:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0,0,0,0.3); }
+.card:hover .card-title { opacity: 1; transform: translateY(0); }
+.starBtn, .deleteBtn { z-index: 4; }
+.card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 26px rgba(0,0,0,0.15) inset; }
+
+/* accent glow border */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  z-index: 0;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.02) inset;
+  transition: box-shadow 260ms ease, transform 260ms ease, opacity 260ms ease;
+  opacity: 0.95;
+}
+.card:hover::before { box-shadow: 0 0 30px var(--accent), 0 0 8px rgba(0,0,0,0.25) inset; transform: scale(1.01); opacity: 1; }
+
+@keyframes floatSlow { 0% { transform: translateY(0); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
+
+@keyframes pulseAccent { 0% { box-shadow: 0 0 0 rgba(0,0,0,0); } 50% { box-shadow: 0 0 18px rgba(0,123,255,0.12); } 100% { box-shadow: 0 0 0 rgba(0,0,0,0); } }
 
 .starBtn {
   position: absolute;
@@ -610,7 +630,8 @@ const defaultGames = [
   {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/fireboy.webp"},
   {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html", img: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/Flappy_Bird_icon.png/250px-Flappy_Bird_icon.png"},
   {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html", img: "https://math711.github.io/img/class-22.png"},
-  {name: "Idle Mining Empire", url: "https://pet-byt3.github.io/markosclassroom/s/g/load/idle-mining-empire/index.html", img: "https://unblocked-games.s3.amazonaws.com/media/posts/372/idle-mining-empire-512.jpg"},
+  {name: "Tomb Of The Mask", url: "https://a7k9-lq2d-v8r1-zx0c-mb6p-tn4g-wy3e-ju5h.github.io/AgicFiles183294-4/tomb/", img: "https://play-lh.googleusercontent.com/ATGr-U4JBK2VjFzKGK9eMMkrDxJaazadOUoz_7Yl0U5NrWSFcFUzEtNurWXYzVWc8uOO=w240-h480-rw"},
+  {name: "Idle Mining Empire", url: "https://ubgwtf.gitlab.io/idle-mining-empire/", img: "https://unblocked-games.s3.amazonaws.com/media/posts/372/idle-mining-empire-512.jpg"},
   {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html", img: "https://math711.github.io/img/class-453.png"},
   {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/rooftop.webp"},
   {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html", img: "https://play-lh.googleusercontent.com/e4Oq0lcZMGkoCTzl-J5HCahIED_9Q-nbBrMQ80MT3uEBf0gwDOh4EMEtkmdCr2Zsng"},
@@ -689,8 +710,10 @@ multiGames.sort((a, b) => {
 
 const arcadeGames = [
   {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
+  {name: "Adventure Capitalist", url: "https://seraph-bi6hosts.vercel.app/games/adventurecapitalist/index.html"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
+  {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html"},
   {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
   {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/"},
   {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
@@ -762,6 +785,7 @@ const puzzleGames = [
   {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
   {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
   {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
+  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html"},
   {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
 ];
