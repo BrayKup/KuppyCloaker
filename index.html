@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V3</title>
+<title>KuppyCloaker V3.5</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -24,7 +24,7 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   overflow: hidden;
 }
 
@@ -33,10 +33,15 @@ body {
   background-color: var(--bg);
   color: var(--text);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  gap: 16px;
   transition: background-color 0.5s, color 0.5s, opacity 2s ease;
   opacity: 0;
+  overflow-y: auto;
 }
 body.loaded { opacity: 1; }
 
@@ -459,6 +464,107 @@ footer {
   opacity: 1;
 }
 
+/* Weather & Time Shell */
+.info-shell {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 16px 24px;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.5);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  border: 1px solid rgba(255,255,255,0.05);
+  width: 100%;
+  max-width: 800px;
+}
+
+.time-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 140px;
+}
+
+.time-display {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.date-display {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.divider {
+  width: 1px;
+  height: 50px;
+  background: rgba(255,255,255,0.1);
+}
+
+.weather-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.weather-icon {
+  font-size: 40px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.weather-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.temperature {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.weather-desc {
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.weather-details {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.weather-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.detail-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 13px;
+}
+
 #fadeOverlay {
   position: fixed;
   top:0;
@@ -496,7 +602,36 @@ footer {
     </button>
   </div>
 </div>
-
+<div class="info-shell" id="infoShell" style="display:none; margin-bottom:50px;">
+  <div class="time-section">
+    <div class="time-display" id="timeDisplay">--:--</div>
+    <div class="date-display" id="dateDisplay">Loading...</div>
+  </div>
+  
+  <div class="divider"></div>
+  
+  <div class="weather-section">
+    <div class="weather-icon" id="weatherIcon">🌤️</div>
+    <div class="weather-info">
+      <div class="temperature" id="temperature">--°</div>
+      <div class="weather-desc" id="weatherDesc">Loading weather...</div>
+    </div>
+    <div class="weather-details">
+      <div class="weather-detail">
+        <div class="detail-label">Feels</div>
+        <div class="detail-value" id="feelsLike">--°</div>
+      </div>
+      <div class="weather-detail">
+        <div class="detail-label">Humid</div>
+        <div class="detail-value" id="humidity">--%</div>
+      </div>
+      <div class="weather-detail">
+        <div class="detail-label">Wind</div>
+        <div class="detail-value" id="windSpeed">-- mph</div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="shell" id="homePage">
 <header style="position: relative;">
   <div id="userDisplay" style="position:absolute; top:12px; left:12px; color:var(--accent); font-weight:bold; text-shadow: 0 0 6px var(--accent); font-size:18px;"></div>
@@ -520,8 +655,6 @@ footer {
 
   <div class="topbar">
     <input id="websiteInput" type="text" placeholder="Enter a game URL" />
-    <button id="loadWebsite" class="btn">Open</button>
-    <button id="saveWebsite" class="btn">Save</button>
   </div>
 
 <div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:10px; margin-top:20px; margin-bottom:10px;">
@@ -606,15 +739,16 @@ footer {
 <script>
 const defaultGames = [
   {name: "2048", url: "https://monkeygg2.github.io/games/2048/", img: "https://upload.wikimedia.org/wikipedia/commons/1/1a/2048_Icon.png"},
-  {name: "Adventure Capitalist", url: "https://seraph-bi6hosts.vercel.app/games/adventurecapitalist/index.html", img: "https://www.andyroid.net/wp-content/uploads/2015/06/AdVenture-Capitalist-icon.png"},
+  {name: "Adventure Capitalist", url: "https://fit.bulkenergy.cl/resources/semag/adventure-capitalist/index.html", img: "https://www.andyroid.net/wp-content/uploads/2015/06/AdVenture-Capitalist-icon.png"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec", img: "https://play-lh.googleusercontent.com/DwEQoD1zm9FLxRstBtdWZUXNxgyWgSsOjM0ILPtlAm1L1X7f2RZdmrjizTlOAdoDF_8=w240-h480-rw"},
+  {name: "Ballistic Chickens", url: "https://fit.bulkenergy.cl/resources/semag/ballisticchickens/index.html", img: "https://fit.bulkenergy.cl/resources/semag/ballisticchickens/logo.png"},  
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec", img: "https://play-lh.googleusercontent.com/xDCBTMTXfhB6HKHVHZXOq06e3c_7d2Ehrdqh62IcCojuX5cAMaO2wIU9tX-J-HZjtT0"},
   {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/baldis.webp"},
   {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html", img: "https://play-lh.googleusercontent.com/gP8T5Z1O-ngxIloiwcBZzrzyLPYDp0R_1BDNKUDZboIRPVImeyWI8-7aExvB9gAGNKc"},
   {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/basketball-stars.webp"},
   {name: "BitLife", url: "https://monkeygg2.github.io/games/bit-life/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/bitlife.webp"},
   {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html", img: "https://play-lh.googleusercontent.com/mBpKOJBdmZLHFEfIMT0s27O-jX4MyAXqX-vhugHlTE0FKj188WmFCRElxY-inKX1tMA"},
-  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/bloxorz.webp"},
+  {name: "Bloxors", url: "https://maddox05.github.io/basic-ruffle-player/html/bloxorz/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/bloxorz.webp"},
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html", img: "https://play-lh.googleusercontent.com/ZuMoNX6xiIBRwdtSL-FN0xCdXyahk8SRaPZ5_4HzkdQEp2Tm_GAsha9OcsRoSDgSw8Y=w240-h480-rw"},
   {name: "Clash Royale", url: "https://maddox05.github.io/basic-ruffle-player/html/clash_royale/index.html", img: "https://play-lh.googleusercontent.com/gnSC6s8-6Tjc4uhvDW7nfrSJxpbhllzYhgX8y374N1LYvWBStn2YhozS9XXaz1T_Pi2q"},
   {name: "Cookie Clicker", url: "https://monkeygg2.github.io/games/cookie-clicker/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/cookieclicker.webp"},
@@ -626,55 +760,56 @@ const defaultGames = [
   {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/driftboss.webp"},
   {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec", img: "https://play-lh.googleusercontent.com/GmjNSIdVoTumy_mps_Ia5U7rpIcaYh_ixhWZlLCcLKCRNOOKop3fFF2fOtEHcNfrthIa"},
   {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/", img: "https://play-lh.googleusercontent.com/V_egAxch0phxs10H_Z1QpWRrsH4phd8egT_5ZjYlFbXzXvwpUGpmJMn2h6HgbGkSlZSM"},
-  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/fireboy.webp"},
-  {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html", img: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/Flappy_Bird_icon.png/250px-Flappy_Bird_icon.png"},
+  {name: "Fireboy & Watergirl", url: "https://rawcdn.githack.com/lioxryt/lioxryt-assets/d16b2cb691af033a5f3da3a496cb691c81977fc9/other/fbwg1/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/fireboy.webp"},
+  {name: "Flappy Bird", url: "https://maddox05.github.io/basic-ruffle-player/html/flappy_bird/index.html", img: "https://upload.wikimedia.org/wikipedia/en/thumb/0/0a/Flappy_Bird_icon.png/250px-Flappy_Bird_icon.png"},
   {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html", img: "https://math711.github.io/img/class-22.png"},
   {name: "Tomb Of The Mask", url: "https://a7k9-lq2d-v8r1-zx0c-mb6p-tn4g-wy3e-ju5h.github.io/AgicFiles183294-4/tomb/", img: "https://play-lh.googleusercontent.com/ATGr-U4JBK2VjFzKGK9eMMkrDxJaazadOUoz_7Yl0U5NrWSFcFUzEtNurWXYzVWc8uOO=w240-h480-rw"},
   {name: "Idle Mining Empire", url: "https://ubgwtf.gitlab.io/idle-mining-empire/", img: "https://unblocked-games.s3.amazonaws.com/media/posts/372/idle-mining-empire-512.jpg"},
-  {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html", img: "https://math711.github.io/img/class-453.png"},
+  {name: "Geometry Dash", url: "https://fit.bulkenergy.cl/resources/semag/gdlite/index.html", img: "https://math711.github.io/img/class-453.png"},
   {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/rooftop.webp"},
-  {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html", img: "https://play-lh.googleusercontent.com/e4Oq0lcZMGkoCTzl-J5HCahIED_9Q-nbBrMQ80MT3uEBf0gwDOh4EMEtkmdCr2Zsng"},
+  {name: "Helix Jump", url: "https://fit.bulkenergy.cl/resources/semag/helixjump/index.html", img: "https://play-lh.googleusercontent.com/e4Oq0lcZMGkoCTzl-J5HCahIED_9Q-nbBrMQ80MT3uEBf0gwDOh4EMEtkmdCr2Zsng"},
   {name: "Infinite Craft", url: "https://maddox05.github.io/basic-ruffle-player/html/nova_craft/index.html", img: "https://play-lh.googleusercontent.com/YJFHGSmrMGuUqyWZ0oZDgDtDErIU2jQY3yT_PG9IRL6s5dBLmKXrXQShM3n8HFoPhkM=w240-h480-rw"},
-  {name: "Knife Hit", url: "https://seraph-bi6hosts.vercel.app/games/knifehit/index.html", img: "https://play-lh.googleusercontent.com/Xi15vMCqH2Ke5ndbpP86LAE2djl58hEpTZvnCF2sKUkd7C9D_x-cOGiR6HhsIOUS9Q"},
+  {name: "Knife Hit", url: "https://fit.bulkenergy.cl/resources/semag/knifehit/index.html", img: "https://play-lh.googleusercontent.com/Xi15vMCqH2Ke5ndbpP86LAE2djl58hEpTZvnCF2sKUkd7C9D_x-cOGiR6HhsIOUS9Q"},
   {name: "Magic Tiles", url: "https://script.google.com/macros/s/AKfycbzsriooEqdtLu3zcG2AUjtLNeqgETUcTv5duzFgEKlIZAZZsYlq49sR2aN6nSwsAjcs/exec", img: "https://play-lh.googleusercontent.com/u94NKpNjH1sBOiKHevX3_ATM-ozNHg6b186oU9GfnPnHwbdJ7RaeipkCRcVPdf1KRA"},
   {name: "Swerve", url: "https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/VecAxR3e/index.html", img: "https://play-lh.googleusercontent.com/P308WGnDs89S9N4QKatc20TBa_vc72evFwg5n8dsNpDNbCKzb4IGm9i2vLBpKex50gY=w600-h300-pc0xffffff-pd"},
   {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html", img: "https://images.icon-icons.com/2699/PNG/512/minecraft_logo_icon_168974.png"},
-  {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/monkey-mart.webp"},
+  {name: "Monkey Mart", url: "https://fit.bulkenergy.cl/resources/semag/monkeymart/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/monkey-mart.webp"},
   {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/motox3m.webp"},
   {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html", img: "https://play-lh.googleusercontent.com/YwxYsY3FW_zhGTZuYjT9MOpv48FKKl90uyM4eyqOjVCPLEbosk2NALJc64arXdPhjq7d"},
   {name: "Climb Simulator", url: "https://script.google.com/macros/s/AKfycbzUPEYWyiXAsI-wbbg-NbWW6ZAZF1FlSqACKLaEQMvPbnqP5zeGHck2VpwfJ9yoO3o7/exec", img: "https://play-lh.googleusercontent.com/BAVIJZwYbS5R02NnvzKGl4Y2xJfUnX0EzrEwwEbnxBMty44EFqTZRFgDRuHLeLZ7NvEE5pC0iBKKeHe44pEyGQ"},
   {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/pacman.webp"},
-  {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html", img: "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/f54dee3512ad75e89cc256c6bec22f06/papa-louie-when-pizzas-attack.jpeg"},
-  {name: "Papa Louie 2", url: "https://maddox05.github.io/basic-ruffle-player/html/papalouie2/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/papalouie2_100x100%20(1).webp"},
-  {name: "Papa Louie 3", url: "https://seraph-bi6hosts.vercel.app/games/papalouie3/index.html", img: "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/6e885a340550b9f7985deccc952db551/papa-louie-3.png"},
-  {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/burger.webp"},
-  {name: "Papa's Freezeria", url: "https://monkeygg2.github.io/games/flash/?game=papas-freezeria", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/icecream.webp"},
-  {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-KwpYmG_9veRHvvfU1xSLP9V5Z4-NG0YUNZG0rXbGvQ&s=10"},
-  {name: "Papa's Pancakeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspancakeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK2yYV4W35JF3qhAMf1PWW5u04eSCR976E6LaN5-xTAQ&s=10"},
-  {name: "Papa's Pastaria", url: "https://seraph-bi6hosts.vercel.app/games/papaspastaria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQlO58zj9CDs3IQMyIWq9S4qtFMAzmGARfONOsLKQjw&s=10"},
-  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/papapizza.webp"},
-  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html", img: "https://www.culinaryschools.org/kids-games/papas-sushiria/papas-sushiria.jpg"},
-  {name: "Papa's Tacomia", url: "https://seraph-bi6hosts.vercel.app/games/papastacomia/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/taco.webp"},
-  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZfK-B1alJVGqZQjFz__cCTuc4dn_ofLTJG8PpMDBjhw&s=10"},
+  {name: "Papa Louie", url: "https://fit.bulkenergy.cl/resources/semag/papalouie/index.html", img: "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/f54dee3512ad75e89cc256c6bec22f06/papa-louie-when-pizzas-attack.jpeg"},
+  {name: "Papa Louie 2", url: "https://fit.bulkenergy.cl/resources/semag/papalouie2/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/papalouie2_100x100%20(1).webp"},
+  {name: "Papa Louie 3", url: "https://fit.bulkenergy.cl/resources/semag/papalouie3/index.html", img: "https://img.poki-cdn.com/cdn-cgi/image/q=78,scq=50,width=1200,height=1200,fit=cover,f=png/6e885a340550b9f7985deccc952db551/papa-louie-3.png"},
+  {name: "Papa's Burgeria", url: "https://fit.bulkenergy.cl/resources/semag/papasburgeria/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/burger.webp"},
+  {name: "Papa's Freezeria", url: "https://fit.bulkenergy.cl/resources/semag/papasfreezeria/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/icecream.webp"},
+  {name: "Papa's Hotdoggeria", url: "https://fit.bulkenergy.cl/resources/semag/papashotdoggeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-KwpYmG_9veRHvvfU1xSLP9V5Z4-NG0YUNZG0rXbGvQ&s=10"},
+  {name: "Papa's Pancakeria", url: "https://fit.bulkenergy.cl/resources/semag/papaspancakeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK2yYV4W35JF3qhAMf1PWW5u04eSCR976E6LaN5-xTAQ&s=10"},
+  {name: "Papa's Pastaria", url: "https://fit.bulkenergy.cl/resources/semag/papaspastaria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQlO58zj9CDs3IQMyIWq9S4qtFMAzmGARfONOsLKQjw&s=10"},
+  {name: "Papa's Pizzeria", url: "https://fit.bulkenergy.cl/resources/semag/papaspizzeria/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/papapizza.webp"},
+  {name: "Papa's Sushiria", url: "https://fit.bulkenergy.cl/resources/semag/papassushiria/index.html", img: "https://www.culinaryschools.org/kids-games/papas-sushiria/papas-sushiria.jpg"},
+  {name: "Papa's Tacomia", url: "https://fit.bulkenergy.cl/resources/semag/papastacomia/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/taco.webp"},
+  {name: "Papa's Wingeria", url: "https://fit.bulkenergy.cl/resources/semag/papaswingeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZfK-B1alJVGqZQjFz__cCTuc4dn_ofLTJG8PpMDBjhw&s=10"},
   {name: "Paper.io 2", url: "https://studyschool.netlify.app/g/paperio2/", img: "https://math711.github.io/img/class-505.png"},
   {name: "Precision Client", url: "https://milkywaygg.github.io/assets/games/eagler/precision/", img: "https://gitlab.com/uploads/-/system/project/avatar/54241378/Untitled.jpg"},
-  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html", img: "https://images.hellokids.com/_uploads/_tiny_galerie/20190624/vign-rise-higher-hk-eyc_424.jpg"},
+  {name: "Rise Higher", url: "https://fit.bulkenergy.cl/resources/semag/risehigher/index.html", img: "https://images.hellokids.com/_uploads/_tiny_galerie/20190624/vign-rise-higher-hk-eyc_424.jpg"},
   {name: "Roblox Obby", url: "https://script.google.com/macros/s/AKfycbx-uaFWRwY1q4Gv7pRrd9PR3zbbmsKV5PTGPQZ11-u3EWCiD4xeM2V3_1JBvmJQNxSshw/exec", img: "https://play-lh.googleusercontent.com/KAz3HyTAVv6kKFVIdDKoHtp0_QsfVfzozrbt8p-iSE6SHTVJikcXtPtYDDN3yqk4LjKJHCWO9UdBQn0QeYw4"},
   {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/retro_bowl_icon.webp"},
   {name: "Retro Bowl College", url: "https://maddox05.github.io/basic-ruffle-player/html/retro_bowl_college/index.html", img: "https://img.poki-cdn.com/cdn-cgi/image/quality=78,width=314,height=314,fit=cover,f=auto/d98547374c4129bf441b754d495e41aa.png"},
   {name: "Run 3", url: "https://monkeygg2.github.io/games/run-3/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/run3.webp"},
   {name: "Slope", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/slope/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/slope.webp"},
-  {name: "SnowBall.io", url: "https://seraph-bi6hosts.vercel.app/games/snowbattleio/index.html", img: "https://play-lh.googleusercontent.com/X8FEOENa_t5mlRllBh2RRLc6sMnPIq56Wxa2ndValDOmwzIRhAv7MG6fT97TLQ2DK48"},
-  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html", img: "https://childrenandmedia.org.au/assets/images/app-reviews/Stack.png"},
-  {name: "Stair Race 3D", url: "https://seraph-bi6hosts.vercel.app/games/stairrace3d/index.html", img: "https://play-lh.googleusercontent.com/ym7hOY7sjtsuZ-CR2tmvtsNEgPTkufUPKdaUKcNHOvJS3bf7CIxA7Eyc23FbnzziPsc"},
+  {name: "SnowBall.io", url: "https://fit.bulkenergy.cl/resources/semag/snow/index.html", img: "https://play-lh.googleusercontent.com/X8FEOENa_t5mlRllBh2RRLc6sMnPIq56Wxa2ndValDOmwzIRhAv7MG6fT97TLQ2DK48"},
+  {name: "Stack", url: "https://fit.bulkenergy.cl/resources/semag/stack/index.html", img: "https://childrenandmedia.org.au/assets/images/app-reviews/Stack.png"},
+  {name: "Stack Bounce", url: "https://fit.bulkenergy.cl/resources/semag/stackbounce/index.html", img: "https://fit.bulkenergy.cl/resources/semag/stackbounce/sb.jpeg"},
+  {name: "Bridge Race", url: "https://maddox05.github.io/basic-ruffle-player/html/bridge_race/index.html", img: "https://play-lh.googleusercontent.com/ym7hOY7sjtsuZ-CR2tmvtsNEgPTkufUPKdaUKcNHOvJS3bf7CIxA7Eyc23FbnzziPsc"},
   {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/stickmanhook.webp"},
   {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/subway.webp"},
   {name: "Tall.io", url: "https://ubg17.github.io/TallIO/", img: "https://play-lh.googleusercontent.com/dKlY6BOKeda6bk2YkZncxHh-oTlcgIiUr3lWMNXApb1GuF0gmfAv10_q7UacKGZ6hNDK"}, 
-  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html", img: "https://math711.github.io/img/class-480.png"},
+  {name: "The Impossible Quiz", url: "https://maddox05.github.io/basic-ruffle-player/html/theimpossiblequiz/index.html", img: "https://math711.github.io/img/class-480.png"},
   {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html", img: "https://img.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a-512x512.jpeg"},
   {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQUFhypuMj6cRanchYLs25DH9EUy5gOe74-g&s"},
-  {name: "Tiny Fishing", url: "https://seraph-bi6hosts.vercel.app/games/tinyfishing/index.html", img: "https://math711.github.io/img/class-451.png"},
-  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html", img: "https://m.media-amazon.com/images/M/MV5BYjJhMGZjY2QtYWQ4YS00YmQyLTlhMjUtZGNlZTI1N2VlNGRjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"},
+  {name: "Tiny Fishing", url: "https://fit.bulkenergy.cl/resources/semag/tinyfishing/index.html", img: "https://math711.github.io/img/class-451.png"},
+  {name: "Unfair Mario", url: "https://fit.bulkenergy.cl/resources/semag/unfmar/index.html", img: "https://m.media-amazon.com/images/M/MV5BYjJhMGZjY2QtYWQ4YS00YmQyLTlhMjUtZGNlZTI1N2VlNGRjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily", img: "https://static01.nyt.com/images/2022/03/02/crosswords/alpha-wordle-icon-new/alpha-wordle-icon-new-smallSquare252-v3.png?format=pjpg&quality=75&auto=webp&disable=upscale"},
   {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/", img: "https://math711.github.io/img/class-828.png"}
 ];
@@ -834,9 +969,11 @@ obbyGames.sort((a, b) => {
 
 const quotes = [
   "Stealth isn’t hiding. It’s blending in.",
+  "Not sure where to start? Try a random game.",
   "You can’t block what you can’t detect.",
   "Freedom starts with a tab.",
   "Kuppy is watching you… but in a friendly way.",
+  "KuppyCloaker is better enjoyed with friends.",
   "I told my computer a joke. It laughed in binary.",
   "Remember: Every button has consequences.",
   "This isn’t a bug. It’s a feature.",
@@ -878,7 +1015,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V3"; let i=0;
+const text="KuppyCloaker V3.5"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -1209,6 +1346,7 @@ function showGamesPage(){
   home.style.opacity='1';
   games.style.display='flex';
   multi.style.display='1';
+  document.getElementById('infoShell').style.display = 'none';
   arcade.style.display='1';
   puzzle.style.display='1';
   obby.style.display='1';
@@ -1233,6 +1371,7 @@ function showMultiGamesPage(){
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='flex';
+  document.getElementById('infoShell').style.display = 'none';
   arcade.style.display='1';
   puzzle.style.display='1';
   obby.style.display='1';
@@ -1257,6 +1396,7 @@ function showArcadeGamesPage(){
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='1';
+  document.getElementById('infoShell').style.display = 'none';
   arcade.style.display='flex';
   puzzle.style.display='1';
   obby.style.display='1';
@@ -1281,6 +1421,7 @@ function showPuzzleGamesPage(){
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='1';
+  document.getElementById('infoShell').style.display = 'none';
   arcade.style.display='1';
   puzzle.style.display='flex';
   obby.style.display='1';
@@ -1307,6 +1448,7 @@ function showObbyGamesPage(){
   games.style.display='1';
   multi.style.display='1';
   arcade.style.display='1';
+  document.getElementById('infoShell').style.display = 'none';
   puzzle.style.display='1';
   sports.style.display='1';
   obby.style.display='flex';
@@ -1333,6 +1475,7 @@ function showHomePage(){
   multi.classList.remove('show');
   arcade.classList.remove('show');
   puzzle.classList.remove('show');
+  document.getElementById('infoShell').style.display = 'flex';
   obby.classList.remove('show');
   sports.classList.remove('show');
   setTimeout(()=>{
@@ -1347,20 +1490,13 @@ function showHomePage(){
   },500);
 }
 
-document.getElementById('loadWebsite').onclick=()=>{
-  const url=document.getElementById('websiteInput').value.trim();
-  openWebsite(url);
-};
-document.getElementById('saveWebsite').onclick=()=>{
-  const url=document.getElementById('websiteInput').value.trim();
-  if(!url)return alert('Enter a URL first');
-  const name=prompt('Enter a name for this site:');
-  if(!name)return;
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  saved.push({name,url});
-  localStorage.setItem('customPresets',JSON.stringify(saved));
-  alert('Saved!');
-};
+document.getElementById('websiteInput').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    const url = document.getElementById('websiteInput').value.trim();
+    openWebsite(url);
+  }
+});
+
 document.getElementById('allGamesBtn').onclick=showGamesPage;
 document.getElementById('multiGamesBtn').onclick=showMultiGamesPage;
 document.getElementById('arcadeGamesBtn').onclick=showArcadeGamesPage;
@@ -1385,6 +1521,7 @@ function showSportsGamesPage(){
   home.style.opacity='0';
   games.style.display='none';
   multi.style.display='none';
+  document.getElementById('infoShell').style.display = 'none';
   arcade.style.display='none';
   puzzle.style.display='none';
   obby.style.display='none';
@@ -1501,6 +1638,7 @@ loginBtn.onclick = () => {
   loginShell.classList.add('hidden');
   setTimeout(() => {
     loginShell.style.display = 'none';
+    document.getElementById('infoShell').style.display = 'flex'; // Show info shell
     homePage.style.display = 'block';
     setTimeout(() => {
       homePage.classList.remove('hidden');
@@ -1605,6 +1743,83 @@ window.addEventListener('load', () => {
     document.body.style.backgroundPosition = 'center';
   }
 });
+
+// Time & Weather Functions
+function updateTime() {
+  const now = new Date();
+  let hours = now.getHours();
+  const minutes = now.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+  const timeStr = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  
+  const options = { weekday: 'long', month: 'short', day: 'numeric', year: 'numeric' };
+  const dateStr = now.toLocaleDateString('en-US', options);
+  
+  document.getElementById('timeDisplay').textContent = timeStr;
+  document.getElementById('dateDisplay').textContent = dateStr;
+}
+
+updateTime();
+setInterval(updateTime, 1000);
+
+async function fetchWeather() {
+  try {
+    const response = await fetch('https://wttr.in/Bridgewater,NJ?format=j1');
+    
+    if (!response.ok) {
+      throw new Error('Weather data unavailable');
+    }
+    
+    const data = await response.json();
+    const current = data.current_condition[0];
+    
+    const temp = Math.round(parseFloat(current.temp_F));
+    const feelsLike = Math.round(parseFloat(current.FeelsLikeF));
+    const humidity = current.humidity;
+    const windSpeed = Math.round(parseFloat(current.windspeedMiles));
+    const desc = current.weatherDesc[0].value.toLowerCase();
+    
+    document.getElementById('temperature').textContent = `${temp}°F`;
+    document.getElementById('weatherDesc').textContent = desc;
+    document.getElementById('feelsLike').textContent = `${feelsLike}°F`;
+    document.getElementById('humidity').textContent = `${humidity}%`;
+    document.getElementById('windSpeed').textContent = `${windSpeed} mph`;
+    
+    const weatherIcons = {
+      'clear': '☀️',
+      'sunny': '☀️',
+      'partly cloudy': '⛅',
+      'cloudy': '☁️',
+      'overcast': '☁️',
+      'mist': '🌫️',
+      'fog': '🌫️',
+      'light rain': '🌦️',
+      'rain': '🌧️',
+      'heavy rain': '🌧️',
+      'thunderstorm': '⛈️',
+      'snow': '❄️',
+      'light snow': '🌨️'
+    };
+    
+    let icon = '🌤️';
+    for (const [key, value] of Object.entries(weatherIcons)) {
+      if (desc.includes(key)) {
+        icon = value;
+        break;
+      }
+    }
+    document.getElementById('weatherIcon').textContent = icon;
+    
+  } catch (error) {
+    console.error('Weather fetch error:', error);
+    document.getElementById('weatherDesc').textContent = 'Weather unavailable';
+    document.getElementById('temperature').textContent = '--°F';
+  }
+}
+
+fetchWeather();
+setInterval(fetchWeather, 600000); // Update every 10 minutes
 
 </script>
 </body>
