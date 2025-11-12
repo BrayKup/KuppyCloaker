@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V3.5</title>
+<title>KuppyCloaker V4</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -53,6 +53,7 @@ body.loaded { opacity: 1; }
   position: relative;
   width: 100%;
   max-width: 800px;
+  animation: fadeInScale 0.6s ease-out;
 }
 header { display: flex; align-items: center; justify-content: space-between; }
 
@@ -158,7 +159,85 @@ header { display: flex; align-items: center; justify-content: space-between; }
 
 @keyframes hideCursor { to { opacity: 0; } }
 
-.topbar { display: flex; margin-top: 16px; gap: 10px; }
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes weatherIconFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.topbar { 
+  display: flex; 
+  margin-top: 16px; 
+  gap: 10px;
+  animation: slideInFromTop 0.6s ease-out 0.2s both;
+}
 input {
   flex: 1;
   padding: 12px;
@@ -166,6 +245,14 @@ input {
   border: 1px solid rgba(255,255,255,0.1);
   background: var(--bg);
   color: var(--text);
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  transform: translateY(-1px);
 }
 .btn {
   background: var(--accent);
@@ -175,8 +262,17 @@ input {
   padding: 10px 16px;
   cursor: pointer;
   font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.btn:hover { opacity: 0.9; }
+
+.btn:active {
+  transform: scale(0.95);
+}
+.btn:hover { 
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
 
 footer {
   margin-top: 20px;
@@ -476,6 +572,7 @@ footer {
   border: 1px solid rgba(255,255,255,0.05);
   width: 100%;
   max-width: 800px;
+  animation: fadeInScale 0.6s ease-out;
 }
 
 .time-section {
@@ -483,6 +580,7 @@ footer {
   flex-direction: column;
   gap: 4px;
   min-width: 140px;
+  animation: slideInFromLeft 0.6s ease-out;
 }
 
 .time-display {
@@ -510,11 +608,13 @@ footer {
   align-items: center;
   gap: 16px;
   flex: 1;
+  animation: slideInFromRight 0.6s ease-out 0.1s both;
 }
 
 .weather-icon {
   font-size: 40px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  animation: weatherIconFloat 3s ease-in-out infinite;
 }
 
 .weather-info {
@@ -565,6 +665,50 @@ footer {
   font-size: 13px;
 }
 
+.starred-games-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.starred-game-icon {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  pointer-events: auto;
+  cursor: grab;
+  transition: box-shadow 0.2s;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  user-select: none;
+  animation: fadeInScale 0.5s ease-out backwards;
+}
+
+.starred-game-icon.dragging {
+  cursor: grabbing;
+  opacity: 0.8;
+  z-index: 1000;
+  transition: none;
+}
+
+.starred-game-icon:hover:not(.dragging) {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5), 0 0 20px var(--accent);
+}
+
+.starred-game-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: inherit;
+}
+
 #fadeOverlay {
   position: fixed;
   top:0;
@@ -597,11 +741,9 @@ footer {
          style="width: 100%; padding:10px 40px 10px 10px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
   <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; user-select:none; color:var(--muted); font-size:16px;">👁️</span>
 </div>
-    <button id="loginBtn" style="width:100%; padding:12px; border:none; border-radius:8px; background:var(--accent); color:#fff; font-weight:bold; cursor:pointer;">
-      Log In
-    </button>
-  </div>
 </div>
+</div>
+<div class="starred-games-container" id="starredGamesContainer"></div>
 <div class="info-shell" id="infoShell" style="display:none; margin-bottom:50px;">
   <div class="time-section">
     <div class="time-display" id="timeDisplay">--:--</div>
@@ -659,7 +801,7 @@ footer {
 
 <div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:10px; margin-top:20px; margin-bottom:10px;">
 
-  <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px;">
+<div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px; animation: slideInFromBottom 0.6s ease-out 0.4s both;">
     <button class="btn" id="sportsGamesBtn">⚽ Sports</button>    
     <button class="btn" id="multiGamesBtn">🧑‍🤝‍🧑 Multiplayer</button>
     <button class="btn" id="arcadeGamesBtn">🕹️ Arcade</button>
@@ -667,8 +809,7 @@ footer {
     <button class="btn" id="obbyGamesBtn">🏃 Obby</button>
   </div>
 
-  <div style="display:flex; justify-content:center; gap:10px;">
-    <button class="btn" id="allGamesBtn">🎮 All Games</button>    
+<div style="display:flex; justify-content:center; gap:10px; animation: slideInFromBottom 0.6s ease-out 0.5s both;">    <button class="btn" id="allGamesBtn">🎮 All Games</button>    
     <button class="btn" id="recentGamesBtn">🕓 Recent</button>
     <button class="btn" id="dailyGameBtn">📅 Daily Game</button>
     <button class="btn" id="randomGameBtn">🎲 Random Game</button>
@@ -741,7 +882,6 @@ const defaultGames = [
   {name: "2048", url: "https://monkeygg2.github.io/games/2048/", img: "https://upload.wikimedia.org/wikipedia/commons/1/1a/2048_Icon.png"},
   {name: "Adventure Capitalist", url: "https://fit.bulkenergy.cl/resources/semag/adventure-capitalist/index.html", img: "https://www.andyroid.net/wp-content/uploads/2015/06/AdVenture-Capitalist-icon.png"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec", img: "https://play-lh.googleusercontent.com/DwEQoD1zm9FLxRstBtdWZUXNxgyWgSsOjM0ILPtlAm1L1X7f2RZdmrjizTlOAdoDF_8=w240-h480-rw"},
-  {name: "Ballistic Chickens", url: "https://fit.bulkenergy.cl/resources/semag/ballisticchickens/index.html", img: "https://fit.bulkenergy.cl/resources/semag/ballisticchickens/logo.png"},  
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec", img: "https://play-lh.googleusercontent.com/xDCBTMTXfhB6HKHVHZXOq06e3c_7d2Ehrdqh62IcCojuX5cAMaO2wIU9tX-J-HZjtT0"},
   {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/baldis.webp"},
   {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html", img: "https://play-lh.googleusercontent.com/gP8T5Z1O-ngxIloiwcBZzrzyLPYDp0R_1BDNKUDZboIRPVImeyWI8-7aExvB9gAGNKc"},
@@ -804,7 +944,6 @@ const defaultGames = [
   {name: "Bridge Race", url: "https://maddox05.github.io/basic-ruffle-player/html/bridge_race/index.html", img: "https://play-lh.googleusercontent.com/ym7hOY7sjtsuZ-CR2tmvtsNEgPTkufUPKdaUKcNHOvJS3bf7CIxA7Eyc23FbnzziPsc"},
   {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/stickmanhook.webp"},
   {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/", img: "https://raw.githubusercontent.com/duckmath/icons/refs/heads/main/subway.webp"},
-  {name: "Tall.io", url: "https://ubg17.github.io/TallIO/", img: "https://play-lh.googleusercontent.com/dKlY6BOKeda6bk2YkZncxHh-oTlcgIiUr3lWMNXApb1GuF0gmfAv10_q7UacKGZ6hNDK"}, 
   {name: "The Impossible Quiz", url: "https://maddox05.github.io/basic-ruffle-player/html/theimpossiblequiz/index.html", img: "https://math711.github.io/img/class-480.png"},
   {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html", img: "https://img.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a-512x512.jpeg"},
   {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQUFhypuMj6cRanchYLs25DH9EUy5gOe74-g&s"},
@@ -996,7 +1135,9 @@ const quotes = [
   "No limits, no traces, no problem."
 ];
 
-document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+const quoteEl = document.getElementById("quote");
+quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+quoteEl.style.animation = 'fadeInScale 0.8s ease-out 0.3s both';
 
 window.addEventListener('load',()=>{
   document.body.classList.add('loaded');
@@ -1015,7 +1156,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V3.5"; let i=0;
+const text="KuppyCloaker V4"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -1171,6 +1312,7 @@ function createGameCard(g, idx, savedArray, starredArray, categoryLength, reload
       starBtn.classList.add('starred');
     }
     localStorage.setItem('starredGames', JSON.stringify(s));
+    displayStarredGames();
     if (typeof reloadFn === 'function') reloadFn();
   };
   div.appendChild(starBtn);
@@ -1193,6 +1335,136 @@ function createGameCard(g, idx, savedArray, starredArray, categoryLength, reload
   div.onclick = () => openWebsite(g.url);
 
   return div;
+}
+
+function displayStarredGames() {
+  const container = document.getElementById('starredGamesContainer');
+  container.innerHTML = '';
+  
+  const starred = JSON.parse(localStorage.getItem('starredGames') || '[]');
+  if (starred.length === 0) return;
+  
+  const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+  const allGames = [...defaultGames, ...saved];
+  
+  const starredGames = allGames.filter(g => starred.includes(g.name));
+  
+  // Load saved positions or use defaults
+  const savedPositions = JSON.parse(localStorage.getItem('starredGamePositions') || '{}');
+  
+  const defaultPositions = [
+    { top: '10%', left: '2%' },
+    { top: '30%', left: '2%' },
+    { top: '50%', left: '2%' },
+    { top: '70%', left: '2%' },
+    { top: '10%', right: '2%' },
+    { top: '30%', right: '2%' },
+    { top: '50%', right: '2%' },
+    { top: '70%', right: '2%' },
+  ];
+  
+  starredGames.forEach((game, idx) => {
+    const icon = document.createElement('div');
+    icon.className = 'starred-game-icon';
+    icon.dataset.gameName = game.name;
+    
+    const imgSrc = game.img || (defaultGames.find(d => d.name === game.name) || {}).img;
+    if (imgSrc) {
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.alt = game.name;
+      img.draggable = false; // Prevent default image drag
+      icon.appendChild(img);
+    }
+    
+    // Position icons
+    const savedPos = savedPositions[game.name];
+    if (savedPos) {
+      icon.style.left = savedPos.left;
+      icon.style.top = savedPos.top;
+      icon.style.right = 'auto';
+      icon.style.bottom = 'auto';
+    } else if (idx < defaultPositions.length) {
+      Object.assign(icon.style, defaultPositions[idx]);
+    }
+    
+// Add staggered animation delay
+    icon.style.animationDelay = `${idx * 0.1}s`;
+    
+    // Make draggable
+    makeDraggable(icon, game);
+    
+    container.appendChild(icon);
+  });
+}
+
+function makeDraggable(element, game) {
+  let isDragging = false;
+  let startX, startY, initialLeft, initialTop;
+  let hasMoved = false;
+  
+  element.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    hasMoved = false;
+    element.classList.add('dragging');
+    
+    const rect = element.getBoundingClientRect();
+    startX = e.clientX;
+    startY = e.clientY;
+    initialLeft = rect.left;
+    initialTop = rect.top;
+    
+    // Remove right positioning if it exists
+    element.style.right = 'auto';
+    element.style.bottom = 'auto';
+    element.style.left = initialLeft + 'px';
+    element.style.top = initialTop + 'px';
+    
+    e.preventDefault();
+  });
+  
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+    
+    // If moved more than 5px, consider it a drag
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      hasMoved = true;
+    }
+    
+    const newLeft = initialLeft + deltaX;
+    const newTop = initialTop + deltaY;
+    
+    // Keep within viewport bounds
+    const maxLeft = window.innerWidth - element.offsetWidth;
+    const maxTop = window.innerHeight - element.offsetHeight;
+    
+    element.style.left = Math.max(0, Math.min(newLeft, maxLeft)) + 'px';
+    element.style.top = Math.max(0, Math.min(newTop, maxTop)) + 'px';
+  });
+  
+  document.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    element.classList.remove('dragging');
+    
+    // If it was a click (not a drag), open the game
+    if (!hasMoved) {
+      openWebsite(game.url);
+      rememberRecentGame(game);
+    } else {
+      // Save position
+      const savedPositions = JSON.parse(localStorage.getItem('starredGamePositions') || '{}');
+      savedPositions[game.name] = {
+        left: element.style.left,
+        top: element.style.top
+      };
+      localStorage.setItem('starredGamePositions', JSON.stringify(savedPositions));
+    }
+  });
 }
 
 document.getElementById('randomGameBtn').onclick = () => {
@@ -1486,7 +1758,10 @@ function showHomePage(){
     obby.style.display='none';
     sports.style.display='none';
     home.style.display='block';
-    requestAnimationFrame(()=>home.style.opacity='1');
+    requestAnimationFrame(()=>{
+      home.style.opacity='1';
+      displayStarredGames();
+    });
   },500);
 }
 
@@ -1494,6 +1769,36 @@ document.getElementById('websiteInput').addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     const url = document.getElementById('websiteInput').value.trim();
     openWebsite(url);
+  }
+});
+
+document.getElementById('loginPassword').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+ const user = loginUsername.value.trim();
+  const pass = loginPassword.value.trim();
+
+  if (!user || !pass) {
+    loginMsg.textContent = "Enter username & password";
+    return;
+  }
+
+  if (!(users[user] === pass || pass === weeklyPassword)) {
+    loginMsg.textContent = "Incorrect username or password";
+    return;
+  }
+
+  loginShell.classList.add('hidden');
+  setTimeout(() => {
+    loginShell.style.display = 'none';
+    document.getElementById('infoShell').style.display = 'flex'; // Show info shell
+    homePage.style.display = 'block';
+    setTimeout(() => {
+      homePage.classList.remove('hidden');
+      startTyping();
+    }, 10);
+    userDisplay.textContent = user;
+    displayStarredGames();
+  }, 500);
   }
 });
 
@@ -1607,46 +1912,15 @@ document.getElementById('dailyGameBtn').onclick = getDailyGame;
   const homePage = document.getElementById('homePage');
   const loginUsername = document.getElementById('loginUsername');
   const loginPassword = document.getElementById('loginPassword');
-  const loginBtn = document.getElementById('loginBtn');
   const loginMsg = document.getElementById('loginMsg');
   const userDisplay = document.getElementById('userDisplay');
 
 const users = {
-  "Kuppy": "ILoveKat",
-  "katvq": "Rose1013.",
-  "Parody": "*****",
   "test": "test",
 };
 
 loginShell.classList.add('fade');
 homePage.classList.add('fade');
-
-loginBtn.onclick = () => {
-  const user = loginUsername.value.trim();
-  const pass = loginPassword.value.trim();
-
-  if (!user || !pass) {
-    loginMsg.textContent = "Enter username & password";
-    return;
-  }
-
-  if (!(users[user] === pass || pass === weeklyPassword)) {
-    loginMsg.textContent = "Incorrect username or password";
-    return;
-  }
-
-  loginShell.classList.add('hidden');
-  setTimeout(() => {
-    loginShell.style.display = 'none';
-    document.getElementById('infoShell').style.display = 'flex'; // Show info shell
-    homePage.style.display = 'block';
-    setTimeout(() => {
-      homePage.classList.remove('hidden');
-      startTyping();
-    }, 10);
-    userDisplay.textContent = user;
-  }, 500);
-};
 
 userDisplay.addEventListener('click', () => {
   const confirmSignOut = confirm("Are you sure you want to log out?");
