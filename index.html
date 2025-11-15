@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V4</title>
+<title>KuppyCloaker V4.5</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -42,8 +42,43 @@ body {
   transition: background-color 0.5s, color 0.5s, opacity 2s ease;
   opacity: 0;
   overflow-y: auto;
+  position: relative;
 }
 body.loaded { opacity: 1; }
+
+/* Particle System */
+#particleCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Ambient Background Animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 20% 50%, rgba(0, 123, 255, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.02) 0%, transparent 50%);
+  animation: ambientMove 20s ease-in-out infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes ambientMove {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(3%, 3%) rotate(2deg); }
+  66% { transform: translate(-2%, 4%) rotate(-1deg); }
+}
 
 .shell {
   background: var(--card);
@@ -54,6 +89,7 @@ body.loaded { opacity: 1; }
   width: 100%;
   max-width: 800px;
   animation: fadeInScale 0.6s ease-out;
+  z-index: 1;
 }
 header { display: flex; align-items: center; justify-content: space-between; }
 
@@ -254,6 +290,8 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
   transform: translateY(-1px);
 }
+
+/* Enhanced Button with Juice */
 .btn {
   background: var(--accent);
   color: white;
@@ -262,15 +300,36 @@ input:focus {
   padding: 10px 16px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
+
 .btn:hover { 
   opacity: 0.9;
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
 }
 
@@ -278,31 +337,37 @@ footer {
   margin-top: 20px;
   color: var(--muted);
   position: relative;
+  z-index: 1;
 }
 
+/* Enhanced Card with 3D Tilt */
 .card {
   background: rgba(255,255,255,0.05);
   border-radius: 8px;
   padding: 8px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
   text-align: center;
   position: relative;
   box-sizing: border-box;
-  width: 135px;       /* fixed compact size */
+  width: 135px;
   min-width: 100px;
   max-width: 155px;
-  aspect-ratio: 1 / 1; /* make cards square */
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
+
 .card span {
   pointer-events: none;
   font-weight: 600;
   text-shadow: 0 0 4px var(--accent), 0 0 5px rgba(0, 123, 255, 0.1);
 }
+
 .card img {
   width: 100%;
   height: 100%;
@@ -310,7 +375,13 @@ footer {
   border-radius: inherit;
   display: block;
   background: transparent;
+  transition: transform 0.3s ease;
 }
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
 .card-title {
   position: absolute;
   inset: 0;
@@ -328,9 +399,29 @@ footer {
   pointer-events: none;
   z-index: 2;
 }
-.card:hover .card-title { opacity: 1; transform: translateY(0); }
+
+.card:hover .card-title { 
+  opacity: 1; 
+  transform: translateY(0);
+}
+
 .starBtn, .deleteBtn { z-index: 4; }
-.card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 26px rgba(0,0,0,0.15) inset; }
+
+.card:hover { 
+  transform: translateY(-8px) scale(1.05); 
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 26px rgba(0,0,0,0.15) inset; 
+}
+
+/* Starred animation */
+.starBtn.starred {
+  animation: starPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes starPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4) rotate(15deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
 
 /* accent glow border */
 .card::before {
@@ -345,7 +436,12 @@ footer {
   transition: box-shadow 260ms ease, transform 260ms ease, opacity 260ms ease;
   opacity: 0.95;
 }
-.card:hover::before { box-shadow: 0 0 30px var(--accent), 0 0 8px rgba(0,0,0,0.25) inset; transform: scale(1.01); opacity: 1; }
+
+.card:hover::before { 
+  box-shadow: 0 0 30px var(--accent), 0 0 8px rgba(0,0,0,0.25) inset; 
+  transform: scale(1.01); 
+  opacity: 1; 
+}
 
 @keyframes floatSlow { 0% { transform: translateY(0); } 50% { transform: translateY(-4px); } 100% { transform: translateY(0); } }
 
@@ -360,15 +456,21 @@ footer {
   border: none;
   cursor: pointer;
   color: var(--muted);
+  transition: transform 0.2s, color 0.2s;
 }
 
-  .fade {
-    transition: opacity 0.5s ease;
-  }
-  .hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
+.starBtn:hover {
+  transform: scale(1.2);
+}
+
+.fade {
+  transition: opacity 0.5s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .forms-icon img {
   width: 20px;
@@ -378,7 +480,10 @@ footer {
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-.starBtn.starred { color: gold; }
+.starBtn.starred { 
+  color: gold;
+  filter: drop-shadow(0 0 8px gold);
+}
 
 .deleteBtn {
   position: absolute;
@@ -389,8 +494,13 @@ footer {
   border: none;
   cursor: pointer;
   color: var(--muted);
+  transition: transform 0.2s, color 0.2s;
 }
-.deleteBtn:hover { color: red; }
+
+.deleteBtn:hover { 
+  color: red; 
+  transform: scale(1.2);
+}
 
 .presets-grid {
   margin-top: 20px;
@@ -400,12 +510,27 @@ footer {
   justify-items: center;
 }
 
-#gamesPage {
+/* Skeleton Loader */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Page Transitions with Slide */
+#gamesPage, #multigamesPage, #arcadegamesPage, #puzzlegamesPage, #obbygamesPage, #sportsgamesPage {
   display: none;
   flex-direction: column;
   align-items: center;
   opacity: 0;
-  transition: opacity 0.5s;
+  transform: translateX(100%);
+  transition: opacity 0.5s, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
@@ -414,13 +539,17 @@ footer {
   width: 100vw;
   height: 100vh;
   padding-bottom: 40px;
-}
-#gamesPage.show {
-  display: flex;
-  opacity: 1;
+  z-index: 1;
 }
 
-.multiplayer-grid {
+#gamesPage.show, #multigamesPage.show, #arcadegamesPage.show, 
+#puzzlegamesPage.show, #obbygamesPage.show, #sportsgamesPage.show {
+  display: flex;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.multiplayer-grid, .arcade-grid, .puzzle-grid, .obby-grid, .sports-grid {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -428,139 +557,7 @@ footer {
   justify-items: center;
 }
 
-#multigamesPage {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 40px;
-}
-#multigamesPage.show {
-  display: flex;
-  opacity: 1;
-}
-
-.arcade-grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  justify-items: center;
-}
-
-#arcadegamesPage {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 40px;
-}
-#arcadegamesPage.show {
-  display: flex;
-  opacity: 1;
-}
-
-.puzzle-grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  justify-items: center;
-}
-
-#puzzlegamesPage {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 40px;
-}
-#puzzlegamesPage.show {
-  display: flex;
-  opacity: 1;
-}
-
-.obby-grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  justify-items: center;
-}
-
-#obbygamesPage {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 40px;
-}
-#obbygamesPage.show {
-  display: flex;
-  opacity: 1;
-}
-
-.sports-grid {
-  margin-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  justify-items: center;
-}
-
-#sportsgamesPage {
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s;
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  padding-bottom: 40px;
-}
-#sportsgamesPage.show {
-  display: flex;
-  opacity: 1;
-}
-
-/* Weather & Time Shell */
+/* Weather & Time Shell with Parallax */
 .info-shell {
   background: var(--card);
   border-radius: 12px;
@@ -573,6 +570,8 @@ footer {
   width: 100%;
   max-width: 800px;
   animation: fadeInScale 0.6s ease-out;
+  z-index: 1;
+  position: relative;
 }
 
 .time-section {
@@ -611,10 +610,36 @@ footer {
   animation: slideInFromRight 0.6s ease-out 0.1s both;
 }
 
+/* Animated Weather Icons */
 .weather-icon {
   font-size: 40px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
   animation: weatherIconFloat 3s ease-in-out infinite;
+  position: relative;
+}
+
+.weather-icon.rainy::after {
+  content: '💧';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  animation: rainDrop 1s infinite;
+}
+
+@keyframes rainDrop {
+  0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+}
+
+.weather-icon.sunny {
+  animation: weatherIconFloat 3s ease-in-out infinite, sunRotate 8s linear infinite;
+}
+
+@keyframes sunRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .weather-info {
@@ -681,7 +706,7 @@ footer {
   height: 90px;
   pointer-events: auto;
   cursor: grab;
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.2s, transform 0.2s;
   border-radius: 12px;
   overflow: hidden;
   background: var(--card);
@@ -721,10 +746,89 @@ footer {
   transition:opacity 0.5s;
   z-index:9999;
 }
-#fadeOverlay.active { opacity:1; pointer-events:auto; }
+
+#fadeOverlay.active { 
+  opacity:1; 
+  pointer-events:auto; 
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--card);
+  color: var(--text);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 10000;
+  animation: toastSlideIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-left: 4px solid var(--accent);
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast.success {
+  border-left-color: #10b981;
+}
+
+.toast.error {
+  border-left-color: #ef4444;
+}
+
+/* Dynamic Weather Background */
+body.weather-rain::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent 0%, rgba(30, 58, 138, 0.1) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.weather-snow::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent 0%, rgba(219, 234, 254, 0.1) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.weather-sunny::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 70% 30%, rgba(251, 191, 36, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
 </style>
 </head>
 <body>
+<canvas id="particleCanvas"></canvas>
 <div class="shell" id="loginShell" style="display:flex; justify-content:center; align-items:center; height:100vh;">
 
   <div class="login-card" style="background:var(--card); padding:30px; border-radius:16px; box-shadow:0 0 20px rgba(0,0,0,0.5); width:320px; text-align:center;">
@@ -1156,7 +1260,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V4"; let i=0;
+const text="KuppyCloaker V4.5"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -1269,7 +1373,6 @@ function rememberRecentGame(game) {
   localStorage.setItem('recentGame', JSON.stringify(game));
 }
 
-// Helper to create a game card element (image-only with hover title overlay)
 function createGameCard(g, idx, savedArray, starredArray, categoryLength, reloadFn) {
   const div = document.createElement('div');
   div.className = 'card';
@@ -1279,24 +1382,20 @@ function createGameCard(g, idx, savedArray, starredArray, categoryLength, reload
     const img = document.createElement('img');
     img.src = imgSrc;
     img.alt = g.name;
-    // ensure rounded corners match the card
     img.style.borderRadius = 'inherit';
     img.onerror = () => {
-      // hide broken images but keep overlay available
       img.style.display = 'none';
       div.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02))';
     };
     div.appendChild(img);
   }
 
-  // overlay title (hidden until hover)
   const overlay = document.createElement('div');
   overlay.className = 'card-title';
   overlay.textContent = g.name;
   overlay.style.pointerEvents = 'none';
   div.appendChild(overlay);
 
-  // star button
   const starBtn = document.createElement('button');
   starBtn.className = 'starBtn';
   if (starredArray && starredArray.includes(g.name)) starBtn.classList.add('starred');
@@ -1317,7 +1416,6 @@ function createGameCard(g, idx, savedArray, starredArray, categoryLength, reload
   };
   div.appendChild(starBtn);
 
-  // delete button for custom entries (those after the builtin category length)
   if (typeof categoryLength === 'number' && idx >= categoryLength) {
     const del = document.createElement('button');
     del.className = 'deleteBtn';
@@ -1331,7 +1429,6 @@ function createGameCard(g, idx, savedArray, starredArray, categoryLength, reload
     div.appendChild(del);
   }
 
-  // click to open
   div.onclick = () => openWebsite(g.url);
 
   return div;
@@ -1349,7 +1446,6 @@ function displayStarredGames() {
   
   const starredGames = allGames.filter(g => starred.includes(g.name));
   
-  // Load saved positions or use defaults
   const savedPositions = JSON.parse(localStorage.getItem('starredGamePositions') || '{}');
   
   const defaultPositions = [
@@ -1373,11 +1469,10 @@ function displayStarredGames() {
       const img = document.createElement('img');
       img.src = imgSrc;
       img.alt = game.name;
-      img.draggable = false; // Prevent default image drag
+      img.draggable = false;
       icon.appendChild(img);
     }
     
-    // Position icons
     const savedPos = savedPositions[game.name];
     if (savedPos) {
       icon.style.left = savedPos.left;
@@ -1388,10 +1483,8 @@ function displayStarredGames() {
       Object.assign(icon.style, defaultPositions[idx]);
     }
     
-// Add staggered animation delay
     icon.style.animationDelay = `${idx * 0.1}s`;
     
-    // Make draggable
     makeDraggable(icon, game);
     
     container.appendChild(icon);
@@ -1414,7 +1507,6 @@ function makeDraggable(element, game) {
     initialLeft = rect.left;
     initialTop = rect.top;
     
-    // Remove right positioning if it exists
     element.style.right = 'auto';
     element.style.bottom = 'auto';
     element.style.left = initialLeft + 'px';
@@ -1429,15 +1521,12 @@ function makeDraggable(element, game) {
     const deltaX = e.clientX - startX;
     const deltaY = e.clientY - startY;
     
-    // If moved more than 5px, consider it a drag
     if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
       hasMoved = true;
     }
     
     const newLeft = initialLeft + deltaX;
     const newTop = initialTop + deltaY;
-    
-    // Keep within viewport bounds
     const maxLeft = window.innerWidth - element.offsetWidth;
     const maxTop = window.innerHeight - element.offsetHeight;
     
@@ -1451,12 +1540,10 @@ function makeDraggable(element, game) {
     isDragging = false;
     element.classList.remove('dragging');
     
-    // If it was a click (not a drag), open the game
     if (!hasMoved) {
       openWebsite(game.url);
       rememberRecentGame(game);
     } else {
-      // Save position
       const savedPositions = JSON.parse(localStorage.getItem('starredGamePositions') || '{}');
       savedPositions[game.name] = {
         left: element.style.left,
@@ -1790,7 +1877,7 @@ document.getElementById('loginPassword').addEventListener('keydown', (event) => 
   loginShell.classList.add('hidden');
   setTimeout(() => {
     loginShell.style.display = 'none';
-    document.getElementById('infoShell').style.display = 'flex'; // Show info shell
+    document.getElementById('infoShell').style.display = 'flex';
     homePage.style.display = 'block';
     setTimeout(() => {
       homePage.classList.remove('hidden');
@@ -2018,7 +2105,6 @@ window.addEventListener('load', () => {
   }
 });
 
-// Time & Weather Functions
 function updateTime() {
   const now = new Date();
   let hours = now.getHours();
@@ -2093,7 +2179,478 @@ async function fetchWeather() {
 }
 
 fetchWeather();
-setInterval(fetchWeather, 600000); // Update every 10 minutes
+setInterval(fetchWeather, 600000);
+
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.opacity = Math.random() * 0.5 + 0.2;
+  }
+  
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  
+  draw() {
+    ctx.fillStyle = `rgba(147, 163, 184, ${this.opacity})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+const particles = [];
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+  
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+document.addEventListener('mousemove', (e) => {
+  const cards = document.querySelectorAll('.card');
+  
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const cardCenterY = rect.top + rect.height / 2;
+    
+    const distanceX = e.clientX - cardCenterX;
+    const distanceY = e.clientY - cardCenterY;
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    
+    if (distance < 200) {
+      const angleX = (distanceY / rect.height) * 15;
+      const angleY = (distanceX / rect.width) * -15;
+      
+      card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-8px) scale(1.05)`;
+    } else {
+      card.style.transform = '';
+    }
+  });
+});
+
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  
+  const icon = type === 'success' ? '✓' : '✗';
+  toast.innerHTML = `<span style="font-size:20px;">${icon}</span><span>${message}</span>`;
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'toastSlideIn 0.3s reverse';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+const originalFetchWeather = fetchWeather;
+fetchWeather = async function() {
+  await originalFetchWeather();
+  
+  const desc = document.getElementById('weatherDesc').textContent.toLowerCase();
+  const weatherIcon = document.getElementById('weatherIcon');
+  
+  document.body.classList.remove('weather-rain', 'weather-snow', 'weather-sunny');
+  
+  if (desc.includes('rain') || desc.includes('drizzle')) {
+    document.body.classList.add('weather-rain');
+    weatherIcon.classList.add('rainy');
+  } else if (desc.includes('snow')) {
+    document.body.classList.add('weather-snow');
+  } else if (desc.includes('clear') || desc.includes('sunny')) {
+    document.body.classList.add('weather-sunny');
+    weatherIcon.classList.add('sunny');
+  }
+};
+
+const parallaxElements = document.querySelectorAll('.shell, .info-shell');
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  
+  parallaxElements.forEach((el, index) => {
+    const speed = 0.05 * (index + 1);
+    el.style.transform = `translateY(${scrolled * speed}px)`;
+  });
+});
+
+fetchWeather();
+
+const originalCreateGameCard = createGameCard;
+createGameCard = function(g, idx, savedArray, starredArray, categoryLength, reloadFn) {
+  const card = originalCreateGameCard(g, idx, savedArray, starredArray, categoryLength, reloadFn);
+  
+  const starBtn = card.querySelector('.starBtn');
+  if (starBtn) {
+    const originalOnClick = starBtn.onclick;
+    starBtn.onclick = (e) => {
+      e.stopPropagation();
+      
+      const wasStarred = starBtn.classList.contains('starred');
+      originalOnClick(e);
+      
+      if (!wasStarred) {
+        showToast(`⭐ ${g.name} added to favorites!`, 'success');
+      } else {
+        showToast(`${g.name} removed from favorites`, 'success');
+      }
+    };
+  }
+  
+  return card;
+};
+
+function createRipple(event, element) {
+  const ripple = document.createElement('span');
+  const rect = element.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const x = event.clientX - rect.left - size / 2;
+  const y = event.clientY - rect.top - size / 2;
+  
+  ripple.style.cssText = `
+    position: absolute;
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    top: ${y}px;
+    left: ${x}px;
+    pointer-events: none;
+    animation: rippleEffect 0.6s ease-out;
+    z-index: 1;
+  `;
+  
+  const style = document.createElement('style');
+  if (!document.getElementById('rippleStyle')) {
+    style.id = 'rippleStyle';
+    style.textContent = `
+      @keyframes rippleEffect {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+  element.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+}
+
+document.addEventListener('click', (e) => {
+  const card = e.target.closest('.card');
+  if (card && !e.target.closest('.starBtn') && !e.target.closest('.deleteBtn')) {
+    createRipple(e, card);
+  }
+});
+
+document.querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-2px) scale(1.02)';
+  });
+  
+  btn.addEventListener('mouseleave', function() {
+    this.style.transform = '';
+  });
+  
+  btn.addEventListener('mousedown', function() {
+    this.style.transform = 'scale(0.92)';
+  });
+  
+  btn.addEventListener('mouseup', function() {
+    this.style.transform = 'translateY(-2px) scale(1.02)';
+  });
+});
+
+function showSkeletonLoaders(gridElement, count = 10) {
+  gridElement.innerHTML = '';
+  
+  for (let i = 0; i < count; i++) {
+    const skeleton = document.createElement('div');
+    skeleton.className = 'card skeleton';
+    skeleton.style.width = '135px';
+    skeleton.style.height = '135px';
+    skeleton.style.animationDelay = `${i * 0.1}s`;
+    gridElement.appendChild(skeleton);
+  }
+}
+
+const originalLoadGamesPage = loadGamesPage;
+loadGamesPage = function() {
+  const grid = document.getElementById('allGamesGrid');
+  showSkeletonLoaders(grid, 20);
+  
+  setTimeout(() => {
+    originalLoadGamesPage();
+  }, 300);
+};
+
+const originalLoadMultiGamesPage = loadmultiGamesPage;
+loadmultiGamesPage = function() {
+  const grid = document.getElementById('multiGamesGrid');
+  showSkeletonLoaders(grid, 8);
+  
+  setTimeout(() => {
+    originalLoadMultiGamesPage();
+  }, 300);
+};
+
+const originalLoadArcadeGamesPage = loadarcadeGamesPage;
+loadarcadeGamesPage = function() {
+  const grid = document.getElementById('arcadeGamesGrid');
+  showSkeletonLoaders(grid, 15);
+  
+  setTimeout(() => {
+    originalLoadArcadeGamesPage();
+  }, 300);
+};
+
+const originalLoadPuzzleGamesPage = loadpuzzleGamesPage;
+loadpuzzleGamesPage = function() {
+  const grid = document.getElementById('puzzleGamesGrid');
+  showSkeletonLoaders(grid, 8);
+  
+  setTimeout(() => {
+    originalLoadPuzzleGamesPage();
+  }, 300);
+};
+
+const originalLoadObbyGamesPage = loadobbyGamesPage;
+loadobbyGamesPage = function() {
+  const grid = document.getElementById('obbyGamesGrid');
+  showSkeletonLoaders(grid, 5);
+  
+  setTimeout(() => {
+    originalLoadObbyGamesPage();
+  }, 300);
+};
+
+const originalLoadSportsGamesPage = loadsportsGamesPage;
+loadsportsGamesPage = function() {
+  const grid = document.getElementById('sportsGamesGrid');
+  showSkeletonLoaders(grid, 7);
+  
+  setTimeout(() => {
+    originalLoadSportsGamesPage();
+  }, 300);
+};
+
+document.addEventListener('mousemove', (e) => {
+  const cards = document.querySelectorAll('.card:not(.skeleton)');
+  
+  cards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const cardCenterY = rect.top + rect.height / 2;
+    
+    const distanceX = e.clientX - cardCenterX;
+    const distanceY = e.clientY - cardCenterY;
+    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+    
+    if (distance < 150 && distance > 0) {
+      const pullStrength = (150 - distance) / 150;
+      const pullX = (distanceX / distance) * pullStrength * 8;
+      const pullY = (distanceY / distance) * pullStrength * 8;
+      
+      const currentTransform = card.style.transform || '';
+      if (!currentTransform.includes('perspective')) {
+        card.style.transform = `translate(${pullX}px, ${pullY}px)`;
+      }
+    }
+  });
+});
+
+const originalShowGamesPage = showGamesPage;
+showGamesPage = function() {
+  const home = document.getElementById('homePage');
+  const games = document.getElementById('gamesPage');
+  
+  home.style.transform = 'translateX(-100%)';
+  home.style.opacity = '0';
+  
+  setTimeout(() => {
+    home.style.display = 'none';
+    home.style.transform = '';
+    document.getElementById('infoShell').style.display = 'none';
+    games.style.display = 'flex';
+    games.classList.add('show');
+    loadGamesPage();
+  }, 500);
+};
+
+const originalShowHomePage = showHomePage;
+showHomePage = function() {
+  const home = document.getElementById('homePage');
+  const pages = [
+    document.getElementById('gamesPage'),
+    document.getElementById('multigamesPage'),
+    document.getElementById('arcadegamesPage'),
+    document.getElementById('puzzlegamesPage'),
+    document.getElementById('obbygamesPage'),
+    document.getElementById('sportsgamesPage')
+  ];
+  
+  pages.forEach(page => {
+    page.style.transform = 'translateX(100%)';
+    page.style.opacity = '0';
+    page.classList.remove('show');
+  });
+  
+  setTimeout(() => {
+    pages.forEach(page => {
+      page.style.display = 'none';
+      page.style.transform = '';
+    });
+    
+    document.getElementById('infoShell').style.display = 'flex';
+    home.style.display = 'block';
+    home.style.transform = 'translateX(-100%)';
+    home.style.opacity = '0';
+    
+    requestAnimationFrame(() => {
+      home.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s';
+      home.style.transform = 'translateX(0)';
+      home.style.opacity = '1';
+      displayStarredGames();
+    });
+  }, 500);
+};
+
+const categoryTransitions = [
+  { show: showMultiGamesPage, page: 'multigamesPage' },
+  { show: showArcadeGamesPage, page: 'arcadegamesPage' },
+  { show: showPuzzleGamesPage, page: 'puzzlegamesPage' },
+  { show: showObbyGamesPage, page: 'obbygamesPage' },
+  { show: showSportsGamesPage, page: 'sportsgamesPage' }
+];
+
+categoryTransitions.forEach(({ show, page }) => {
+  const originalShow = window[show.name];
+  window[show.name] = function() {
+    const home = document.getElementById('homePage');
+    const targetPage = document.getElementById(page);
+    
+    home.style.transform = 'translateX(-100%)';
+    home.style.opacity = '0';
+    
+    setTimeout(() => {
+      home.style.display = 'none';
+      home.style.transform = '';
+      document.getElementById('infoShell').style.display = 'none';
+      targetPage.style.display = 'flex';
+      targetPage.classList.add('show');
+      
+      const loadFnName = 'load' + page.replace('Page', 'Page').replace('games', 'Games');
+      if (window[loadFnName]) window[loadFnName]();
+    }, 500);
+  };
+});
+
+const originalRandomBtn = document.getElementById('randomGameBtn').onclick;
+document.getElementById('randomGameBtn').onclick = function() {
+  showToast('🎲 Selecting random game...', 'success');
+  setTimeout(() => {
+    originalRandomBtn();
+  }, 300);
+};
+
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node.classList && node.classList.contains('card') && !node.classList.contains('skeleton')) {
+        const cards = Array.from(node.parentElement.children);
+        const index = cards.indexOf(node);
+        node.style.animation = `fadeInScale 0.4s ease-out ${index * 0.05}s both`;
+      }
+    });
+  });
+});
+
+['allGamesGrid', 'multiGamesGrid', 'arcadeGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+  const grid = document.getElementById(id);
+  if (grid) {
+    observer.observe(grid, { childList: true });
+  }
+});
+
+const trail = [];
+const trailLength = 8;
+
+document.addEventListener('mousemove', (e) => {
+  trail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
+  
+  if (trail.length > trailLength) {
+    trail.shift();
+  }
+});
+
+function drawCursorTrail() {
+  const now = Date.now();
+  
+  trail.forEach((point, index) => {
+    const age = now - point.time;
+    if (age < 500) {
+      const opacity = (1 - age / 500) * 0.3;
+      const size = 3 - (age / 500) * 2;
+      
+      ctx.fillStyle = `rgba(0, 123, 255, ${opacity})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+}
+
+const originalAnimateParticles = animateParticles;
+animateParticles = function() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+  
+  drawCursorTrail();
+  
+  requestAnimationFrame(animateParticles);
+};
+
+animateParticles();
 
 </script>
 </body>
