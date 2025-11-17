@@ -825,10 +825,504 @@ body.weather-sunny::after {
   pointer-events: none;
   z-index: 0;
 }
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 10000;
+  animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotateZ(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotateZ(720deg);
+    opacity: 0;
+  }
+}
+
+/* ============= ACHIEVEMENT POPUP ============= */
+.achievement {
+  position: fixed;
+  top: 80px;
+  right: -400px;
+  background: linear-gradient(135deg, var(--card) 0%, rgba(0, 123, 255, 0.2) 100%);
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-left: 4px solid gold;
+  z-index: 10001;
+  animation: achievementSlide 4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 350px;
+}
+
+@keyframes achievementSlide {
+  0% { right: -400px; }
+  15% { right: 20px; }
+  85% { right: 20px; }
+  100% { right: -400px; }
+}
+
+.achievement-icon {
+  font-size: 48px;
+  animation: achievementPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes achievementPop {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3) rotate(10deg); }
+}
+
+.achievement-content h3 {
+  margin: 0;
+  color: gold;
+  font-size: 16px;
+  text-shadow: 0 0 10px gold;
+}
+
+.achievement-content p {
+  margin: 4px 0 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* ============= COMBO COUNTER ============= */
+#comboCounter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent);
+  z-index: 10002;
+  pointer-events: none;
+  opacity: 0;
+}
+
+#comboCounter.show {
+  animation: comboAppear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes comboAppear {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(-10deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* ============= SCREEN SHAKE ============= */
+body.shake {
+  animation: screenShake 0.5s ease-in-out;
+}
+
+@keyframes screenShake {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5px, 2px); }
+  20% { transform: translate(5px, -2px); }
+  30% { transform: translate(-5px, -2px); }
+  40% { transform: translate(5px, 2px); }
+  50% { transform: translate(-5px, 2px); }
+  60% { transform: translate(5px, -2px); }
+  70% { transform: translate(-5px, -2px); }
+  80% { transform: translate(5px, 2px); }
+  90% { transform: translate(-5px, -2px); }
+}
+
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.9; }
+}
+
+/* ============= CARD FLIP ANIMATION ============= */
+.card.flipping {
+  animation: cardFlip 0.6s ease-in-out;
+}
+
+@keyframes cardFlip {
+  0% { transform: rotateY(0deg) scale(1); }
+  50% { transform: rotateY(90deg) scale(0.9); }
+  100% { transform: rotateY(0deg) scale(1); }
+}
+
+/* ============= FLOATING ACTION BUTTON ============= */
+#fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, #0056b3 100%);
+  color: white;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+  z-index: 1000;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+  animation: fabPulse 2s ease-in-out infinite;
+}
+
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); }
+  50% { box-shadow: 0 6px 30px rgba(0, 123, 255, 0.8); }
+}
+
+#fab:hover {
+  transform: scale(1.1) rotate(90deg);
+}
+
+#fabMenu {
+  position: fixed;
+  bottom: 110px;
+  right: 20px;
+  background: var(--card);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  opacity: 0;
+  transform: scale(0.8) translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 999;
+}
+
+#fabMenu.show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+.fab-item {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.fab-item:hover {
+  background: var(--accent);
+  transform: translateX(-5px);
+}
+
+#statsPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10004;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-width: 400px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: default;
+}
+
+#statsPanel.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+#statsPanel h2 {
+  margin: 0 0 20px 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.stat-label {
+  color: var(--muted);
+}
+
+.stat-value {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+#statsClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+#statsClose:hover {
+  color: var(--accent);
+  transform: rotate(90deg);
+}
+
+/* ============= WELCOME ANIMATION ============= */
+#welcomeOverlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+
+#welcomeOverlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#welcomeText {
+  font-size: 64px;
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--accent), #9333ea, var(--accent));
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: welcomeGradient 3s ease infinite, welcomeScale 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes welcomeGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes welcomeScale {
+  0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+#welcomeSubtext {
+  color: var(--muted);
+  font-size: 18px;
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============= PARTICLE MODE SELECTOR ============= */
+#particleMode {
+  position: fixed;
+  bottom: 20px;
+  left: 80px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+#particleMode:hover {
+  background: var(--accent);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ============= EASTER EGG INDICATOR ============= */
+.easter-egg-found {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 120px;
+  z-index: 10006;
+  pointer-events: none;
+  animation: easterEggReveal 2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes easterEggReveal {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.5) rotate(10deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+/* ============= PROGRESS BAR ============= */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #9333ea);
+  z-index: 10007;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+/* ============= BADGE COLLECTION ============= */
+.badge {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  margin: 5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, gold, #ff8c00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+  animation: badgeShine 2s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes badgeShine {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+.badge.locked {
+  background: rgba(255,255,255,0.1);
+  filter: grayscale(1);
+  opacity: 0.3;
+}
+
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  animation: badgeRing 2s ease-in-out infinite;
+}
+
+@keyframes badgeRing {
+  0%, 100% { 
+    border-color: transparent;
+    transform: scale(1);
+  }
+  50% { 
+    border-color: gold;
+    transform: scale(1.2);
+  }
+}
 </style>
 </head>
 <body>
 <canvas id="particleCanvas"></canvas>
+
+<!-- Combo Counter -->
+<div id="comboCounter">x0</div>
+
+<!-- Floating Action Button -->
+<div id="fab">⚡</div>
+<div id="fabMenu">
+  <div class="fab-item" id="fabStats">📊 Stats</div>
+  <div class="fab-item" id="lightToggle">💡 Light</div>
+  <div class="fab-item" id="colorToggle">🎨 Theme</div>
+        <input type="file" id="bgUpload" accept="image/*" style="display:none;"> 
+  <div class="fab-item" id="bgButton">🖼️ Background</div>  
+  <div class="fab-item" id="passwordUnlock">🔒 Weekly Password</div>
+</div>
+
+<!-- Stats Panel -->
+<div id="statsPanel">
+  <button id="statsClose">×</button>
+  <h2>📊 Your Stats</h2>
+  <div class="stat-row">
+    <span class="stat-label">Games Launched</span>
+    <span class="stat-value" id="statLaunches">0</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Favorites</span>
+    <span class="stat-value" id="statFavorites">0</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Total Playtime</span>
+    <span class="stat-value" id="statPlaytime">0m</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Most Played</span>
+    <span class="stat-value" id="statMostPlayed">None</span>
+  </div>
+  <div class="stat-row">
+    <span class="stat-label">Badges Earned</span>
+    <span class="stat-value" id="statBadges">0/10</span>
+  </div>
+  <div style="margin-top: 20px;">
+    <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;">🏆 Badges</h3>
+    <div id="badgeDisplay"></div>
+  </div>
+</div>
+
+<!-- Welcome Overlay -->
+<div id="welcomeOverlay">
+  <div id="welcomeText">KuppyCloaker</div>
+  <div id="welcomeSubtext">Loading your experience...</div>
+  <div class="progress-bar" style="position: relative; width: 300px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 20px;">
+    <div id="welcomeProgress" class="progress-bar" style="position: absolute;"></div>
+  </div>
+</div>
 <div class="shell" id="loginShell" style="display:flex; justify-content:center; align-items:center; height:100vh;">
 
   <div class="login-card" style="background:var(--card); padding:30px; border-radius:16px; box-shadow:0 0 20px rgba(0,0,0,0.5); width:320px; text-align:center;">
@@ -888,13 +1382,7 @@ body.weather-sunny::after {
     </p>
   </div>
     <div style="position:absolute;top:12px;right:12px;">
-      <div class="gear" id="gear">⚙️</div>
       <div id="settingsMenu">
-        <button id="lightToggle">💡</button>
-        <button id="colorToggle">🎨</button>
-        <button id="passwordUnlock">🔒</button>      
-        <input type="file" id="bgUpload" accept="image/*" style="display:none;">
-<button id="bgButton">🖼️</button>  
       </div>
     </div>
   </header>
@@ -1928,10 +2416,6 @@ function showSportsGamesPage(){
   });
 }
 
-const gear=document.getElementById('gear'),menu=document.getElementById('settingsMenu');
-gear.onclick=()=>menu.classList.toggle('show');
-document.addEventListener('click',e=>{if(!menu.contains(e.target)&&e.target!==gear)menu.classList.remove('show');});
-
 document.getElementById('lightToggle').onclick = () => {
   const isLight = document.body.classList.toggle('light');
   localStorage.setItem('kuppyLightMode', isLight);
@@ -2217,24 +2701,6 @@ class Particle {
     ctx.fill();
   }
 }
-
-const particles = [];
-for (let i = 0; i < 80; i++) {
-  particles.push(new Particle());
-}
-
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  particles.forEach(particle => {
-    particle.update();
-    particle.draw();
-  });
-  
-  requestAnimationFrame(animateParticles);
-}
-
-animateParticles();
 
 document.addEventListener('mousemove', (e) => {
   const cards = document.querySelectorAll('.card');
@@ -2636,21 +3102,489 @@ function drawCursorTrail() {
   });
 }
 
-const originalAnimateParticles = animateParticles;
-animateParticles = function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  particles.forEach(particle => {
-    particle.update();
-    particle.draw();
-  });
-  
-  drawCursorTrail();
-  
-  requestAnimationFrame(animateParticles);
+const KuppyState = {
+  soundEnabled: localStorage.getItem('kuppySoundEnabled') !== 'false',
+  stats: JSON.parse(localStorage.getItem('kuppyStats') || '{"launches":0,"favorites":0,"playtime":0,"games":{}}'),
+  badges: JSON.parse(localStorage.getItem('kuppyBadges') || '[]'),
+  combo: 0,
+  comboTimer: null,
+  customCursor: localStorage.getItem('kuppyCustomCursor') === 'true',
 };
 
-animateParticles();
+function createConfetti(x, y, count = 50) {
+  const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4'];
+  
+  for (let i = 0; i < count; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = x + 'px';
+    confetti.style.top = y + 'px';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDuration = (Math.random() * 2 + 1) + 's';
+    confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+    
+    const angle = (Math.random() * 360) * Math.PI / 180;
+    const velocity = Math.random() * 200 + 100;
+    confetti.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
+    confetti.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
+    
+    document.body.appendChild(confetti);
+    
+    setTimeout(() => confetti.remove(), 3000);
+  }
+  
+}
+
+const achievements = [
+  { id: 'first_launch', name: 'First Steps', desc: 'Launch your first game', icon: '🎮', check: () => KuppyState.stats.launches >= 1 },
+  { id: 'game_hoarder', name: 'Game Hoarder', desc: 'Star 5 games', icon: '⭐', check: () => KuppyState.stats.favorites >= 5 },
+  { id: 'dedicated', name: 'Dedicated Player', desc: 'Launch 25 games', icon: '🏆', check: () => KuppyState.stats.launches >= 25 },
+  { id: 'speed_runner', name: 'Speed Runner', desc: 'Build a 5x combo', icon: '⚡', check: () => false },
+  { id: 'night_owl', name: 'Night Owl', desc: 'Use KuppyCloaker after midnight', icon: '🦉', check: () => new Date().getHours() >= 0 && new Date().getHours() < 6 },
+  { id: 'collector', name: 'Collector', desc: 'Star 10 games', icon: '💎', check: () => KuppyState.stats.favorites >= 10 },
+  { id: 'explorer', name: 'Explorer', desc: 'Try the random game 10 times', icon: '🧭', check: () => (KuppyState.stats.games['__random__'] || 0) >= 10 },
+  { id: 'marathon', name: 'Marathon Runner', desc: 'Launch 50 games', icon: '🏃', check: () => KuppyState.stats.launches >= 50 },
+  { id: 'master', name: 'Kuppy Master', desc: 'Earn all other badges', icon: '👑', check: () => KuppyState.badges.length >= 9 }
+];
+
+function checkAchievements() {
+  achievements.forEach(achievement => {
+    if (!KuppyState.badges.includes(achievement.id) && achievement.check()) {
+      unlockAchievement(achievement);
+    }
+  });
+  
+  saveStats();
+}
+
+function unlockAchievement(achievement) {
+  KuppyState.badges.push(achievement.id);
+  localStorage.setItem('kuppyBadges', JSON.stringify(KuppyState.badges));
+  
+  const achDiv = document.createElement('div');
+  achDiv.className = 'achievement';
+  achDiv.innerHTML = `
+    <div class="achievement-icon">${achievement.icon}</div>
+    <div class="achievement-content">
+      <h3>Achievement Unlocked!</h3>
+      <p><strong>${achievement.name}</strong> - ${achievement.desc}</p>
+    </div>
+  `;
+  
+  document.body.appendChild(achDiv);
+  
+  createConfetti(window.innerWidth - 200, 100, 30);
+  screenShake();
+  
+  setTimeout(() => achDiv.remove(), 4000);
+  
+  updateBadgeDisplay();
+  checkAchievements();
+}
+
+function updateBadgeDisplay() {
+  const badgeDisplay = document.getElementById('badgeDisplay');
+  if (!badgeDisplay) return;
+
+  badgeDisplay.innerHTML = '';
+  
+  achievements.forEach(ach => {
+    const unlocked = KuppyState.badges.includes(ach.id);
+
+    const badge = document.createElement('div');
+    badge.className = 'badge' + (unlocked ? '' : ' locked');
+    badge.innerHTML = ach.icon;
+
+    // Tooltip text
+    badge.title = unlocked
+      ? `${ach.name} – ${ach.desc}`
+      : `Locked – ${ach.desc}`;
+
+    // Cursor styling
+    badge.style.cursor = unlocked ? "help" : "not-allowed";
+
+    badgeDisplay.appendChild(badge);
+  });
+}
+
+
+function incrementCombo() {
+  KuppyState.combo++;
+  
+  clearTimeout(KuppyState.comboTimer);
+  KuppyState.comboTimer = setTimeout(() => {
+    KuppyState.combo = 0;
+  }, 2000);
+  
+  if (KuppyState.combo >= 2) {
+    const comboDiv = document.getElementById('comboCounter');
+    comboDiv.textContent = `x${KuppyState.combo} COMBO!`;
+    comboDiv.classList.remove('show');
+    void comboDiv.offsetWidth;
+    comboDiv.classList.add('show');
+    
+    setTimeout(() => {
+      comboDiv.classList.remove('show');
+    }, 1000);
+  }
+  
+  if (KuppyState.combo >= 5 && !KuppyState.badges.includes('speed_runner')) {
+    unlockAchievement(achievements.find(a => a.id === 'speed_runner'));
+  }
+}
+
+function screenShake() {
+  document.body.classList.add('shake');
+  setTimeout(() => {
+    document.body.classList.remove('shake');
+  }, 500);
+}
+
+function trackGameLaunch(gameName) {
+  KuppyState.stats.launches++;
+if (gameName !== 'Unknown Game') {
+  KuppyState.stats.games[gameName] =
+    (KuppyState.stats.games[gameName] || 0) + 1;
+}
+
+  
+  incrementCombo();
+  saveStats();
+  checkAchievements();
+}
+
+function saveStats() {
+  localStorage.setItem('kuppyStats', JSON.stringify(KuppyState.stats));
+}
+
+function updateStatsDisplay() {
+  document.getElementById('statLaunches').textContent = KuppyState.stats.launches;
+  document.getElementById('statFavorites').textContent = JSON.parse(localStorage.getItem('starredGames') || '[]').length;
+  document.getElementById('statPlaytime').textContent = Math.floor(KuppyState.stats.playtime / 60) + 'm';
+  
+  const mostPlayed = Object.entries(KuppyState.stats.games)
+    .filter(([name]) => name !== '__random__')
+    .sort(([,a], [,b]) => b - a)[0];
+  
+  document.getElementById('statMostPlayed').textContent = mostPlayed ? `${mostPlayed[0]} (${mostPlayed[1]}x)` : 'None';
+  document.getElementById('statBadges').textContent = `${KuppyState.badges.length}/${achievements.length}`;
+  
+  updateBadgeDisplay();
+}
+  
+const fab = document.getElementById('fab');
+const fabMenu = document.getElementById('fabMenu');
+let fabOpen = false;
+
+fab.onclick = () => {
+  fabOpen = !fabOpen;
+  fabMenu.classList.toggle('show');
+  fab.style.transform = fabOpen ? 'rotate(135deg)' : '';
+};
+
+document.getElementById('fabStats').onclick = () => {
+  document.getElementById('statsPanel').classList.add('show');
+  updateStatsDisplay();
+  fabMenu.classList.remove('show');
+  fabOpen = false;
+  fab.style.transform = '';
+};
+
+document.getElementById('statsClose').onclick = () => {
+  document.getElementById('statsPanel').classList.remove('show');
+};
+
+const originalOpenWebsite = openWebsite;
+openWebsite = function(url) {
+  let gameName = 'Unknown Game';
+
+  // Normalize URL
+  const normalizedUrl = url.replace(/^https?:\/\//, '');
+
+  // First: direct match against default/custom games
+  const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+  const allGames = [...defaultGames, ...saved];
+
+  const found = allGames.find(g =>
+    g.url.replace(/^https?:\/\//, '').includes(normalizedUrl)
+  );
+
+  if (found) {
+    gameName = found.name;
+  } else {
+    // Second fallback: search visible cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      const title = card.querySelector('.card-title')?.textContent || '';
+      const onclickStr = card.onclick?.toString() || '';
+      if (onclickStr.includes(url) || onclickStr.includes(normalizedUrl)) {
+        gameName = title;
+      }
+    });
+  }
+
+  // Only track valid games
+  if (gameName !== 'Unknown Game') {
+    trackGameLaunch(gameName);
+    showToast(`🚀 Launching ${gameName}...`, 'success');
+  }
+
+  originalOpenWebsite(url);
+};
+
+document.getElementById('randomGameBtn').addEventListener('click', function(e) {
+  e.stopPropagation();
+  
+  const cards = Array.from(document.querySelectorAll('.card:not(.skeleton)'));
+  if (cards.length === 0) return;
+  
+  let spins = 0;
+  const maxSpins = 20;
+  
+  const spinInterval = setInterval(() => {
+    cards.forEach(card => card.classList.remove('flipping'));
+    
+    const randomCard = cards[Math.floor(Math.random() * cards.length)];
+    randomCard.classList.add('flipping');
+    
+    spins++;
+    
+    if (spins >= maxSpins) {
+      clearInterval(spinInterval);
+      
+      setTimeout(() => {
+        randomCard.click();
+        trackGameLaunch('__random__');
+      }, 300);
+    }
+  }, 100);
+  
+});
+
+const originalStarClick = document.querySelector('.starBtn')?.onclick;
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('starBtn')) {
+    const rect = e.target.getBoundingClientRect();
+    createConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2, 20);
+    
+    KuppyState.stats.favorites = JSON.parse(localStorage.getItem('starredGames') || '[]').length;
+    saveStats();
+    checkAchievements();
+  }
+});
+
+document.querySelectorAll('.btn, .gear, #fab').forEach(el => {
+  el.classList.add('breathe');
+});
+
+window.addEventListener('load', () => {
+  const welcomeOverlay = document.getElementById('welcomeOverlay');
+  const welcomeProgress = document.getElementById('welcomeProgress');
+  
+  let progress = 0;
+  const progressInterval = setInterval(() => {
+    progress += Math.random() * 15 + 5;
+    if (progress >= 100) progress = 100;
+    
+    welcomeProgress.style.width = progress + '%';
+    
+    if (progress >= 100) {
+      clearInterval(progressInterval);
+      
+      setTimeout(() => {
+        welcomeOverlay.classList.add('hide');
+        
+        setTimeout(() => {
+          welcomeOverlay.remove();
+        }, 1000);
+      }, 500);
+    }
+  }, 150);
+  
+  checkAchievements();
+});
+
+const originalShowToast = showToast;
+showToast = function(message, type = 'success') {
+  originalShowToast(message, type);
+  
+  if (type === 'success') {
+  } else if (type === 'error') {
+  }
+};
+
+setInterval(() => {
+  KuppyState.stats.playtime += 1;
+  saveStats();
+}, 60000);
+
+document.querySelectorAll('.btn, button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (!btn.id?.includes('sound') && !btn.id?.includes('stats')) {
+    }
+  });
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.card') && !e.target.closest('.starBtn') && !e.target.closest('.deleteBtn')) {
+  }
+});
+
+document.getElementById('gear').addEventListener('click', () => {
+});
+
+document.getElementById('allGamesBtn').addEventListener('click', () => {
+  showToast('📚 Opening all games...', 'success');
+});
+
+document.getElementById('multiGamesBtn').addEventListener('click', () => {
+  showToast('🧑‍🤝‍🧑 Loading multiplayer games...', 'success');
+});
+
+document.getElementById('arcadeGamesBtn').addEventListener('click', () => {
+  showToast('🕹️ Loading arcade classics...', 'success');
+});
+
+document.getElementById('puzzleGamesBtn').addEventListener('click', () => {
+  showToast('🧩 Brain teasers loading...', 'success');
+});
+
+document.getElementById('obbyGamesBtn').addEventListener('click', () => {
+  showToast('🏃 Parkour time!', 'success');
+});
+
+document.getElementById('sportsGamesBtn').addEventListener('click', () => {
+  showToast('⚽ Sports games loading...', 'success');
+});
+
+document.getElementById('dailyGameBtn').addEventListener('click', () => {
+  showToast('📅 Loading today\'s featured game...', 'success');
+});
+
+document.getElementById('recentGamesBtn').addEventListener('click', () => {
+  const recent = JSON.parse(localStorage.getItem('recentGame'));
+  if (recent) {
+    showToast(`🕓 Reopening ${recent.name}...`, 'success');
+  }
+});
+
+[document.getElementById('backBtn'), 
+ document.getElementById('multiBackBtn'),
+ document.getElementById('arcadeBackBtn'),
+ document.getElementById('puzzleBackBtn'),
+ document.getElementById('obbyBackBtn'),
+ document.getElementById('sportsBackBtn')].forEach(btn => {
+  btn?.addEventListener('click', () => {
+    showToast('🏠 Returning home...', 'success');
+  });
+});
+
+document.getElementById('lightToggle').addEventListener('click', () => {
+  const isLight = document.body.classList.contains('light');
+  showToast(isLight ? '🌙 Dark mode activated' : '☀️ Light mode activated', 'success');
+});
+
+document.getElementById('colorToggle').addEventListener('click', () => {
+  showToast('🎨 Theme changed!', 'success');
+});
+
+let clickCount = 0;
+let clickTimer = null;
+
+document.getElementById('typedTitle').addEventListener('click', () => {
+  clickCount++;
+  
+  clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => {
+    clickCount = 0;
+  }, 500);
+  
+  if (clickCount === 3) {
+    const easterEgg = document.createElement('div');
+    easterEgg.className = 'easter-egg-found';
+    easterEgg.textContent = '🎉';
+    document.body.appendChild(easterEgg);
+    
+    createConfetti(window.innerWidth / 2, 100, 50);    
+    setTimeout(() => easterEgg.remove(), 2000);
+    
+    showToast('🎉 You found the secret! Here\'s a surprise!', 'success');
+    
+    const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+    const allGames = [...defaultGames, ...saved];
+    const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
+    
+    let starred = JSON.parse(localStorage.getItem('starredGames') || '[]');
+    if (!starred.includes(randomGame.name)) {
+      starred.push(randomGame.name);
+      localStorage.setItem('starredGames', JSON.stringify(starred));
+      showToast(`⭐ ${randomGame.name} has been auto-starred!`, 'success');
+      displayStarredGames();
+    }
+    
+    clickCount = 0;
+  }
+});
+
+updateBadgeDisplay();
+checkAchievements();
+
+const cardObserver = new MutationObserver(() => {
+  document.querySelectorAll('.card:not(.breathe-checked)').forEach(card => {
+    card.classList.add('breathe-checked');
+    
+    card.addEventListener('mouseenter', () => {
+      if (KuppyState.soundEnabled) {
+        playSound(300, 0.05, 'sine');
+      }
+    });
+  });
+});
+
+['allGamesGrid', 'multiGamesGrid', 'arcadeGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+  const grid = document.getElementById(id);
+  if (grid) {
+    cardObserver.observe(grid, { childList: true, subtree: true });
+  }
+});
+
+const specialMessages = [
+  { hour: 0, message: '🌙 Burning the midnight oil? Night Owl achievement unlocked!' },
+  { hour: 6, message: '🌅 Good morning, early bird!' },
+  { hour: 12, message: '☀️ Good afternoon! Time for a game break?' },
+  { hour: 18, message: '🌆 Good evening! Ready to unwind?' },
+  { hour: 22, message: '🌃 Late night gaming session?' }
+];
+
+const currentHour = new Date().getHours();
+const specialMessage = specialMessages.find(m => m.hour === currentHour);
+
+if (specialMessage) {
+  setTimeout(() => {
+    showToast(specialMessage.message, 'success');
+  }, 2000);
+}
+
+const motivationalQuotes = [
+  'Every game is a new adventure! 🎮',
+  'You\'ve launched ' + KuppyState.stats.launches + ' games so far! 🚀',
+  'Keep exploring and having fun! ✨',
+  'Gaming is not just a hobby, it\'s a lifestyle! 🎯',
+  'You\'re doing great! 🌟'
+];
+
+setInterval(() => {
+  const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
+  showToast(quote, 'success');
+}, 300000);
+
+if (KuppyState.stats.launches > 0 && KuppyState.stats.launches % 10 === 0) {
+  setTimeout(() => {
+    createConfetti(window.innerWidth / 2, window.innerHeight / 2, 30);
+    showToast(`🎉 Milestone! You've launched ${KuppyState.stats.launches} games!`, 'success');
+  }, 3000);
+}
 
 </script>
 </body>
