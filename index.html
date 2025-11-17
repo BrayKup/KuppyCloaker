@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V5</title>
+<title>KuppyCloaker V4.5</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -1043,13 +1043,16 @@ body.shake {
   transform: translate(-50%, -50%) scale(0.8);
   background: var(--card);
   border-radius: 16px;
-  padding: 32px;
+  padding: 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.5);
   z-index: 10004;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  min-width: 400px;
+  min-width: 350px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
   border: 1px solid rgba(255,255,255,0.1);
   cursor: default;
 }
@@ -1177,6 +1180,25 @@ body.shake {
   background: var(--accent);
   color: white;
   transform: scale(1.05);
+}
+
+/* ============= MATRIX RAIN EFFECT ============= */
+.matrix-char {
+  position: fixed;
+  color: #00ff00;
+  font-family: monospace;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 0;
+  text-shadow: 0 0 5px #00ff00;
+  animation: matrixFall linear forwards;
+}
+
+@keyframes matrixFall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
 }
 
 /* ============= EASTER EGG INDICATOR ============= */
@@ -1748,7 +1770,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V5"; let i=0;
+const text="KuppyCloaker V4.5"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -3260,8 +3282,10 @@ function saveStats() {
 function updateStatsDisplay() {
   document.getElementById('statLaunches').textContent = KuppyState.stats.launches;
   document.getElementById('statFavorites').textContent = JSON.parse(localStorage.getItem('starredGames') || '[]').length;
-  document.getElementById('statPlaytime').textContent = Math.floor(KuppyState.stats.playtime / 60) + 'm';
-  
+const totalMinutes = Math.floor(KuppyState.stats.playtime / 60);
+const hours = Math.floor(totalMinutes / 60);
+const minutes = totalMinutes % 60;
+document.getElementById('statPlaytime').textContent = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;  
   const mostPlayed = Object.entries(KuppyState.stats.games)
     .filter(([name]) => name !== '__random__')
     .sort(([,a], [,b]) => b - a)[0];
@@ -3417,7 +3441,7 @@ showToast = function(message, type = 'success') {
 setInterval(() => {
   KuppyState.stats.playtime += 1;
   saveStats();
-}, 60000);
+}, 1000);
 
 document.querySelectorAll('.btn, button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -3577,7 +3601,7 @@ const motivationalQuotes = [
 setInterval(() => {
   const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
   showToast(quote, 'success');
-}, 300000);
+}, 60000);
 
 if (KuppyState.stats.launches > 0 && KuppyState.stats.launches % 10 === 0) {
   setTimeout(() => {
