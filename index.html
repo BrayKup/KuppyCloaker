@@ -516,7 +516,7 @@ footer {
   100% { background-position: -200% 0; }
 }
 
-#gamesPage, #multigamesPage, #arcadegamesPage, #puzzlegamesPage, #obbygamesPage, #sportsgamesPage {
+#gamesPage, #multigamesPage, #puzzlegamesPage, #obbygamesPage, #sportsgamesPage {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -534,14 +534,14 @@ footer {
   z-index: 1;
 }
 
-#gamesPage.show, #multigamesPage.show, #arcadegamesPage.show, 
+#gamesPage.show, #multigamesPage.show, 
 #puzzlegamesPage.show, #obbygamesPage.show, #sportsgamesPage.show {
   display: flex;
   opacity: 1;
   transform: translateX(0);
 }
 
-.multiplayer-grid, .arcade-grid, .puzzle-grid, .obby-grid, .sports-grid {
+.multiplayer-grid, .puzzle-grid, .obby-grid, .sports-grid {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -1368,9 +1368,8 @@ body.shake {
 <div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:10px; margin-top:20px; margin-bottom:10px;">
 
 <div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px; animation: slideInFromBottom 0.6s ease-out 0.4s both;">
-    <button class="btn" id="sportsGamesBtn">⚽ Sports</button>    
     <button class="btn" id="multiGamesBtn">🧑‍🤝‍🧑 Multiplayer</button>
-    <button class="btn" id="arcadeGamesBtn">🕹️ Arcade</button>
+    <button class="btn" id="sportsGamesBtn">⚽ Sports</button>    
     <button class="btn" id="puzzleGamesBtn">🧩 Puzzle</button>    
     <button class="btn" id="obbyGamesBtn">🏃 Obby</button>
   </div>
@@ -1415,12 +1414,6 @@ body.shake {
   <h2>Multiplayer Games</h2>
   <div class="multiplayer-grid" id="multiGamesGrid"></div>
   <button id="multiBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
-</div>
-
-<div id="arcadegamesPage">
-  <h2>Arcade Games</h2>
-  <div class="arcade-grid" id="arcadeGamesGrid"></div>
-  <button id="arcadeBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
 </div>
 
 <div id="puzzlegamesPage">
@@ -1516,7 +1509,8 @@ const defaultGames = [
   {name: "Tiny Fishing", url: "https://fit.bulkenergy.cl/resources/semag/tinyfishing/index.html", img: "https://math711.github.io/img/class-451.png"},
   {name: "Unfair Mario", url: "https://fit.bulkenergy.cl/resources/semag/unfmar/index.html", img: "https://m.media-amazon.com/images/M/MV5BYjJhMGZjY2QtYWQ4YS00YmQyLTlhMjUtZGNlZTI1N2VlNGRjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily", img: "https://static01.nyt.com/images/2022/03/02/crosswords/alpha-wordle-icon-new/alpha-wordle-icon-new-smallSquare252-v3.png?format=pjpg&quality=75&auto=webp&disable=upscale"},
-  {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/", img: "https://math711.github.io/img/class-828.png"}
+  {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/", img: "https://math711.github.io/img/class-828.png"},
+  {name: "House Painter", url: "https://www.hoodamath.com/mobile/games/house-painter/game.html?nocheckorient=1", img: "https://starship-app.com/uploads/covers/housepainter.png"}  
 ];
 
 defaultGames.sort((a, b) => {
@@ -1540,77 +1534,6 @@ const multiGames = [
 ];
 
 multiGames.sort((a, b) => {
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-
-  if (nameA < nameB) return -1;
-  if (nameA > nameB) return 1;
-  return 0;
-});
-
-const arcadeGames = [
-  {name: "2048", url: "https://monkeygg2.github.io/games/2048/"},
-  {name: "Adventure Capitalist", url: "https://seraph-bi6hosts.vercel.app/games/adventurecapitalist/index.html"},
-  {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
-  {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
-  {name: "Baldi's Basics", url: "https://milkywaygg.github.io/reider/storage/gxmes/baldis-basics/index.html"},
-  {name: "Basket Random", url: "https://maddox05.github.io/basic-ruffle-player/html/basket_random/index.html"},
-  {name: "Basketball Stars", url: "https://monkeygg2.github.io/games/basketball-stars/"},
-  {name: "Block Blast", url: "https://maddox05.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
-  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
-  {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
-  {name: "Clash Royale", url: "https://maddox05.github.io/basic-ruffle-player/html/clash_royale/index.html"},
-  {name: "Tag", url: "https://script.google.com/macros/s/AKfycby2Crs4kcY3H8tDRHQp1JRJNd_v8_zYBjwU-qF2trfXQWAeWpW1vFVzGgQdv-Ejmq6P/exec"},  
-  {name: "Crossy Road", url: "https://monkeygg2.github.io/games/crossy-road/"},
-  {name: "Crazy Cattle 3D", url: "https://crazycattle.club/"},
-  {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html"},
-  {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html"},
-  {name: "Drift Boss", url: "https://monkeygg2.github.io/games/drift-boss/"},
-  {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
-  {name: "Drive Mad", url: "https://monkeygg2.github.io/games/drive-mad/"},
-  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
-  {name: "Flappy Bird", url: "https://seraph-bi6hosts.vercel.app/games/flappy/index.html"},
-  {name: "Fruit Ninja", url: "https://bi66ie619.github.io/g/fruit-ninja.html"},
-  {name: "Geometry Dash", url: "https://seraph-bi6hosts.vercel.app/games/gdlite/index.html"},
-  {name: "Getaway Shootout", url: "https://monkeygg2.github.io/games/getaway-shootout/"},
-  {name: "Helix Jump", url: "https://seraph-bi6hosts.vercel.app/games/helixjump/index.html"},
-  {name: "Knife Hit", url: "https://seraph-bi6hosts.vercel.app/games/knifehit/index.html"},
-  {name: "Magic Tiles", url: "https://script.google.com/macros/s/AKfycbzsriooEqdtLu3zcG2AUjtLNeqgETUcTv5duzFgEKlIZAZZsYlq49sR2aN6nSwsAjcs/exec"},
-  {name: "Monkey Mart", url: "https://seraph-bi6hosts.vercel.app/games/monkeymart/index.html"},
-  {name: "Moto X3M", url: "https://monkeygg2.github.io/games/motox3m/"},
-  {name: "Pacman", url: "https://element-games-v5.vercel.app/g/source/pacman/index.html"},
-  {name: "Papa Louie", url: "https://seraph-bi6hosts.vercel.app/games/papalouie/index.html"},
-  {name: "Papa Louie 2", url: "https://maddox05.github.io/basic-ruffle-player/html/papalouie2/index.html"},
-  {name: "Papa Louie 3", url: "https://seraph-bi6hosts.vercel.app/games/papalouie3/index.html"},
-  {name: "Papa's Burgeria", url: "https://seraph-bi6hosts.vercel.app/games/papasburgeria/index.html"},
-  {name: "Papa's Freezeria", url: "https://seraph-bi6hosts.vercel.app/games/papasfreezeria/index.html"},
-  {name: "Papa's Hotdoggeria", url: "https://seraph-bi6hosts.vercel.app/games/papashotdoggeria/index.html"},
-  {name: "Papa's Pancakeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspancakeria/index.html"},
-  {name: "Papa's Pastaria", url: "https://seraph-bi6hosts.vercel.app/games/papaspastaria/index.html"},
-  {name: "Papa's Pizzeria", url: "https://seraph-bi6hosts.vercel.app/games/papaspizzaria/index.html"},
-  {name: "Papa's Sushiria", url: "https://seraph-bi6hosts.vercel.app/games/papassushiria/index.html"},
-  {name: "Papa's Tacomia", url: "https://seraph-bi6hosts.vercel.app/games/papastacomia/index.html"},
-  {name: "Papa's Wingeria", url: "https://seraph-bi6hosts.vercel.app/games/papaswingeria/index.html"},
-  {name: "Paper.io 2", url: "https://studyschool.netlify.app/g/paperio2/"},
-  {name: "Rise Higher", url: "https://seraph-bi6hosts.vercel.app/games/risehigher/index.html"},
-  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
-  {name: "Retro Bowl College", url: "https://maddox05.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
-  {name: "Run 3", url: "https://monkeygg2.github.io/games/run-3/"},
-  {name: "Slope", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/slope/index.html"},
-  {name: "SnowBall.io", url: "https://seraph-bi6hosts.vercel.app/games/snowbattleio/index.html"},
-  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html"},
-  {name: "Stair Race 3D", url: "https://seraph-bi6hosts.vercel.app/games/stairrace3d/index.html"},
-  {name: "Stickman Hook", url: "https://monkeygg2.github.io/games/stickman-hook/"},
-  {name: "Subway Surfers", url: "https://monkeygg2.github.io/games/subway-surfers/"},
-  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
-  {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html"},
-  {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html"},
-  {name: "Tiny Fishing", url: "https://seraph-bi6hosts.vercel.app/games/tinyfishing/index.html"},
-  {name: "Unfair Mario", url: "https://seraph-bi6hosts.vercel.app/games/unfairmario/index.html"},
-  {name: "YoHoHo!", url: "https://monkeygg2.github.io/games/yohoho/"},
-];
-
-arcadeGames.sort((a, b) => {
   const nameA = a.name.toUpperCase();
   const nameB = b.name.toUpperCase();
 
@@ -2137,27 +2060,6 @@ function loadGamesPage(){
   });
 }
 
-function loadarcadeGamesPage(){
-  const grid=document.getElementById('arcadeGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...arcadeGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
-  });
-
-  allGames.forEach((g,idx)=>{
-    const card = createGameCard(g, idx, saved, starred, arcadeGames.length, loadarcadeGamesPage);
-    grid.appendChild(card);
-  });
-}
-
 function loadpuzzleGamesPage(){
   const grid=document.getElementById('puzzleGamesGrid');
   grid.innerHTML='';
@@ -2246,14 +2148,12 @@ function showGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   home.style.opacity='1';
   games.style.display='flex';
   multi.style.display='1';
   document.getElementById('infoShell').style.display = 'none';
-  arcade.style.display='1';
   puzzle.style.display='1';
   obby.style.display='1';
   requestAnimationFrame(()=>{
@@ -2271,14 +2171,12 @@ function showMultiGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='flex';
   document.getElementById('infoShell').style.display = 'none';
-  arcade.style.display='1';
   puzzle.style.display='1';
   obby.style.display='1';
   requestAnimationFrame(()=>{
@@ -2292,43 +2190,16 @@ function showMultiGamesPage(){
   });
 }
 
-function showArcadeGamesPage(){
-  const home=document.getElementById('homePage');
-  const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  home.style.opacity='1';
-  games.style.display='1';
-  multi.style.display='1';
-  document.getElementById('infoShell').style.display = 'none';
-  arcade.style.display='flex';
-  puzzle.style.display='1';
-  obby.style.display='1';
-  requestAnimationFrame(()=>{
-    home.style.transition='opacity 0.5s';
-    home.style.opacity='0';
-    setTimeout(()=>{
-      home.style.display='none';
-      arcade.classList.add('show');
-      loadarcadeGamesPage();
-    },500);
-  });
-}
-
 function showPuzzleGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='1';
   document.getElementById('infoShell').style.display = 'none';
-  arcade.style.display='1';
   puzzle.style.display='flex';
   obby.style.display='1';
   requestAnimationFrame(()=>{
@@ -2346,14 +2217,12 @@ function showObbyGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   const sports=document.getElementById('sportsgamesPage');
   home.style.opacity='1';
   games.style.display='1';
   multi.style.display='1';
-  arcade.style.display='1';
   document.getElementById('infoShell').style.display = 'none';
   puzzle.style.display='1';
   sports.style.display='1';
@@ -2373,13 +2242,11 @@ function showHomePage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   const sports=document.getElementById('sportsgamesPage');
   games.classList.remove('show');
   multi.classList.remove('show');
-  arcade.classList.remove('show');
   puzzle.classList.remove('show');
   document.getElementById('infoShell').style.display = 'flex';
   obby.classList.remove('show');
@@ -2387,7 +2254,6 @@ function showHomePage(){
   setTimeout(()=>{
     games.style.display='none';
     multi.style.display='none';
-    arcade.style.display='none';
     puzzle.style.display='none';
     obby.style.display='none';
     sports.style.display='none';
@@ -2438,13 +2304,11 @@ document.getElementById('loginPassword').addEventListener('keydown', (event) => 
 
 document.getElementById('allGamesBtn').onclick=showGamesPage;
 document.getElementById('multiGamesBtn').onclick=showMultiGamesPage;
-document.getElementById('arcadeGamesBtn').onclick=showArcadeGamesPage;
 document.getElementById('puzzleGamesBtn').onclick=showPuzzleGamesPage;
 document.getElementById('obbyGamesBtn').onclick=showObbyGamesPage;
 document.getElementById('sportsGamesBtn').onclick=showSportsGamesPage;
 document.getElementById('backBtn').onclick=showHomePage;
 document.getElementById('multiBackBtn').onclick=showHomePage;
-document.getElementById('arcadeBackBtn').onclick=showHomePage;
 document.getElementById('puzzleBackBtn').onclick=showHomePage;
 document.getElementById('obbyBackBtn').onclick=showHomePage;
 document.getElementById('sportsBackBtn').onclick=showHomePage;
@@ -2453,7 +2317,6 @@ function showSportsGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
   const multi=document.getElementById('multigamesPage');
-  const arcade=document.getElementById('arcadegamesPage');
   const puzzle=document.getElementById('puzzlegamesPage');
   const obby=document.getElementById('obbygamesPage');
   const sports=document.getElementById('sportsgamesPage');
@@ -2461,7 +2324,6 @@ function showSportsGamesPage(){
   games.style.display='none';
   multi.style.display='none';
   document.getElementById('infoShell').style.display = 'none';
-  arcade.style.display='none';
   puzzle.style.display='none';
   obby.style.display='none';
   sports.style.display='flex';
@@ -2918,16 +2780,6 @@ loadmultiGamesPage = function() {
   }, 300);
 };
 
-const originalLoadArcadeGamesPage = loadarcadeGamesPage;
-loadarcadeGamesPage = function() {
-  const grid = document.getElementById('arcadeGamesGrid');
-  showSkeletonLoaders(grid, 15);
-  
-  setTimeout(() => {
-    originalLoadArcadeGamesPage();
-  }, 300);
-};
-
 const originalLoadPuzzleGamesPage = loadpuzzleGamesPage;
 loadpuzzleGamesPage = function() {
   const grid = document.getElementById('puzzleGamesGrid');
@@ -3007,7 +2859,6 @@ showHomePage = function() {
   const pages = [
     document.getElementById('gamesPage'),
     document.getElementById('multigamesPage'),
-    document.getElementById('arcadegamesPage'),
     document.getElementById('puzzlegamesPage'),
     document.getElementById('obbygamesPage'),
     document.getElementById('sportsgamesPage')
@@ -3041,7 +2892,6 @@ showHomePage = function() {
 
 const categoryTransitions = [
   { show: showMultiGamesPage, page: 'multigamesPage' },
-  { show: showArcadeGamesPage, page: 'arcadegamesPage' },
   { show: showPuzzleGamesPage, page: 'puzzlegamesPage' },
   { show: showObbyGamesPage, page: 'obbygamesPage' },
   { show: showSportsGamesPage, page: 'sportsgamesPage' }
@@ -3089,7 +2939,7 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 
-['allGamesGrid', 'multiGamesGrid', 'arcadeGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+['allGamesGrid', 'multiGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
   const grid = document.getElementById(id);
   if (grid) {
     observer.observe(grid, { childList: true });
@@ -3431,10 +3281,6 @@ document.getElementById('multiGamesBtn').addEventListener('click', () => {
   showToast('🧑‍🤝‍🧑 Loading multiplayer games...', 'success');
 });
 
-document.getElementById('arcadeGamesBtn').addEventListener('click', () => {
-  showToast('🕹️ Loading arcade classics...', 'success');
-});
-
 document.getElementById('puzzleGamesBtn').addEventListener('click', () => {
   showToast('🧩 Brain teasers loading...', 'success');
 });
@@ -3460,7 +3306,6 @@ document.getElementById('recentGamesBtn').addEventListener('click', () => {
 
 [document.getElementById('backBtn'), 
  document.getElementById('multiBackBtn'),
- document.getElementById('arcadeBackBtn'),
  document.getElementById('puzzleBackBtn'),
  document.getElementById('obbyBackBtn'),
  document.getElementById('sportsBackBtn')].forEach(btn => {
@@ -3531,7 +3376,7 @@ const cardObserver = new MutationObserver(() => {
   });
 });
 
-['allGamesGrid', 'multiGamesGrid', 'arcadeGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+['allGamesGrid', 'multiGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
   const grid = document.getElementById(id);
   if (grid) {
     cardObserver.observe(grid, { childList: true, subtree: true });
