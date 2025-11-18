@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>KuppyCloaker V4.5</title>
+<title>KuppyCloaker V5</title>
 <style>
 :root {
   --bg: #0f1724;
@@ -46,7 +46,6 @@ body {
 }
 body.loaded { opacity: 1; }
 
-/* Particle System */
 #particleCanvas {
   position: fixed;
   top: 0;
@@ -58,7 +57,6 @@ body.loaded { opacity: 1; }
   opacity: 0.6;
 }
 
-/* Ambient Background Animation */
 body::before {
   content: '';
   position: fixed;
@@ -291,7 +289,6 @@ input:focus {
   transform: translateY(-1px);
 }
 
-/* Enhanced Button with Juice */
 .btn {
   background: var(--accent);
   color: white;
@@ -340,7 +337,6 @@ footer {
   z-index: 1;
 }
 
-/* Enhanced Card with 3D Tilt */
 .card {
   background: rgba(255,255,255,0.05);
   border-radius: 8px;
@@ -412,7 +408,6 @@ footer {
   box-shadow: 0 18px 40px rgba(0,0,0,0.45), 0 0 26px rgba(0,0,0,0.15) inset; 
 }
 
-/* Starred animation */
 .starBtn.starred {
   animation: starPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -423,7 +418,6 @@ footer {
   100% { transform: scale(1) rotate(0deg); }
 }
 
-/* accent glow border */
 .card::before {
   content: "";
   position: absolute;
@@ -510,7 +504,6 @@ footer {
   justify-items: center;
 }
 
-/* Skeleton Loader */
 .skeleton {
   background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
   background-size: 200% 100%;
@@ -523,7 +516,6 @@ footer {
   100% { background-position: -200% 0; }
 }
 
-/* Page Transitions with Slide */
 #gamesPage, #multigamesPage, #arcadegamesPage, #puzzlegamesPage, #obbygamesPage, #sportsgamesPage {
   display: none;
   flex-direction: column;
@@ -557,7 +549,6 @@ footer {
   justify-items: center;
 }
 
-/* Weather & Time Shell with Parallax */
 .info-shell {
   background: var(--card);
   border-radius: 12px;
@@ -610,7 +601,6 @@ footer {
   animation: slideInFromRight 0.6s ease-out 0.1s both;
 }
 
-/* Animated Weather Icons */
 .weather-icon {
   font-size: 40px;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
@@ -752,7 +742,6 @@ footer {
   pointer-events:auto; 
 }
 
-/* Toast Notifications */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -789,7 +778,6 @@ footer {
   border-left-color: #ef4444;
 }
 
-/* Dynamic Weather Background */
 body.weather-rain::after {
   content: '';
   position: fixed;
@@ -846,7 +834,6 @@ body.weather-sunny::after {
   }
 }
 
-/* ============= ACHIEVEMENT POPUP ============= */
 .achievement {
   position: fixed;
   top: 80px;
@@ -894,7 +881,6 @@ body.weather-sunny::after {
   font-size: 13px;
 }
 
-/* ============= COMBO COUNTER ============= */
 #comboCounter {
   position: fixed;
   top: 50%;
@@ -928,7 +914,6 @@ body.weather-sunny::after {
   }
 }
 
-/* ============= SCREEN SHAKE ============= */
 body.shake {
   animation: screenShake 0.5s ease-in-out;
 }
@@ -955,7 +940,6 @@ body.shake {
   50% { transform: scale(1.02); opacity: 0.9; }
 }
 
-/* ============= CARD FLIP ANIMATION ============= */
 .card.flipping {
   animation: cardFlip 0.6s ease-in-out;
 }
@@ -966,7 +950,6 @@ body.shake {
   100% { transform: rotateY(0deg) scale(1); }
 }
 
-/* ============= FLOATING ACTION BUTTON ============= */
 #fab {
   position: fixed;
   bottom: 25px;
@@ -1102,7 +1085,6 @@ body.shake {
   transform: rotate(90deg);
 }
 
-/* ============= WELCOME ANIMATION ============= */
 #welcomeOverlay {
   position: fixed;
   inset: 0;
@@ -1160,29 +1142,6 @@ body.shake {
   }
 }
 
-/* ============= PARTICLE MODE SELECTOR ============= */
-#particleMode {
-  position: fixed;
-  bottom: 20px;
-  left: 80px;
-  background: var(--card);
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  padding: 8px 12px;
-  color: var(--muted);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.3s;
-  z-index: 1000;
-}
-
-#particleMode:hover {
-  background: var(--accent);
-  color: white;
-  transform: scale(1.05);
-}
-
-/* ============= MATRIX RAIN EFFECT ============= */
 .matrix-char {
   position: fixed;
   color: #00ff00;
@@ -1201,7 +1160,6 @@ body.shake {
   }
 }
 
-/* ============= EASTER EGG INDICATOR ============= */
 .easter-egg-found {
   position: fixed;
   top: 50%;
@@ -1228,7 +1186,6 @@ body.shake {
   }
 }
 
-/* ============= PROGRESS BAR ============= */
 .progress-bar {
   position: fixed;
   top: 0;
@@ -1241,7 +1198,6 @@ body.shake {
   box-shadow: 0 0 10px var(--accent);
 }
 
-/* ============= BADGE COLLECTION ============= */
 .badge {
   display: inline-block;
   width: 40px;
@@ -1293,10 +1249,8 @@ body.shake {
 <body>
 <canvas id="particleCanvas"></canvas>
 
-<!-- Combo Counter -->
 <div id="comboCounter">x0</div>
 
-<!-- Floating Action Button -->
 <div id="fab">⚡</div>
 <div id="fabMenu">
   <div class="fab-item" id="fabStats">📊 Stats</div>
@@ -1307,7 +1261,6 @@ body.shake {
   <div class="fab-item" id="passwordUnlock">🔒 Weekly Password</div>
 </div>
 
-<!-- Stats Panel -->
 <div id="statsPanel">
   <button id="statsClose">×</button>
   <h2>📊 Your Stats</h2>
@@ -1337,7 +1290,6 @@ body.shake {
   </div>
 </div>
 
-<!-- Welcome Overlay -->
 <div id="welcomeOverlay">
   <div id="welcomeText">KuppyCloaker</div>
   <div id="welcomeSubtext">Loading your experience...</div>
@@ -1753,6 +1705,91 @@ const quoteEl = document.getElementById("quote");
 quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
 quoteEl.style.animation = 'fadeInScale 0.8s ease-out 0.3s both';
 
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.opacity = Math.random() * 0.5 + 0.2;
+  }
+  
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  
+  draw() {
+    ctx.fillStyle = `rgba(147, 163, 184, ${this.opacity})`;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+const particles = [];
+for (let i = 0; i < 80; i++) {
+  particles.push(new Particle());
+}
+
+const trail = [];
+const trailLength = 8;
+
+document.addEventListener('mousemove', (e) => {
+  trail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
+  
+  if (trail.length > trailLength) {
+    trail.shift();
+  }
+});
+
+function drawCursorTrail() {
+  const now = Date.now();
+  
+  trail.forEach((point, index) => {
+    const age = now - point.time;
+    if (age < 500) {
+      const opacity = (1 - age / 500) * 0.3;
+      const size = 3 - (age / 500) * 2;
+      
+      ctx.fillStyle = `rgba(0, 123, 255, ${opacity})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  });
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  particles.forEach(particle => {
+    particle.update();
+    particle.draw();
+  });
+  
+  drawCursorTrail();
+  
+  requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
 window.addEventListener('load',()=>{
   document.body.classList.add('loaded');
 
@@ -1770,7 +1807,7 @@ window.addEventListener('load',()=>{
   if(isLight) document.body.classList.add('light');
 });
 
-const text="KuppyCloaker V4.5"; let i=0;
+const text="KuppyCloaker V5"; let i=0;
 
 function startTyping(){document.getElementById("typedTitle").textContent=""; typeTitle();}
 
@@ -2687,43 +2724,6 @@ async function fetchWeather() {
 fetchWeather();
 setInterval(fetchWeather, 600000);
 
-const canvas = document.getElementById('particleCanvas');
-const ctx = canvas.getContext('2d');
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-class Particle {
-  constructor() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 3 + 1;
-    this.speedX = Math.random() * 0.5 - 0.25;
-    this.speedY = Math.random() * 0.5 - 0.25;
-    this.opacity = Math.random() * 0.5 + 0.2;
-  }
-  
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    
-    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-  }
-  
-  draw() {
-    ctx.fillStyle = `rgba(147, 163, 184, ${this.opacity})`;
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fill();
-  }
-}
-
 document.addEventListener('mousemove', (e) => {
   const cards = document.querySelectorAll('.card');
   
@@ -3096,34 +3096,6 @@ const observer = new MutationObserver((mutations) => {
   }
 });
 
-const trail = [];
-const trailLength = 8;
-
-document.addEventListener('mousemove', (e) => {
-  trail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-  
-  if (trail.length > trailLength) {
-    trail.shift();
-  }
-});
-
-function drawCursorTrail() {
-  const now = Date.now();
-  
-  trail.forEach((point, index) => {
-    const age = now - point.time;
-    if (age < 500) {
-      const opacity = (1 - age / 500) * 0.3;
-      const size = 3 - (age / 500) * 2;
-      
-      ctx.fillStyle = `rgba(0, 123, 255, ${opacity})`;
-      ctx.beginPath();
-      ctx.arc(point.x, point.y, size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  });
-}
-
 const KuppyState = {
   soundEnabled: localStorage.getItem('kuppySoundEnabled') !== 'false',
   stats: JSON.parse(localStorage.getItem('kuppyStats') || '{"launches":0,"favorites":0,"playtime":0,"games":{}}'),
@@ -3216,13 +3188,10 @@ function updateBadgeDisplay() {
     const badge = document.createElement('div');
     badge.className = 'badge' + (unlocked ? '' : ' locked');
     badge.innerHTML = ach.icon;
-
-    // Tooltip text
     badge.title = unlocked
       ? `${ach.name} – ${ach.desc}`
       : `Locked – ${ach.desc}`;
 
-    // Cursor styling
     badge.style.cursor = unlocked ? "help" : "not-allowed";
 
     badgeDisplay.appendChild(badge);
@@ -3322,10 +3291,8 @@ const originalOpenWebsite = openWebsite;
 openWebsite = function(url) {
   let gameName = 'Unknown Game';
 
-  // Normalize URL
   const normalizedUrl = url.replace(/^https?:\/\//, '');
 
-  // First: direct match against default/custom games
   const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
   const allGames = [...defaultGames, ...saved];
 
@@ -3336,7 +3303,6 @@ openWebsite = function(url) {
   if (found) {
     gameName = found.name;
   } else {
-    // Second fallback: search visible cards
     const cards = document.querySelectorAll('.card');
     cards.forEach(card => {
       const title = card.querySelector('.card-title')?.textContent || '';
@@ -3347,7 +3313,6 @@ openWebsite = function(url) {
     });
   }
 
-  // Only track valid games
   if (gameName !== 'Unknown Game') {
     trackGameLaunch(gameName);
     showToast(`🚀 Launching ${gameName}...`, 'success');
