@@ -498,10 +498,13 @@ footer {
 
 .presets-grid {
   margin-top: 20px;
+  margin-bottom: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   justify-items: center;
+  width: 100%;
+  max-width: 900px;
 }
 
 .skeleton {
@@ -530,7 +533,9 @@ footer {
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-bottom: 100px;
+  box-sizing: border-box;
   z-index: 1;
 }
 
@@ -543,10 +548,13 @@ footer {
 
 .multiplayer-grid, .puzzle-grid, .obby-grid, .sports-grid {
   margin-top: 20px;
+  margin-bottom: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 10px;
   justify-items: center;
+  width: 100%;
+  max-width: 900px;
 }
 
 .info-shell {
@@ -687,7 +695,7 @@ footer {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 1001;
 }
 
 .starred-game-icon {
@@ -1524,9 +1532,10 @@ const multiGames = [
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
   {name: "Tag", url: "https://script.google.com/macros/s/AKfycby2Crs4kcY3H8tDRHQp1JRJNd_v8_zYBjwU-qF2trfXQWAeWpW1vFVzGgQdv-Ejmq6P/exec"},  
   {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
-  {name: "Getaway Shootout", url: "games/getaway-shootout/"},
+  {name: "Getaway Shootout", url: "https://studyschool.netlify.app/g/getaway-shootout/"},
   {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html"},
   {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+  {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html", img: "https://project-s0lace.onrender.com/thumbs/football-bros.jpeg"},
 ];
 
 multiGames.sort((a, b) => {
@@ -1566,7 +1575,8 @@ const obbyGames = [
 const sportsGames = [
   {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
   {name: "Retro Bowl College", url: "https://classroomlesson.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
-  {name: "Basketball Stars", url: "games/basketball-stars/"},
+  {name: "Basketball Stars", url: "https://reading.dinprima.ro/resources/semag/basketball-stars/index.html"},
+  {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html", img: "https://project-s0lace.onrender.com/thumbs/football-bros.jpeg"},
   {name: "Basket Random", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_random/index.html"},
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
