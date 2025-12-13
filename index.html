@@ -1499,6 +1499,248 @@ body.shake {
   box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
 }
 
+/* Class Timer Widget */
+.timer-widget {
+  background: linear-gradient(135deg, #1a1f35 0%, #2d3548 100%) !important;
+  border: 2px solid rgba(0, 123, 255, 0.3) !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4), 0 0 30px rgba(0, 123, 255, 0.2) !important;
+  width: 320px;
+  min-height: 280px;
+  border-radius: 12px !important;
+  position: relative;
+  overflow: hidden !important;
+}
+
+.timer-widget .widget-header {
+  background: rgba(0, 123, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(0, 123, 255, 0.3);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+}
+
+.timer-widget .widget-title {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timer-widget .widget-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.timer-block {
+  background: rgba(0, 123, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  border-left: 3px solid var(--accent);
+}
+
+.timer-block-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.timer-block-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.timer-countdown {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin: 10px 0;
+}
+
+.timer-countdown-time {
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--accent);
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px var(--accent);
+}
+
+.timer-countdown-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.timer-btn {
+  flex: 1;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.timer-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+.timer-btn.secondary {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.timer-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.focus-mode-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 30px;
+  animation: fadeIn 0.5s ease;
+}
+
+.focus-mode-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--accent);
+  text-shadow: 0 0 20px var(--accent);
+}
+
+.focus-mode-timer {
+  font-size: 72px;
+  font-weight: 900;
+  font-family: 'Courier New', monospace;
+  color: white;
+  text-shadow: 0 0 30px var(--accent);
+}
+
+.focus-mode-message {
+  font-size: 18px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.focus-mode-exit {
+  margin-top: 20px;
+  background: rgba(255, 0, 0, 0.2);
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  color: #ff6b6b;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.focus-mode-exit:hover {
+  background: rgba(255, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+/* Timer Settings Panel */
+.timer-settings-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10004;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-width: 500px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.timer-settings-panel.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+.class-input-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.class-input-row label {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.class-input-row input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.focus-duration-selector {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.duration-btn {
+  flex: 1;
+  padding: 10px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.duration-btn:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+
+.duration-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
 </style>
 </head>
 <body>
@@ -1562,11 +1804,17 @@ body.shake {
       <div class="module-card-desc">Quick notes</div>
     </div>
     
-    <div class="module-card" style="opacity: 0.5; cursor: not-allowed;" title="Coming soon!">
-      <div class="module-card-icon">⏰</div>
-      <div class="module-card-title">Timer</div>
-      <div class="module-card-desc">Coming soon</div>
-    </div>
+<div class="module-card" data-module="weather">
+  <div class="module-card-icon">🌤️</div>
+  <div class="module-card-title">Weather</div>
+  <div class="module-card-desc">Live weather info</div>
+</div>
+
+<div class="module-card" data-module="timer">
+  <div class="module-card-icon">⏰</div>
+  <div class="module-card-title">Class Timer</div>
+  <div class="module-card-desc">Track classes & focus</div>
+</div>
     
     <div class="module-card" style="opacity: 0.5; cursor: not-allowed;" title="Coming soon!">
       <div class="module-card-icon">📅</div>
@@ -1761,6 +2009,9 @@ const defaultGames = [
   {name: "Table Tennis World Tour", url: "https://_github-production.tickles.store/s/g/load/table-tennis-world-tour/index.html", img: "https://_github-production.tickles.store/s/g/images/tabletennisworldtour.png"},
   {name: "Idle Startup Tycoon", url: "https://_github-production.tickles.store/s/g/load/idle-startup-tycoon/index.html", img: "https://_github-production.tickles.store/s/g/images/idlestartuptycoon.png"},
   {name: "Idle Mining Empire", url: "https://ubgwtf.gitlab.io/idle-mining-empire/", img: "https://unblocked-games.s3.amazonaws.com/media/posts/372/idle-mining-empire-512.jpg"},
+  {name: "Snake MLG", url: "https://ph4xus.github.io/Vafor_IT/snakemlg/", img: "https://ph4xus.github.io/assets/img/snakemlg.jfif"},
+  {name: "State.io", url: "https://ph4xus.github.io/Vafor_IT/state-io/", img: "https://ph4xus.github.io/assets/img/state-io.png"},
+  {name: "Amaze", url: "https://ph4xus.github.io/Vafor_IT/amaze/", img: "https://ph4xus.github.io/assets/img/amaze.png"},
   {name: "Geometry Dash", url: "https://reading.dinprima.ro/resources/semag/gdlite/index.html", img: "https://math711.github.io/img/class-453.png"},
   {name: "FNAF 3", url: "https://script.google.com/macros/s/AKfycbyVdPAG4aRGh5tmBwKEZthKmaqO12GTD-h-C1Do6ICbR3ZEj5ic1aJQ2e4Im2pxcWLf/exec", img: "https://cherrion.top/assets/img/games/fnaf3.png"},
   {name: "Getaway Shootout", url: "https://studyschool.netlify.app/g/getaway-shootout/", img: "https://reading.dinprima.ro/resources/semag/getawayshooter/Untitled.jpeg"},
@@ -2549,7 +2800,11 @@ function showHomePage(){
   games.classList.remove('show');
   multi.classList.remove('show');
   puzzle.classList.remove('show');
-  document.getElementById('infoShell').style.display = 'flex';
+  
+  // Check if weather is enabled
+  const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+  document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
+  
   obby.classList.remove('show');
   sports.classList.remove('show');
   setTimeout(()=>{
@@ -2591,7 +2846,8 @@ document.getElementById('loginPassword').addEventListener('keydown', (event) => 
   loginShell.classList.add('hidden');
   setTimeout(() => {
     loginShell.style.display = 'none';
-    document.getElementById('infoShell').style.display = 'flex';
+    const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
     homePage.style.display = 'block';
     setTimeout(() => {
       homePage.classList.remove('hidden');
@@ -2721,7 +2977,8 @@ if (localStorage.getItem('kuppyTrusted') === 'true') {
     loginShell.classList.add('hidden');
     setTimeout(() => {
       loginShell.style.display = 'none';
-      document.getElementById('infoShell').style.display = 'flex';
+      const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
       homePage.style.display = 'block';
       setTimeout(() => {
         homePage.classList.remove('hidden');
@@ -2819,7 +3076,8 @@ document.getElementById("passwordUnlock").addEventListener("click", () => {
       loginShell.classList.add('hidden');
       setTimeout(() => {
         loginShell.style.display = 'none';
-        document.getElementById('infoShell').style.display = 'flex';
+        const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
         homePage.style.display = 'block';
         setTimeout(() => {
           homePage.classList.remove('hidden');
@@ -2945,8 +3203,10 @@ async function fetchWeather() {
   }
 }
 
-fetchWeather();
-setInterval(fetchWeather, 600000);
+if (localStorage.getItem('kuppyWeatherEnabled') === 'true') {
+  fetchWeather();
+  setInterval(fetchWeather, 600000);
+}
 
 document.addEventListener('mousemove', (e) => {
   const cards = document.querySelectorAll('.card');
@@ -3238,7 +3498,8 @@ showHomePage = function() {
       page.style.transform = '';
     });
     
-    document.getElementById('infoShell').style.display = 'flex';
+    const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
     home.style.display = 'block';
     home.style.transform = 'translateX(-100%)';
     home.style.opacity = '0';
@@ -3750,36 +4011,6 @@ const cardObserver = new MutationObserver(() => {
   }
 });
 
-const specialMessages = [
-  { hour: 0, message: '🌙 Burning the midnight oil? Night Owl achievement unlocked!' },
-  { hour: 6, message: '🌅 Good morning, early bird!' },
-  { hour: 12, message: '☀️ Good afternoon! Time for a game break?' },
-  { hour: 18, message: '🌆 Good evening! Ready to unwind?' },
-  { hour: 22, message: '🌃 Late night gaming session?' }
-];
-
-const currentHour = new Date().getHours();
-const specialMessage = specialMessages.find(m => m.hour === currentHour);
-
-if (specialMessage) {
-  setTimeout(() => {
-    showToast(specialMessage.message, 'success');
-  }, 2000);
-}
-
-const motivationalQuotes = [
-  'Every game is a new adventure! 🎮',
-  'You\'ve launched ' + KuppyState.stats.launches + ' games so far! 🚀',
-  'Keep exploring and having fun! ✨',
-  'Gaming is not just a hobby, it\'s a lifestyle! 🎯',
-  'You\'re doing great! 🌟'
-];
-
-setInterval(() => {
-  const quote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-  showToast(quote, 'success');
-}, 60000);
-
 if (KuppyState.stats.launches > 0 && KuppyState.stats.launches % 10 === 0) {
   setTimeout(() => {
     createConfetti(window.innerWidth / 2, window.innerHeight / 2, 30);
@@ -3835,39 +4066,75 @@ const ModulesSystem = {
       };
     }
     
-    const backdrop = document.getElementById('modulesBackdrop');
-    if (backdrop) {
-      backdrop.onclick = () => {
-        this.closePanel();
-      };
-    }
+const backdrop = document.getElementById('modulesBackdrop');
+if (backdrop) {
+  backdrop.onclick = () => {
+    this.closePanel();
+  };
+}
+
+// ✅ FIX: Define cards first!
+const cards = document.querySelectorAll('.module-card');
+
+cards.forEach(card => {
+  card.onclick = () => {
+    const moduleType = card.dataset.module;
     
-    const cards = document.querySelectorAll('.module-card');
-    
-    cards.forEach(card => {
-      card.onclick = () => {
-        const moduleType = card.dataset.module;
-        
-        if (moduleType === 'postit') {
-          const centerX = Math.max(50, (window.innerWidth / 2) - 100);
-          const centerY = Math.max(50, (window.innerHeight / 2) - 100);
-          
-          this.createWidget('postit', {
-            position: { x: centerX, y: centerY }
-          });
-          
-          if (typeof showToast === 'function') {
-            showToast('📝 Post-it note added!', 'success');
-          }
-          
-          this.closePanel();
-        } else {
-          if (typeof showToast === 'function') {
-            showToast('This module is coming soon!', 'error');
-          }
+    if (moduleType === 'postit') {
+      const centerX = Math.max(50, (window.innerWidth / 2) - 100);
+      const centerY = Math.max(50, (window.innerHeight / 2) - 100);
+      
+      this.createWidget('postit', {
+        position: { x: centerX, y: centerY }
+      });
+      
+      if (typeof showToast === 'function') {
+        showToast('📝 Post-it note added!', 'success');
+      }
+      
+      this.closePanel();
+    } else if (moduleType === 'weather') {
+      const isEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+      
+      if (isEnabled) {
+        localStorage.setItem('kuppyWeatherEnabled', 'false');
+        document.getElementById('infoShell').style.display = 'none';
+        if (typeof showToast === 'function') {
+          showToast('🌤️ Weather widget disabled.', 'success');
         }
-      };
-    });
+      } else {
+        localStorage.setItem('kuppyWeatherEnabled', 'true');
+        if (document.getElementById('homePage').style.display !== 'none') {
+          const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
+          document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
+        }
+        fetchWeather();
+        if (typeof showToast === 'function') {
+          showToast('🌤️ Weather widget enabled!', 'success');
+        }
+      }
+      
+      this.closePanel();
+    } else if (moduleType === 'timer') {
+      const centerX = Math.max(50, (window.innerWidth / 2) - 160);
+      const centerY = Math.max(50, (window.innerHeight / 2) - 140);
+      
+      this.createWidget('timer', {
+        position: { x: centerX, y: centerY }
+      });
+      
+      if (typeof showToast === 'function') {
+        showToast('⏰ Class timer added!', 'success');
+      }
+      
+      this.closePanel();
+    } else {
+      if (typeof showToast === 'function') {
+        showToast('This module is coming soon!', 'error');
+      }
+    }
+  };
+});
   },
   
   closePanel() {
@@ -4027,6 +4294,90 @@ renderWidget(widget) {
     
     this.makeWidgetDraggable(widgetEl, widget);
     
+  } else if (widget.type === 'timer') {
+    // Initialize timer data if not exists
+    if (!widget.data.schedule) {
+      widget.data.schedule = JSON.parse(localStorage.getItem('kuppyClassSchedule') || '{}');
+    }
+    if (!widget.data.focusDuration) {
+      widget.data.focusDuration = parseInt(localStorage.getItem('kuppyFocusDuration') || '10');
+    }
+    
+    const currentInfo = this.getCurrentClassInfo(widget.data.schedule);
+    
+    widgetEl.innerHTML = `
+      <div class="widget timer-widget">
+        <div class="widget-header">
+          <div class="widget-title">⏰ Class Timer</div>
+          <div class="widget-controls">
+            <button class="widget-btn widget-settings" title="Settings">⚙️</button>
+            <button class="widget-btn widget-delete" title="Delete">×</button>
+          </div>
+        </div>
+<div class="widget-content">
+  <div class="timer-block">
+    <div class="timer-block-label">Current Class</div>
+    <div class="timer-block-value">${currentInfo.currentClass}</div>
+  </div>
+  
+  <div class="timer-countdown">
+    <div class="timer-countdown-time" id="timer-countdown-${widget.id}">--:--</div>
+    <div class="timer-countdown-label">Time Remaining</div>
+  </div>
+  
+  <div class="timer-block">
+    <div class="timer-block-label">Next Class</div>
+    <div class="timer-block-value">${currentInfo.nextClass}</div>
+  </div>
+  
+  <div class="timer-controls">
+    <button class="timer-btn focus-5">🎯 Focus 5m</button>
+    <button class="timer-btn focus-10">🎯 Focus 10m</button>
+    <button class="timer-btn secondary focus-custom">⚙️ Custom</button>
+  </div>
+</div>
+      </div>
+    `;
+    
+    container.appendChild(widgetEl);
+    
+    // Start countdown
+    this.startTimerCountdown(widget);
+    
+    // Settings button
+    const settingsBtn = widgetEl.querySelector('.widget-settings');
+    if (settingsBtn) {
+      settingsBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.showTimerSettings(widget);
+      };
+    }
+    
+    // Delete button
+    const deleteBtn = widgetEl.querySelector('.widget-delete');
+    if (deleteBtn) {
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (confirm('Delete this timer?')) {
+          this.deleteWidget(widget.id);
+          if (typeof showToast === 'function') {
+            showToast('🗑️ Timer deleted', 'success');
+          }
+        }
+      };
+    }
+    
+    // Focus mode buttons
+    widgetEl.querySelector('.focus-5').onclick = () => this.startFocusMode(5, widget);
+    widgetEl.querySelector('.focus-10').onclick = () => this.startFocusMode(10, widget);
+    widgetEl.querySelector('.focus-custom').onclick = () => {
+      const minutes = prompt('Enter focus duration in minutes:', widget.data.focusDuration);
+      if (minutes && !isNaN(minutes) && minutes > 0) {
+        this.startFocusMode(parseInt(minutes), widget);
+      }
+    };
+    
+    this.makeWidgetDraggable(widgetEl, widget);
   }
 },
   
@@ -4100,7 +4451,244 @@ makeWidgetDraggable(element, widget) {
     container.innerHTML = '';
     this.widgets.forEach(widget => this.renderWidget(widget));
     
+  },
+  getCurrentClassInfo(schedule) {
+  const now = new Date();
+  const day = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+  const hours = now.getHours();
+  const minutes = now.getMinutes();
+  const currentTime = hours * 60 + minutes; // Minutes since midnight
+  
+  // Define default time blocks (customizable)
+  const timeBlocks = [
+    { name: 'Homeroom', start: 8 * 60 + 10, end: 8 * 60 + 18 }, // 8:10-8:18
+    { name: 'TB1', start: 8 * 60 + 21, end: 9 * 60 + 1 }, // 8:21-9:01
+    { name: 'TB2', start: 9 * 60 + 4, end: 9 * 60 + 44 }, // 9:04-9:44
+    { name: 'TB3', start: 9 * 60 + 47, end: 10 * 60 + 27 }, // 9:47-10:27
+    { name: 'TB4', start: 10 * 60 + 30, end: 11 * 60 + 10 }, // 10:30-11:10
+    { name: 'Lunch', start: 11 * 60 + 13, end: 11 * 60 + 43 }, // 11:13-11:43
+    { name: 'TB5', start: 11 * 60 + 46, end: 12 * 60 + 26 }, // 11:46-12:26
+    { name: 'TB6', start: 12 * 60 + 29, end: 13 * 60 + 9 }, // 12:29-1:09
+    { name: 'TB7', start: 13 * 60 + 12, end: 13 * 60 + 52 }, // 1:12-1:52
+    { name: 'TB8', start: 13 * 60 + 55, end: 14 * 60 + 35 }, // 1:55-2:35
+  ];
+  
+  // Weekend check
+  if (day === 0 || day === 6) {
+    return {
+      currentBlock: 'Weekend',
+      currentClass: 'No Classes',
+      nextClass: 'Enjoy your day!',
+      remainingMinutes: 0
+    };
   }
+  
+  // Find current block
+  let currentBlock = null;
+  let nextBlock = null;
+  
+  for (let i = 0; i < timeBlocks.length; i++) {
+    const block = timeBlocks[i];
+    if (currentTime >= block.start && currentTime < block.end) {
+      currentBlock = block;
+      nextBlock = timeBlocks[i + 1] || null;
+      break;
+    } else if (currentTime < block.start && !currentBlock) {
+      nextBlock = block;
+      break;
+    }
+  }
+  
+  if (!currentBlock) {
+    // Before school or after school
+    if (currentTime < timeBlocks[0].start) {
+      return {
+        currentBlock: 'Before School',
+        currentClass: 'School starts soon',
+        nextClass: schedule['Block 1'] || 'Not set',
+        remainingMinutes: timeBlocks[0].start - currentTime
+      };
+    } else {
+      return {
+        currentBlock: 'After School',
+        currentClass: 'School is over',
+        nextClass: 'See you tomorrow!',
+        remainingMinutes: 0
+      };
+    }
+  }
+  
+  const remainingMinutes = currentBlock.end - currentTime;
+  const currentClassName = schedule[currentBlock.name] || 'Not set';
+  const nextClassName = nextBlock ? (schedule[nextBlock.name] || 'Not set') : 'End of day';
+  
+  return {
+    currentBlock: currentBlock.name,
+    currentClass: currentClassName,
+    nextClass: nextClassName,
+    remainingMinutes: remainingMinutes
+  };
+},
+
+startTimerCountdown(widget) {
+  const updateCountdown = () => {
+    const info = this.getCurrentClassInfo(widget.data.schedule);
+    const countdownEl = document.getElementById(`timer-countdown-${widget.id}`);
+    
+    if (countdownEl && info.remainingMinutes > 0) {
+      const mins = Math.floor(info.remainingMinutes);
+      const secs = Math.floor((info.remainingMinutes - mins) * 60);
+      countdownEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    } else if (countdownEl) {
+      countdownEl.textContent = '--:--';
+    }
+    
+    // Update every second
+    setTimeout(updateCountdown, 1000);
+  };
+  
+  updateCountdown();
+},
+
+startFocusMode(minutes, widget) {
+  if (typeof showToast === 'function') {
+    showToast(`🎯 Starting ${minutes} minute focus mode...`, 'success');
+  }
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'focus-mode-overlay';
+  overlay.innerHTML = `
+    <div class="focus-mode-title">Focus Mode</div>
+    <div class="focus-mode-timer" id="focusTimer">--:--</div>
+    <div class="focus-mode-message">Stay focused! KuppyCloaker is locked.</div>
+    <button class="focus-mode-exit">Exit Focus Mode</button>
+  `;
+  
+  document.body.appendChild(overlay);
+  
+  const endTime = Date.now() + (minutes * 60 * 1000);
+  
+  const updateFocusTimer = () => {
+    const remaining = endTime - Date.now();
+    
+    if (remaining <= 0) {
+      overlay.remove();
+      if (typeof showToast === 'function') {
+        showToast('✅ Focus session complete!', 'success');
+      }
+      createConfetti(window.innerWidth / 2, window.innerHeight / 2, 50);
+      return;
+    }
+    
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    
+    const timerEl = document.getElementById('focusTimer');
+    if (timerEl) {
+      timerEl.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    setTimeout(updateFocusTimer, 1000);
+  };
+  
+  updateFocusTimer();
+  
+  // Exit button
+  overlay.querySelector('.focus-mode-exit').onclick = () => {
+    if (confirm('Are you sure you want to exit focus mode early?')) {
+      overlay.remove();
+      if (typeof showToast === 'function') {
+        showToast('Focus mode cancelled', 'error');
+      }
+    }
+  };
+},
+
+showTimerSettings(widget) {
+  const backdrop = document.getElementById('modulesBackdrop');
+  if (backdrop) backdrop.classList.add('show');
+  
+  const panel = document.createElement('div');
+  panel.className = 'timer-settings-panel show';
+  panel.innerHTML = `
+    <button id="timerSettingsClose" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer;">×</button>
+    <h2 style="color: var(--accent); text-align: center; margin: 0 0 20px 0;">⏰ Timer Settings</h2>
+    
+    <h3 style="color: var(--text); font-size: 16px; margin-bottom: 12px;">Class Schedule</h3>
+    <div class="class-input-row">
+      <label>Block 1:</label>
+      <input type="text" id="class-block1" value="${widget.data.schedule['Block 1'] || ''}" placeholder="e.g., Science">
+    </div>
+    <div class="class-input-row">
+      <label>Block 2:</label>
+      <input type="text" id="class-block2" value="${widget.data.schedule['Block 2'] || ''}" placeholder="e.g., Social Studies">
+    </div>
+    <div class="class-input-row">
+      <label>Block 3:</label>
+      <input type="text" id="class-block3" value="${widget.data.schedule['Block 3'] || ''}" placeholder="e.g., PE">
+    </div>
+    <div class="class-input-row">
+      <label>Block 4:</label>
+      <input type="text" id="class-block4" value="${widget.data.schedule['Block 4'] || ''}" placeholder="e.g., ISP / Language">
+    </div>
+    <div class="class-input-row">
+      <label>Block 5:</label>
+      <input type="text" id="class-block5" value="${widget.data.schedule['Block 5'] || ''}" placeholder="e.g., ELA">
+    </div>
+    <div class="class-input-row">
+      <label>Block 6:</label>
+      <input type="text" id="class-block6" value="${widget.data.schedule['Block 6'] || ''}" placeholder="e.g., Math">
+    </div>
+    <div class="class-input-row">
+      <label>Block 7:</label>
+      <input type="text" id="class-block7" value="${widget.data.schedule['Block 7'] || ''}" placeholder="e.g., Cycle">
+    </div>
+    <div class="class-input-row">
+      <label>Block 8:</label>
+      <input type="text" id="class-block8" value="${widget.data.schedule['Block 8'] || ''}" placeholder="e.g., ELA">
+    </div>
+    
+    <button class="timer-btn" id="saveTimerSettings" style="width: 100%; margin-top: 20px;">Save Schedule</button>
+  `;
+  
+  document.body.appendChild(panel);
+  
+  document.getElementById('timerSettingsClose').onclick = () => {
+    panel.remove();
+    if (backdrop) backdrop.classList.remove('show');
+  };
+  
+  document.getElementById('saveTimerSettings').onclick = () => {
+    const schedule = {
+      'Block 1': document.getElementById('class-block1').value,
+      'Block 2': document.getElementById('class-block2').value,
+      'Block 3': document.getElementById('class-block3').value,
+      'Block 4': document.getElementById('class-block4').value,
+      'Block 5': document.getElementById('class-block5').value,
+      'Block 6': document.getElementById('class-block6').value,
+      'Block 7': document.getElementById('class-block7').value,
+      'Block 8': document.getElementById('class-block8').value,
+    };
+    
+    widget.data.schedule = schedule;
+    localStorage.setItem('kuppyClassSchedule', JSON.stringify(schedule));
+    this.saveWidgets();
+    
+    // Refresh the widget
+    const widgetEl = document.querySelector(`[data-widget-id="${widget.id}"]`);
+    if (widgetEl) {
+      widgetEl.remove();
+      this.renderWidget(widget);
+    }
+    
+    panel.remove();
+    if (backdrop) backdrop.classList.remove('show');
+    
+    if (typeof showToast === 'function') {
+      showToast('✅ Schedule saved!', 'success');
+    }
+  };
+},
 };
 
 setTimeout(() => {
