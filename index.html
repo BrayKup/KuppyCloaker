@@ -91,23 +91,6 @@ body::before {
 }
 header { display: flex; align-items: center; justify-content: space-between; }
 
-.gear {
-  cursor: pointer;
-  font-size: 24px;
-  color: var(--accent);
-  transition: transform 0.4s ease, color 0.3s ease;
-  display: inline-block;
-}
-
-.gear:hover {
-  transform: rotate(90deg) scale(1.1);
-  color: var(--text);
-}
-
-.gear.spin {
-  animation: spinOnce 0.5s ease;
-}
-
 @keyframes spinOnce {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -1252,6 +1235,270 @@ body.shake {
     transform: scale(1.2);
   }
 }
+
+/* Modules System */
+#modulesPanel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  z-index: 10003;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  min-width: 400px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+#modulesPanel.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+
+#modulesBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 10002;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#modulesBackdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modulesPanel h2 {
+  margin: 0 0 20px 0;
+  color: var(--accent);
+  text-align: center;
+}
+
+#modulesClose {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.2s, transform 0.2s;
+}
+
+#modulesClose:hover {
+  color: var(--accent);
+  transform: rotate(90deg);
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.module-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.module-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 20px var(--accent);
+  background: rgba(255,255,255,0.08);
+  border-color: var(--accent);
+}
+
+.module-card-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.module-card-title {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.module-card-desc {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* Post-it Note Widget */
+.postit-widget {
+  background: linear-gradient(135deg, var(--postit-color, #ffd54f) 0%, var(--postit-color-light, #ffeb3b) 100%) !important;
+  border: none !important;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3), 0 0 0 3px rgba(0,0,0,0.1), 
+              inset 0 -2px 4px rgba(0,0,0,0.1) !important;
+  width: 280px;
+  height: 280px;
+  border-radius: 4px !important;
+  position: relative;
+  resize: both !important;
+  overflow: hidden !important;
+  min-width: 200px !important;
+  min-height: 200px !important;
+  max-width: 600px !important;
+  max-height: 600px !important;
+}
+
+.postit-widget::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+  border-radius: 4px 4px 0 0;
+  pointer-events: none;
+}
+
+.postit-widget .widget-header {
+  background: rgba(0,0,0,0.08) !important;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
+  cursor: move;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.postit-title-input {
+  background: transparent !important;
+  border: none !important;
+  color: #333 !important;
+  font-weight: 700 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  outline: none !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  transition: background 0.2s !important;
+  flex: 1;
+  min-width: 100px;
+}
+
+.postit-title-input:hover,
+.postit-title-input:focus {
+  background: rgba(255,255,255,0.3) !important;
+}
+
+.postit-title-input::placeholder {
+  color: rgba(0,0,0,0.4) !important;
+}
+
+.postit-widget .widget-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.postit-widget .widget-btn {
+  background: rgba(0,0,0,0.1) !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  color: #333 !important;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.postit-widget .widget-btn:hover {
+  background: rgba(0,0,0,0.2) !important;
+  transform: scale(1.1);
+}
+
+.postit-widget .widget-delete:hover {
+  background: rgba(255, 0, 0, 0.3) !important;
+  color: #cc0000 !important;
+  border-color: #cc0000 !important;
+}
+
+.postit-widget .widget-content {
+  background: transparent;
+  padding: 12px;
+  height: calc(100% - 100px);
+  overflow: auto;
+}
+
+.postit-textarea {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  color: #333 !important;
+  font-family: Inter, system-ui, sans-serif !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  resize: none !important;
+  outline: none !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.postit-textarea::placeholder {
+  color: rgba(0,0,0,0.4) !important;
+  font-style: italic;
+}
+
+.postit-colors {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.05);
+  border-top: 1px solid rgba(0,0,0,0.1);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.postit-color-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.postit-color-btn:hover {
+  transform: scale(1.2);
+}
+
+.postit-color-btn.active {
+  border-color: #333;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.3);
+}
+
 </style>
 </head>
 <body>
@@ -1261,10 +1508,11 @@ body.shake {
 
 <div id="fab">⚡</div>
 <div id="fabMenu">
+  <div class="fab-item" id="fabModules">📦 Modules</div>
   <div class="fab-item" id="fabStats">📊 Stats</div>
   <div class="fab-item" id="lightToggle">💡 Light</div>
   <div class="fab-item" id="colorToggle">🎨 Theme</div>
-        <input type="file" id="bgUpload" accept="image/*" style="display:none;"> 
+  <input type="file" id="bgUpload" accept="image/*" style="display:none;"> 
   <div class="fab-item" id="bgButton">🖼️ Background</div>  
   <div class="fab-item" id="passwordUnlock">🔒 Weekly Password</div>
 </div>
@@ -1295,6 +1543,42 @@ body.shake {
   <div style="margin-top: 20px;">
     <h3 style="color: var(--accent); font-size: 16px; margin-bottom: 10px;">🏆 Badges</h3>
     <div id="badgeDisplay"></div>
+  </div>
+</div>
+
+<div id="modulesBackdrop"></div>
+
+<div id="modulesPanel">
+  <button id="modulesClose">×</button>
+  <h2>📦 Modules</h2>
+  <p style="color: var(--muted); text-align: center; margin-bottom: 20px;">
+    Click a module to add it to your screen
+  </p>
+  
+  <div class="modules-grid">
+    <div class="module-card" data-module="postit">
+      <div class="module-card-icon">📝</div>
+      <div class="module-card-title">Post-it Note</div>
+      <div class="module-card-desc">Quick notes</div>
+    </div>
+    
+    <div class="module-card" style="opacity: 0.5; cursor: not-allowed;" title="Coming soon!">
+      <div class="module-card-icon">⏰</div>
+      <div class="module-card-title">Timer</div>
+      <div class="module-card-desc">Coming soon</div>
+    </div>
+    
+    <div class="module-card" style="opacity: 0.5; cursor: not-allowed;" title="Coming soon!">
+      <div class="module-card-icon">📅</div>
+      <div class="module-card-title">Calendar</div>
+      <div class="module-card-desc">Coming soon</div>
+    </div>
+    
+    <div class="module-card" style="opacity: 0.5; cursor: not-allowed;" title="Coming soon!">
+      <div class="module-card-icon">🧮</div>
+      <div class="module-card-title">Calculator</div>
+      <div class="module-card-desc">Coming soon</div>
+    </div>
   </div>
 </div>
 
@@ -1443,6 +1727,8 @@ body.shake {
 </div>
 
 <div id="fadeOverlay"></div>
+
+<div id="widgetsContainer"></div>
 
 <script>
 const defaultGames = [
@@ -2429,11 +2715,9 @@ const users = {
 loginShell.classList.add('fade');
 homePage.classList.add('fade');
 
-// Auto-login if device was previously marked trusted
 if (localStorage.getItem('kuppyTrusted') === 'true') {
   const autoUser = localStorage.getItem('kuppyAutoUser') || 'Kuppy';
   try {
-    // mimic successful login flow
     loginShell.classList.add('hidden');
     setTimeout(() => {
       loginShell.style.display = 'none';
@@ -2527,12 +2811,10 @@ document.getElementById("passwordUnlock").addEventListener("click", () => {
   if (entered === secretCode) {
     alert(`✅ Your weekly password is:\n\n${weeklyPassword}`);
   } else if (entered === "050124") {
-    // Enable a trusted device mode: user will be auto-logged in on this browser
     localStorage.setItem('kuppyTrusted', 'true');
     localStorage.setItem('kuppyAutoUser', 'Kuppy');
     alert('✅ Trusted device enabled. You will be logged in automatically on this device.');
 
-    // Immediately perform the same UI transitions as a successful login
     try {
       loginShell.classList.add('hidden');
       setTimeout(() => {
@@ -2547,7 +2829,6 @@ document.getElementById("passwordUnlock").addEventListener("click", () => {
         displayStarredGames();
       }, 500);
     } catch (e) {
-      // safety: if elements aren't available, ignore
       console.warn('Auto-login failed:', e);
     }
   } else if (entered !== null) {
@@ -3218,6 +3499,14 @@ document.getElementById('statsClose').onclick = () => {
   document.getElementById('statsPanel').classList.remove('show');
 };
 
+document.getElementById('fabModules').onclick = () => {
+  document.getElementById('modulesPanel').classList.add('show');
+  document.getElementById('modulesBackdrop').classList.add('show');
+  fabMenu.classList.remove('show');
+  fabOpen = false;
+  fab.style.transform = '';
+};
+
 const originalOpenWebsite = openWebsite;
 openWebsite = function(url) {
   let gameName = 'Unknown Game';
@@ -3294,7 +3583,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-document.querySelectorAll('.btn, .gear, #fab').forEach(el => {
+document.querySelectorAll('.btn, #fab').forEach(el => {
   el.classList.add('breathe');
 });
 
@@ -3349,9 +3638,6 @@ document.querySelectorAll('.btn, button').forEach(btn => {
 document.addEventListener('click', (e) => {
   if (e.target.closest('.card') && !e.target.closest('.starBtn') && !e.target.closest('.deleteBtn')) {
   }
-});
-
-document.getElementById('gear').addEventListener('click', () => {
 });
 
 document.getElementById('allGamesBtn').addEventListener('click', () => {
@@ -3500,6 +3786,326 @@ if (KuppyState.stats.launches > 0 && KuppyState.stats.launches % 10 === 0) {
     showToast(`🎉 Milestone! You've launched ${KuppyState.stats.launches} games!`, 'success');
   }, 3000);
 }
+
+const ModulesSystem = {
+  widgets: [],
+  nextId: 1,
+  
+  init() {    
+    try {
+      const saved = localStorage.getItem('kuppyWidgets');
+      if (saved) {
+        this.widgets = JSON.parse(saved);
+      }
+      const savedId = localStorage.getItem('kuppyWidgetNextId');
+      if (savedId) {
+        this.nextId = parseInt(savedId);
+      }
+    } catch (e) {
+      console.error('Error loading widgets:', e);
+    }
+    
+    this.setupListeners();
+    this.loadAllWidgets();
+    
+  },
+  
+  setupListeners() {
+    const fabModules = document.getElementById('fabModules');
+    if (fabModules) {
+      fabModules.onclick = () => {
+        const panel = document.getElementById('modulesPanel');
+        const backdrop = document.getElementById('modulesBackdrop');
+        
+        if (panel) panel.classList.add('show');
+        if (backdrop) backdrop.classList.add('show');
+        
+        const fabMenu = document.getElementById('fabMenu');
+        const fab = document.getElementById('fab');
+        if (fabMenu) fabMenu.classList.remove('show');
+        if (fab) fab.style.transform = '';
+      };
+    }
+    
+    const closeBtn = document.getElementById('modulesClose');
+    if (closeBtn) {
+      closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.closePanel();
+      };
+    }
+    
+    const backdrop = document.getElementById('modulesBackdrop');
+    if (backdrop) {
+      backdrop.onclick = () => {
+        this.closePanel();
+      };
+    }
+    
+    const cards = document.querySelectorAll('.module-card');
+    
+    cards.forEach(card => {
+      card.onclick = () => {
+        const moduleType = card.dataset.module;
+        
+        if (moduleType === 'postit') {
+          const centerX = Math.max(50, (window.innerWidth / 2) - 100);
+          const centerY = Math.max(50, (window.innerHeight / 2) - 100);
+          
+          this.createWidget('postit', {
+            position: { x: centerX, y: centerY }
+          });
+          
+          if (typeof showToast === 'function') {
+            showToast('📝 Post-it note added!', 'success');
+          }
+          
+          this.closePanel();
+        } else {
+          if (typeof showToast === 'function') {
+            showToast('This module is coming soon!', 'error');
+          }
+        }
+      };
+    });
+  },
+  
+  closePanel() {
+    const panel = document.getElementById('modulesPanel');
+    const backdrop = document.getElementById('modulesBackdrop');
+    
+    if (panel) panel.classList.remove('show');
+    if (backdrop) backdrop.classList.remove('show');
+  },
+  
+  saveWidgets() {
+    try {
+      localStorage.setItem('kuppyWidgets', JSON.stringify(this.widgets));
+      localStorage.setItem('kuppyWidgetNextId', this.nextId.toString());
+    } catch (e) {
+      console.error('Error saving widgets:', e);
+    }
+  },
+  
+  createWidget(type, data = {}) {    
+    const widget = {
+      id: this.nextId++,
+      type: type,
+      position: data.position || { x: 100, y: 100 },
+      data: data.content || { text: '' }
+    };
+    
+    this.widgets.push(widget);
+    this.saveWidgets();
+    this.renderWidget(widget);
+    
+    return widget;
+  },
+  
+  deleteWidget(id) {
+    this.widgets = this.widgets.filter(w => w.id !== id);
+    this.saveWidgets();
+    
+    const widgetEl = document.querySelector(`[data-widget-id="${id}"]`);
+    if (widgetEl) {
+      widgetEl.style.animation = 'fadeInScale 0.3s reverse';
+      setTimeout(() => widgetEl.remove(), 300);
+    }
+  },
+  
+renderWidget(widget) {  
+  const container = document.body;
+  if (!container) {
+    console.error('Container not found!');
+    return;
+  }
+  
+  const widgetEl = document.createElement('div');
+  widgetEl.className = 'widget-container';
+  widgetEl.dataset.widgetId = widget.id;
+  widgetEl.style.position = 'fixed';
+  widgetEl.style.left = widget.position.x + 'px';
+  widgetEl.style.top = widget.position.y + 'px';
+  widgetEl.style.zIndex = '2000';
+  
+  if (widget.type === 'postit') {
+    if (!widget.data.color) {
+      widget.data.color = '#ffd54f';
+      widget.data.colorLight = '#ffeb3b';
+    }
+    if (!widget.data.width) widget.data.width = 280;
+    if (!widget.data.height) widget.data.height = 280;
+    
+    widgetEl.innerHTML = `
+      <div class="widget postit-widget" style="--postit-color: ${widget.data.color}; --postit-color-light: ${widget.data.colorLight}; width: ${widget.data.width}px; height: ${widget.data.height}px;">
+        <div class="widget-header">
+          <input type="text" class="postit-title-input" placeholder="Note Title" value="${widget.data.title || ''}" />
+          <div class="widget-controls">
+            <button class="widget-btn widget-delete" title="Delete">×</button>
+          </div>
+        </div>
+        <div class="widget-content">
+          <textarea class="postit-textarea" placeholder="Type your note here...">${widget.data.text || ''}</textarea>
+        </div>
+        <div class="postit-colors">
+          <div class="postit-color-btn ${widget.data.color === '#ffd54f' ? 'active' : ''}" data-color="#ffd54f" data-color-light="#ffeb3b" style="background: linear-gradient(135deg, #ffd54f, #ffeb3b);" title="Yellow"></div>
+          <div class="postit-color-btn ${widget.data.color === '#ffb3ba' ? 'active' : ''}" data-color="#ffb3ba" data-color-light="#ffccd5" style="background: linear-gradient(135deg, #ffb3ba, #ffccd5);" title="Pink"></div>
+          <div class="postit-color-btn ${widget.data.color === '#bae1ff' ? 'active' : ''}" data-color="#bae1ff" data-color-light="#d4edff" style="background: linear-gradient(135deg, #bae1ff, #d4edff);" title="Blue"></div>
+          <div class="postit-color-btn ${widget.data.color === '#baffc9' ? 'active' : ''}" data-color="#baffc9" data-color-light="#d4ffe0" style="background: linear-gradient(135deg, #baffc9, #d4ffe0);" title="Green"></div>
+          <div class="postit-color-btn ${widget.data.color === '#ffffba' ? 'active' : ''}" data-color="#ffffba" data-color-light="#ffffd4" style="background: linear-gradient(135deg, #ffffba, #ffffd4);" title="Light Yellow"></div>
+          <div class="postit-color-btn ${widget.data.color === '#e0bbff' ? 'active' : ''}" data-color="#e0bbff" data-color-light="#f0d4ff" style="background: linear-gradient(135deg, #e0bbff, #f0d4ff);" title="Purple"></div>
+          <div class="postit-color-btn ${widget.data.color === '#ffd9b3' ? 'active' : ''}" data-color="#ffd9b3" data-color-light="#ffe8d4" style="background: linear-gradient(135deg, #ffd9b3, #ffe8d4);" title="Orange"></div>
+        </div>
+      </div>
+    `;
+    
+    container.appendChild(widgetEl);
+    
+    const postitWidget = widgetEl.querySelector('.postit-widget');
+    
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const newWidth = entry.contentRect.width;
+        const newHeight = entry.contentRect.height;
+        
+        widget.data.width = newWidth;
+        widget.data.height = newHeight;
+        this.saveWidgets();
+        
+      }
+    });
+    
+    resizeObserver.observe(postitWidget);
+    
+    const titleInput = widgetEl.querySelector('.postit-title-input');
+    if (titleInput) {
+      titleInput.oninput = (e) => {
+        widget.data.title = e.target.value;
+        this.saveWidgets();
+      };
+    }
+    
+    const textarea = widgetEl.querySelector('.postit-textarea');
+    if (textarea) {
+      textarea.oninput = (e) => {
+        widget.data.text = e.target.value;
+        this.saveWidgets();
+      };
+    }
+    
+    const colorBtns = widgetEl.querySelectorAll('.postit-color-btn');
+    colorBtns.forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const color = btn.dataset.color;
+        const colorLight = btn.dataset.colorLight;
+        
+        widget.data.color = color;
+        widget.data.colorLight = colorLight;
+        this.saveWidgets();
+        
+        postitWidget.style.setProperty('--postit-color', color);
+        postitWidget.style.setProperty('--postit-color-light', colorLight);
+        
+        colorBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      };
+    });
+    
+    const deleteBtn = widgetEl.querySelector('.widget-delete');
+    if (deleteBtn) {
+      deleteBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (confirm('Delete this post-it note?')) {
+          this.deleteWidget(widget.id);
+          if (typeof showToast === 'function') {
+            showToast('🗑️ Post-it deleted', 'success');
+          }
+        }
+      };
+    }
+    
+    this.makeWidgetDraggable(widgetEl, widget);
+    
+  }
+},
+  
+makeWidgetDraggable(element, widget) {
+  const header = element.querySelector('.widget-header');
+  if (!header) return;
+  
+  let isDragging = false;
+  let startX, startY, initialLeft, initialTop;
+  
+  header.onmousedown = (e) => {
+    if (e.target.closest('.widget-btn') || 
+        e.target.closest('textarea') || 
+        e.target.closest('.postit-color-btn') ||
+        e.target.closest('.postit-title-input')) {
+      return;
+    }
+    
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    
+    const rect = element.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+    
+    element.style.zIndex = '2001';
+    header.style.cursor = 'grabbing';
+    
+    e.preventDefault();
+  };
+  
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+    
+    const newLeft = initialLeft + deltaX;
+    const newTop = initialTop + deltaY;
+    
+    const maxLeft = window.innerWidth - element.offsetWidth;
+    const maxTop = window.innerHeight - element.offsetHeight;
+    
+    element.style.left = Math.max(0, Math.min(newLeft, maxLeft)) + 'px';
+    element.style.top = Math.max(0, Math.min(newTop, maxTop)) + 'px';
+  };
+  
+  const handleMouseUp = () => {
+    if (!isDragging) return;
+    
+    isDragging = false;
+    header.style.cursor = 'move';
+    element.style.zIndex = '2000';
+    
+    widget.position = {
+      x: parseInt(element.style.left),
+      y: parseInt(element.style.top)
+    };
+    this.saveWidgets();
+  };
+  
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+},
+  
+  loadAllWidgets() {
+    const container = document.getElementById('widgetsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    this.widgets.forEach(widget => this.renderWidget(widget));
+    
+  }
+};
+
+setTimeout(() => {
+  ModulesSystem.init();
+}, 500);
 
 </script>
 </body>
