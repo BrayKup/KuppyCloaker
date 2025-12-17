@@ -1755,8 +1755,7 @@ body.shake {
   <div class="fab-item" id="lightToggle">💡 Light</div>
   <div class="fab-item" id="colorToggle">🎨 Theme</div>
   <input type="file" id="bgUpload" accept="image/*" style="display:none;"> 
-  <div class="fab-item" id="bgButton">🖼️ Background</div>  
-  <div class="fab-item" id="passwordUnlock">🔒 Weekly Password</div>
+  <div class="fab-item" id="bgButton">🖼️ Background</div> 
 </div>
 
 <div id="statsPanel">
@@ -1849,7 +1848,7 @@ body.shake {
 </div>
 
 <div style="width: 80%; margin: 0 auto 20px auto; position: relative; box-sizing: border-box;">
-  <input id="loginPassword" type="password" placeholder="Password"
+  <input id="loginPassword" type="password" placeholder="Access Code"
          style="width: 100%; padding:10px 40px 10px 10px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
   <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; user-select:none; color:var(--muted); font-size:16px;">👁️</span>
 </div>
@@ -2806,7 +2805,6 @@ function showHomePage(){
   multi.classList.remove('show');
   puzzle.classList.remove('show');
   
-  // Check if weather is enabled
   const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
   document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
   
@@ -2833,34 +2831,53 @@ document.getElementById('websiteInput').addEventListener('keydown', (event) => {
   }
 });
 
-document.getElementById('loginPassword').addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
- const user = loginUsername.value.trim();
-  const pass = loginPassword.value.trim();
+const kuppycloakercoins = "13ad0b87d0b5d5b6e00564fdc589c6d33cbaf0acaf72aea144feff851c3e3c8a";
 
-  if (!user || !pass) {
-    loginMsg.textContent = "Enter username & password";
+async function hashCode(code) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(code);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function handleLogin() {
+  const username = loginUsername.value.trim();
+  const code = loginPassword.value.trim();
+
+  if (!username || !code) {
+    loginMsg.textContent = "Enter username & access code";
     return;
   }
 
-  if (!(users[user] === pass || pass === weeklyPassword)) {
-    loginMsg.textContent = "Incorrect username or password";
+  const enteredHash = await hashCode(code);
+  
+  if (enteredHash !== kuppycloakercoins) {
+    loginMsg.textContent = "Invalid access code";
     return;
   }
+
+  localStorage.setItem('kuppyTrusted', 'true');
+  localStorage.setItem('kuppyAutoUser', username);
 
   loginShell.classList.add('hidden');
   setTimeout(() => {
     loginShell.style.display = 'none';
     const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
-document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
+    document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
     homePage.style.display = 'block';
     setTimeout(() => {
       homePage.classList.remove('hidden');
       startTyping();
     }, 10);
-    userDisplay.textContent = user;
+    userDisplay.textContent = username;
     displayStarredGames();
   }, 500);
+}
+
+document.getElementById('loginPassword').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    handleLogin();
   }
 });
 
@@ -2969,10 +2986,6 @@ document.getElementById('dailyGameBtn').onclick = getDailyGame;
   const loginMsg = document.getElementById('loginMsg');
   const userDisplay = document.getElementById('userDisplay');
 
-const users = {
-  "kuppycloakerforlife": "hahaifyoureseeingthisthenyoufoundmysecret",
-};
-
 loginShell.classList.add('fade');
 homePage.classList.add('fade');
 
@@ -3029,74 +3042,6 @@ userDisplay.addEventListener('click', () => {
     loginUsername.value = '';
     loginPassword.value = '';
   }, 500);
-});
-
-let inactivityTimer;
-
-function kickUser() {
-  alert("You have been inactive for 30 minutes. You will be signed out.");
-  window.location.href = "about:blank";
-}
-
-function resetInactivityTimer() {
-  clearTimeout(inactivityTimer);
-  inactivityTimer = setTimeout(kickUser, 30 * 60 * 1000);
-}
-
-["mousemove", "keydown", "click", "scroll", "touchstart"].forEach(evt => {
-  document.addEventListener(evt, resetInactivityTimer, false);
-});
-
-resetInactivityTimer();
-
-function getWeeklyPassword() {
-  const date = new Date();
-
-  const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-  const days = Math.floor((date - firstDayOfYear) / (24 * 60 * 60 * 1000));
-  const week = Math.ceil((days + firstDayOfYear.getDay() + 1) / 7);
-
-  const seed = date.getFullYear() + "-W" + week;
-
-  let hash = 0;
-  for (let i = 0; i < seed.length; i++) {
-    hash = (hash * 32 + seed.charCodeAt(i)) % 999999;
-  }
-
-  return "Kuppy" + hash.toString(16).toUpperCase();
-}
-
-const secretCode = "KupCloakPass";
-const weeklyPassword = getWeeklyPassword();
-document.getElementById("passwordUnlock").addEventListener("click", () => {
-  const entered = prompt("Enter special code:");
-  if (entered === secretCode) {
-    alert(`✅ Your weekly password is:\n\n${weeklyPassword}`);
-  } else if (entered === "050124") {
-    localStorage.setItem('kuppyTrusted', 'true');
-    localStorage.setItem('kuppyAutoUser', 'Kuppy');
-    alert('✅ Trusted device enabled. You will be logged in automatically on this device.');
-
-    try {
-      loginShell.classList.add('hidden');
-      setTimeout(() => {
-        loginShell.style.display = 'none';
-        const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
-document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
-        homePage.style.display = 'block';
-        setTimeout(() => {
-          homePage.classList.remove('hidden');
-          startTyping();
-        }, 10);
-        userDisplay.textContent = 'Kuppy';
-        displayStarredGames();
-      }, 500);
-    } catch (e) {
-      console.warn('Auto-login failed:', e);
-    }
-  } else if (entered !== null) {
-    alert("❌ Wrong code.");
-  }
 });
 
 const passwordInput = document.getElementById('loginPassword');
@@ -4078,7 +4023,6 @@ if (backdrop) {
   };
 }
 
-// ✅ FIX: Define cards first!
 const cards = document.querySelectorAll('.module-card');
 
 cards.forEach(card => {
@@ -4300,7 +4244,6 @@ renderWidget(widget) {
     this.makeWidgetDraggable(widgetEl, widget);
     
   } else if (widget.type === 'timer') {
-    // Initialize timer data if not exists
     if (!widget.data.schedule) {
       widget.data.schedule = JSON.parse(localStorage.getItem('kuppyClassSchedule') || '{}');
     }
@@ -4346,10 +4289,8 @@ renderWidget(widget) {
     
     container.appendChild(widgetEl);
     
-    // Start countdown
     this.startTimerCountdown(widget);
     
-    // Settings button
     const settingsBtn = widgetEl.querySelector('.widget-settings');
     if (settingsBtn) {
       settingsBtn.onclick = (e) => {
@@ -4358,7 +4299,6 @@ renderWidget(widget) {
       };
     }
     
-    // Delete button
     const deleteBtn = widgetEl.querySelector('.widget-delete');
     if (deleteBtn) {
       deleteBtn.onclick = (e) => {
@@ -4372,7 +4312,6 @@ renderWidget(widget) {
       };
     }
     
-    // Focus mode buttons
     widgetEl.querySelector('.focus-5').onclick = () => this.startFocusMode(5, widget);
     widgetEl.querySelector('.focus-10').onclick = () => this.startFocusMode(10, widget);
     widgetEl.querySelector('.focus-custom').onclick = () => {
@@ -4464,7 +4403,6 @@ getCurrentClassInfo(schedule) {
   const minutes = now.getMinutes();
   const currentTime = hours * 60 + minutes;
   
-  // Map time block names to schedule keys
   const blockMapping = {
     'Homeroom': 'Homeroom',
     'TB1': 'Block 1',
@@ -4491,7 +4429,6 @@ getCurrentClassInfo(schedule) {
     { name: 'TB8', start: 13 * 60 + 55, end: 14 * 60 + 35 },
   ];
   
-  // Weekend check
   if (day === 0 || day === 6) {
     return {
       currentBlock: 'Weekend',
@@ -4501,7 +4438,6 @@ getCurrentClassInfo(schedule) {
     };
   }
   
-  // Find current block
   let currentBlock = null;
   let nextBlock = null;
   
@@ -4512,13 +4448,11 @@ getCurrentClassInfo(schedule) {
       nextBlock = timeBlocks[i + 1] || null;
       break;
     } else if (currentTime < block.start && !currentBlock) {
-      // We're between blocks or before school
       nextBlock = block;
       break;
     }
   }
   
-  // Before school
   if (!currentBlock && currentTime < timeBlocks[0].start) {
     return {
       currentBlock: 'Before School',
@@ -4528,7 +4462,6 @@ getCurrentClassInfo(schedule) {
     };
   }
   
-  // After school - only if we're past the last block's END time
   if (!currentBlock && currentTime >= timeBlocks[timeBlocks.length - 1].end) {
     return {
       currentBlock: 'After School',
@@ -4538,7 +4471,6 @@ getCurrentClassInfo(schedule) {
     };
   }
   
-  // Between classes
   if (!currentBlock && nextBlock) {
     const scheduleKey = blockMapping[nextBlock.name] || nextBlock.name;
     return {
@@ -4549,7 +4481,6 @@ getCurrentClassInfo(schedule) {
     };
   }
   
-  // During a class
   if (currentBlock) {
     const remainingMinutes = currentBlock.end - currentTime;
     const scheduleKey = blockMapping[currentBlock.name] || currentBlock.name;
@@ -4566,7 +4497,6 @@ getCurrentClassInfo(schedule) {
     };
   }
   
-  // Fallback (should never reach here)
   return {
     currentBlock: 'Unknown',
     currentClass: 'Error',
@@ -4585,10 +4515,8 @@ startTimerCountdown(widget) {
     
     if (!countdownEl) return;
     
-    // Calculate remaining time in seconds for accurate countdown
     const nowInSeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
     
-    // Find current block
     const timeBlocks = [
       { name: 'Homeroom', start: 8 * 60 + 10, end: 8 * 60 + 18 },
       { name: 'TB1', start: 8 * 60 + 21, end: 9 * 60 + 1 },
@@ -4613,7 +4541,7 @@ startTimerCountdown(widget) {
     }
     
     if (currentBlock) {
-      const endInSeconds = currentBlock.end * 60; // Convert to seconds
+      const endInSeconds = currentBlock.end * 60;
       const remainingSeconds = endInSeconds - nowInSeconds;
       
       if (remainingSeconds > 0) {
@@ -4634,7 +4562,6 @@ startTimerCountdown(widget) {
 },
 
 startFocusMode(minutes, widget) {
-  // Cap at 999 minutes
   if (minutes > 999) {
     if (typeof showToast === 'function') {
       showToast('⚠️ Maximum focus time is 999 minutes!', 'error');
@@ -4658,13 +4585,12 @@ startFocusMode(minutes, widget) {
   document.body.appendChild(overlay);
   
   const endTime = Date.now() + (minutes * 60 * 1000);
-  let timerInterval = null; // Store the interval ID
+  let timerInterval = null;
   
   const updateFocusTimer = () => {
     const remaining = endTime - Date.now();
     
     if (remaining <= 0) {
-      // Timer completed naturally
       clearInterval(timerInterval);
       overlay.remove();
       if (typeof showToast === 'function') {
@@ -4684,15 +4610,13 @@ startFocusMode(minutes, widget) {
     }
   };
   
-  // Update immediately, then every second
   updateFocusTimer();
   timerInterval = setInterval(updateFocusTimer, 1000);
   
-  // Exit button
   overlay.querySelector('.focus-mode-exit').onclick = () => {
     if (confirm('Are you sure you want to exit focus mode early?')) {
-      clearInterval(timerInterval); // ✅ Stop the timer
-      overlay.remove(); // ✅ Remove the overlay
+      clearInterval(timerInterval);
+      overlay.remove();
       if (typeof showToast === 'function') {
         showToast('Focus mode cancelled', 'error');
       }
@@ -4770,7 +4694,6 @@ showTimerSettings(widget) {
     localStorage.setItem('kuppyClassSchedule', JSON.stringify(schedule));
     this.saveWidgets();
     
-    // Refresh the widget
     const widgetEl = document.querySelector(`[data-widget-id="${widget.id}"]`);
     if (widgetEl) {
       widgetEl.remove();
