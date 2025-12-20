@@ -3567,7 +3567,7 @@ const achievements = [
   { id: 'collector', name: 'Collector', desc: 'Star 10 games', icon: '💎', check: () => KuppyState.stats.favorites >= 10 },
   { id: 'explorer', name: 'Explorer', desc: 'Try the random game 10 times', icon: '🧭', check: () => (KuppyState.stats.games['__random__'] || 0) >= 10 },
   { id: 'marathon', name: 'Marathon Runner', desc: 'Launch 50 games', icon: '🏃', check: () => KuppyState.stats.launches >= 50 },
-  { id: 'master', name: 'Kuppy Master', desc: 'Earn all other badges', icon: '👑', check: () => KuppyState.badges.length >= 9 }
+  { id: 'master', name: 'Kuppy Master', desc: 'Earn all other badges', icon: '👑', check: () => KuppyState.badges.length >= 8 }
 ];
 
 function checkAchievements() {
