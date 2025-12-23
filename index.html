@@ -502,7 +502,7 @@ footer {
   100% { background-position: -200% 0; }
 }
 
-#gamesPage, #multigamesPage, #puzzlegamesPage, #obbygamesPage, #sportsgamesPage {
+#gamesPage {
   display: none;
   flex-direction: column;
   align-items: center;
@@ -522,23 +522,13 @@ footer {
   z-index: 1;
 }
 
-#gamesPage.show, #multigamesPage.show, 
-#puzzlegamesPage.show, #obbygamesPage.show, #sportsgamesPage.show {
+#gamesPage.show {
   display: flex;
   opacity: 1;
   transform: translateX(0);
 }
 
-.multiplayer-grid, .puzzle-grid, .obby-grid, .sports-grid {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
-  justify-items: center;
-  width: 100%;
-  max-width: 900px;
-}
+
 
 .info-shell {
   background: var(--card);
@@ -1906,15 +1896,7 @@ body.shake {
 
 <div style="display:flex; flex-direction:column; align-items:center; width:100%; gap:10px; margin-top:20px; margin-bottom:10px;">
 
-<div style="display:flex; justify-content:center; gap:10px; margin-bottom:10px; animation: slideInFromBottom 0.6s ease-out 0.4s both;">
-    <button class="btn" id="sportsGamesBtn">⚽ Sports</button>    
-    <button class="btn" id="multiGamesBtn">🧑‍🤝‍🧑 Multiplayer</button>
-    <button class="btn" id="puzzleGamesBtn">🧩 Puzzle</button>    
-    <button class="btn" id="obbyGamesBtn">🏃 Obby</button>
-  </div>
-
 <div style="display:flex; justify-content:center; gap:10px; animation: slideInFromBottom 0.6s ease-out 0.5s both;">    <button class="btn" id="allGamesBtn">🎮 All Games</button>    
-    <button class="btn" id="recentGamesBtn">🕓 Recent</button>
     <button class="btn" id="dailyGameBtn">📅 Daily Game</button>
     <button class="btn" id="randomGameBtn">🎲 Random Game</button>
   </div>
@@ -1944,34 +1926,22 @@ body.shake {
 </footer></div>
 
 <div id="gamesPage">
-  <h2>All Games</h2>
+  <h2> </h2>
+  
+  <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 20px; align-items: center; flex-wrap: wrap;">
+    <button id="categoryFilter" class="filter-btn active" data-filter="all" style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--muted); background: var(--bg); color: var(--text); cursor: pointer; font-size: 14px;">All Games</button>
+    
+    <div class="search-container" style="min-width: 250px;">
+      <input type="text" id="gameSearch" placeholder="🔍 Search games..." style="width: 90%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--muted); background: var(--bg); color: var(--text); font-size: 14px;">
+    </div>
+    
+    <button id="favoritesFilter" class="filter-btn" data-filter="all" style="padding: 8px 16px; border-radius: 6px; border: 1px solid var(--muted); background: var(--bg); color: var(--text); cursor: pointer; font-size: 14px;">⭐ Favorites</button>
+  </div>
+    
   <div class="presets-grid" id="allGamesGrid"></div>
   <button id="backBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
 </div>
 
-<div id="multigamesPage">
-  <h2>Multiplayer Games</h2>
-  <div class="multiplayer-grid" id="multiGamesGrid"></div>
-  <button id="multiBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
-</div>
-
-<div id="puzzlegamesPage">
-  <h2>Puzzle Games</h2>
-  <div class="puzzle-grid" id="puzzleGamesGrid"></div>
-  <button id="puzzleBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
-</div>
-
-<div id="obbygamesPage">
-  <h2>Obby Games</h2>
-  <div class="obby-grid" id="obbyGamesGrid"></div>
-  <button id="obbyBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
-</div>
-
-<div id="sportsgamesPage">
-  <h2>Sports Games</h2>
-  <div class="sports-grid" id="sportsGamesGrid"></div>
-  <button id="sportsBackBtn" class="btn" style="margin-top:20px;">⬅ Back</button>
-</div>
 
 <div id="fadeOverlay"></div>
 
@@ -1994,7 +1964,7 @@ const defaultGames = [
   {name: "Clash Royale", url: "https://classroomlesson.github.io/basic-ruffle-player/html/clash_royale/index.html", img: "https://play-lh.googleusercontent.com/gnSC6s8-6Tjc4uhvDW7nfrSJxpbhllzYhgX8y374N1LYvWBStn2YhozS9XXaz1T_Pi2q"},
   {name: "Cookie Clicker", url: "https://reading.dinprima.ro/resources/semag/cookieclicker/index.html", img: "https://reading.dinprima.ro/resources/semag/cookieclicker/img/perfectCookie.png"},
   {name: "Tag", url: "https://script.google.com/macros/s/AKfycby2Crs4kcY3H8tDRHQp1JRJNd_v8_zYBjwU-qF2trfXQWAeWpW1vFVzGgQdv-Ejmq6P/exec", img: "https://math711.github.io/img/class-633.png"},
-  {name: "Crossy Road", url: "https://studyschool.netlify.app/g/crossyroad/", img: "https://math711.github.io/img/class-402.png"},
+  {name: "Crossy Road", url: "https://games.proll.dev/g/crossyroad/", img: "https://math711.github.io/img/class-402.png"},
   {name: "Crazy Cattle 3D", url: "https://crazycattle.club/", img: "https://img02.symbaloo.com/XPUEyvCMeHSBnj1zo3b3Dw6a9YE=/0x7:245x252/fit-in/522x342/filters:no_upscale()/smarkImages%2Fv1%2Fd1%2Fd5%2F1cbad2544788a399975998b6a3afd8fbb336704132e64cd00edee0355012.png"},
   {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html", img: "https://reading.dinprima.ro/resources/semag/doodlejump/icon.png"},
   {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8WYV2uyGpWXy2lKdzlsSWfdTCK9LcDs1ZQ&s"},
@@ -2013,14 +1983,14 @@ const defaultGames = [
   {name: "Amaze", url: "https://ph4xus.github.io/Vafor_IT/amaze/", img: "https://ph4xus.github.io/assets/img/amaze.png"},
   {name: "Geometry Dash", url: "https://g-mcb.github.io/public/assets/games/geometry-dash/", img: "https://math711.github.io/img/class-453.png"},
   {name: "FNAF 3", url: "https://script.google.com/macros/s/AKfycbyVdPAG4aRGh5tmBwKEZthKmaqO12GTD-h-C1Do6ICbR3ZEj5ic1aJQ2e4Im2pxcWLf/exec", img: "https://cherrion.top/assets/img/games/fnaf3.png"},
-  {name: "Getaway Shootout", url: "https://studyschool.netlify.app/g/getaway-shootout/", img: "https://reading.dinprima.ro/resources/semag/getawayshooter/Untitled.jpeg"},
+  {name: "Getaway Shootout", url: "https://games.proll.dev/g/getaway-shootout/", img: "https://reading.dinprima.ro/resources/semag/getawayshooter/Untitled.jpeg"},
   {name: "Helix Jump", url: "https://reading.dinprima.ro/resources/semag/helixjump/index.html", img: "https://play-lh.googleusercontent.com/e4Oq0lcZMGkoCTzl-J5HCahIED_9Q-nbBrMQ80MT3uEBf0gwDOh4EMEtkmdCr2Zsng"},
   {name: "Infinite Craft", url: "https://classroomlesson.github.io/basic-ruffle-player/html/nova_craft/index.html", img: "https://play-lh.googleusercontent.com/YJFHGSmrMGuUqyWZ0oZDgDtDErIU2jQY3yT_PG9IRL6s5dBLmKXrXQShM3n8HFoPhkM=w240-h480-rw"},
   {name: "Knife Hit", url: "https://reading.dinprima.ro/resources/semag/knifehit/index.html", img: "https://play-lh.googleusercontent.com/Xi15vMCqH2Ke5ndbpP86LAE2djl58hEpTZvnCF2sKUkd7C9D_x-cOGiR6HhsIOUS9Q"},
   {name: "Magic Tiles", url: "https://script.google.com/macros/s/AKfycbzsriooEqdtLu3zcG2AUjtLNeqgETUcTv5duzFgEKlIZAZZsYlq49sR2aN6nSwsAjcs/exec", img: "https://play-lh.googleusercontent.com/u94NKpNjH1sBOiKHevX3_ATM-ozNHg6b186oU9GfnPnHwbdJ7RaeipkCRcVPdf1KRA"},
   {name: "Swerve", url: "https://s3-eu-west-1.amazonaws.com/apps.playcanvas.com/VecAxR3e/index.html", img: "https://play-lh.googleusercontent.com/P308WGnDs89S9N4QKatc20TBa_vc72evFwg5n8dsNpDNbCKzb4IGm9i2vLBpKex50gY=w600-h300-pc0xffffff-pd"},
   {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html", img: "https://images.icon-icons.com/2699/PNG/512/minecraft_logo_icon_168974.png"},
-  {name: "Monkey Mart", url: "https://studyschool.netlify.app/g/monkey-mart", img: "https://reading.dinprima.ro/resources/semag/monkeymart/unnamed.png"},
+  {name: "Monkey Mart", url: "https://games.proll.dev/g/monkey-mart", img: "https://reading.dinprima.ro/resources/semag/monkeymart/unnamed.png"},
   {name: "Moto X3M", url: "https://reading.dinprima.ro/resources/semag/motox3m/index.html", img: "https://reading.dinprima.ro/resources/semag/motox3m/splash.jpg"},
   {name: "Obby on a Bike", url: "https://element-games-v5.vercel.app/g/source/obby-on-a-bike/index.html", img: "https://play-lh.googleusercontent.com/YwxYsY3FW_zhGTZuYjT9MOpv48FKKl90uyM4eyqOjVCPLEbosk2NALJc64arXdPhjq7d"},
   {name: "Climb Simulator", url: "https://script.google.com/macros/s/AKfycbzUPEYWyiXAsI-wbbg-NbWW6ZAZF1FlSqACKLaEQMvPbnqP5zeGHck2VpwfJ9yoO3o7/exec", img: "https://play-lh.googleusercontent.com/BAVIJZwYbS5R02NnvzKGl4Y2xJfUnX0EzrEwwEbnxBMty44EFqTZRFgDRuHLeLZ7NvEE5pC0iBKKeHe44pEyGQ"},
@@ -2052,11 +2022,11 @@ const defaultGames = [
   {name: "Stack", url: "https://reading.dinprima.ro/resources/semag/stack/index.html", img: "https://childrenandmedia.org.au/assets/images/app-reviews/Stack.png"},
   {name: "Bridge Race", url: "https://classroomlesson.github.io/basic-ruffle-player/html/bridge_race/index.html", img: "https://play-lh.googleusercontent.com/ym7hOY7sjtsuZ-CR2tmvtsNEgPTkufUPKdaUKcNHOvJS3bf7CIxA7Eyc23FbnzziPsc"},
   {name: "Stickman Hook", url: "https://element-games-v5.vercel.app/g/source/stickman-hook/index.html", img: "https://play-lh.googleusercontent.com/yXqBI1Vb1b-xjwmXLE2T7FQbgHIxfvjze1b6jO2aLHfy8Y8ta7NFSEVqZoPHtM2Ajyrl"},
-  {name: "Subway Surfers", url: "https://studyschool.netlify.app/g/subway-surfers/", img: "https://play-lh.googleusercontent.com/MmT3Av6CUMJGTthbYPt7dud3SotZ7ExEwkwy7bxNKn9_VbcsPgQ5Gl4gnni3P30rDKoA=w240-h480-rw"},
+  {name: "Subway Surfers", url: "https://games.proll.dev/g/subway-surfers/", img: "https://play-lh.googleusercontent.com/MmT3Av6CUMJGTthbYPt7dud3SotZ7ExEwkwy7bxNKn9_VbcsPgQ5Gl4gnni3P30rDKoA=w240-h480-rw"},
   {name: "The Impossible Quiz", url: "https://classroomlesson.github.io/basic-ruffle-player/html/theimpossiblequiz/index.html", img: "https://math711.github.io/img/class-480.png"},
   {name: "Time Shooter 2", url: "https://element-games-v5.vercel.app/g/source/time-shooter-2/index.html", img: "https://img.gamedistribution.com/62a72f2da7cb4b609579a47653546e6a-512x512.jpeg"},
   {name: "Time Shooter 3", url: "https://element-games-v5.vercel.app/g/source/time-shooter-3/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQUFhypuMj6cRanchYLs25DH9EUy5gOe74-g&s"},
-  {name: "Tiny Fishing", url: "https://studyschool.netlify.app/g/tinyfishing/", img: "https://math711.github.io/img/class-451.png"},
+  {name: "Tiny Fishing", url: "https://games.proll.dev/g/tinyfishing/", img: "https://math711.github.io/img/class-451.png"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily", img: "https://static01.nyt.com/images/2022/03/02/crosswords/alpha-wordle-icon-new/alpha-wordle-icon-new-smallSquare252-v3.png?format=pjpg&quality=75&auto=webp&disable=upscale"},
   {name: "YoHoHo!", url: "https://reading.dinprima.ro/resources/semag/yohoho/index.html", img: "https://math711.github.io/img/class-828.png"}
 ];
@@ -2070,17 +2040,14 @@ defaultGames.sort((a, b) => {
   return 0;
 });
 
-const notWorking = [
-];
-
 const multiGames = [
   {name: "Basket Random", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_random/index.html"},
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
   {name: "Tag", url: "https://script.google.com/macros/s/AKfycby2Crs4kcY3H8tDRHQp1JRJNd_v8_zYBjwU-qF2trfXQWAeWpW1vFVzGgQdv-Ejmq6P/exec"},  
-  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
-  {name: "Getaway Shootout", url: "https://studyschool.netlify.app/g/getaway-shootout/"},
+  {name: "Fireboy & Watergirl", url: "https://rawcdn.githack.com/lioxryt/lioxryt-assets/d16b2cb691af033a5f3da3a496cb691c81977fc9/other/fbwg1/index.html"},
+  {name: "Getaway Shootout", url: "https://games.proll.dev/g/getaway-shootout/"},
   {name: "Minecraft 1.12.2", url: "https://element-games-v5.vercel.app/g/source/minecraft-1.12/index.html"},
-  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+  {name: "Retro Bowl", url: "https://games.proll.dev/g/retro-bowl/"},
   {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html"},
 ];
 
@@ -2096,11 +2063,11 @@ multiGames.sort((a, b) => {
 const puzzleGames = [
   {name: "2048", url: "https://classroomlesson.github.io/basic-ruffle-player/html/2048/index.html"},
   {name: "Block Blast", url: "https://classroomlesson.github.io/basic-ruffle-player/html/blocky_puzzle/index.html"},
-  {name: "Bloxors", url: "https://seraph-bi6hosts.vercel.app/games/bloxors/index.html"},
+  {name: "Bloxors", url: "https://classroomlesson.github.io/basic-ruffle-player/html/bloxorz/index.html"},
   {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec"},
-  {name: "Fireboy & Watergirl", url: "https://seraph-bi6hosts.vercel.app/games/fireboywatergirl/index.html"},
-  {name: "Stack", url: "https://seraph-bi6hosts.vercel.app/games/stack/index.html"},
-  {name: "The Impossible Quiz", url: "https://seraph-bi6hosts.vercel.app/games/theimpossiblequiz/index.html"},
+  {name: "Fireboy & Watergirl", url: "https://rawcdn.githack.com/lioxryt/lioxryt-assets/d16b2cb691af033a5f3da3a496cb691c81977fc9/other/fbwg1/index.html"},
+  {name: "Stack", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/stack/index.html"},
+  {name: "The Impossible Quiz", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/the-impossible-quiz/index.html"},
   {name: "Wordle Unlimited", url: "https://element-games-v5.vercel.app/g/source/wordle/index.html#daily"},
 ];
 
@@ -2118,8 +2085,17 @@ const obbyGames = [
   {name: "Roblox Obby", url: "https://script.google.com/macros/s/AKfycbx-uaFWRwY1q4Gv7pRrd9PR3zbbmsKV5PTGPQZ11-u3EWCiD4xeM2V3_1JBvmJQNxSshw/exec"},
 ];
 
+obbyGames.sort((a, b) => {
+  const nameA = a.name.toUpperCase();
+  const nameB = b.name.toUpperCase();
+
+  if (nameA < nameB) return -1;
+  if (nameA > nameB) return 1;
+  return 0;
+});
+
 const sportsGames = [
-  {name: "Retro Bowl", url: "https://studyschool.netlify.app/g/retro-bowl/"},
+  {name: "Retro Bowl", url: "https://games.proll.dev/g/retro-bowl/"},
   {name: "Retro Bowl College", url: "https://classroomlesson.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
   {name: "Basket Bros", url: "https://player-nation.anjumanallana.in/resources/semag/basketbros/index.html"},
   {name: "Basketball Stars", url: "https://reading.dinprima.ro/resources/semag/basketball-stars/index.html"},
@@ -2130,7 +2106,7 @@ const sportsGames = [
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
   {name: "Tap Tap Shots", url: "https://unblocked-games.s3.amazonaws.com/games/2023/q/1/tap-tap-shots/index.html"},
-  {name: "Table Tennis World Tour", url: "https://_github-production.tickles.store/s/g/load/table-tennis-world-tour/index.html"},
+  {name: "Table Tennis World Tour", url: "https://g-mcb.github.io/public/assets/games/table-tennis-world-tour/"},
 ];
 
 sportsGames.sort((a, b) => {
@@ -2142,14 +2118,8 @@ sportsGames.sort((a, b) => {
   return 0;
 });
 
-obbyGames.sort((a, b) => {
-  const nameA = a.name.toUpperCase();
-  const nameB = b.name.toUpperCase();
-
-  if (nameA < nameB) return -1;
-  if (nameA > nameB) return 1;
-  return 0;
-});
+const notWorking = [
+];
 
 const quotes = [
   "Stealth isn’t hiding. It’s blending in.",
@@ -2395,10 +2365,6 @@ overlay.classList.remove('active');
 }, 500);
 }
 
-function rememberRecentGame(game) {
-  localStorage.setItem('recentGame', JSON.stringify(game));
-}
-
 function createGameCard(g, idx, savedArray, starredArray, categoryLength, reloadFn) {
   const div = document.createElement('div');
   div.className = 'card';
@@ -2573,7 +2539,6 @@ function makeDraggable(element, game) {
     
     if (!hasMoved) {
       openWebsite(game.url);
-      rememberRecentGame(game);
     } else {
       const savedPositions = JSON.parse(localStorage.getItem('starredGamePositions') || '{}');
       savedPositions[game.name] = {
@@ -2591,132 +2556,162 @@ document.getElementById('randomGameBtn').onclick = () => {
   if (allGames.length === 0) return alert('No games available!');
   const randomGame = allGames[Math.floor(Math.random() * allGames.length)];
   openWebsite(randomGame.url);
-  rememberRecentGame(randomGame);
-};
-
-document.getElementById('recentGamesBtn').onclick = () => {
-  const recent = JSON.parse(localStorage.getItem('recentGame'));
-  if (!recent) return alert('No recent game yet!');
-  openWebsite(recent.url);
 };
 
 function loadGamesPage(){
-  const grid=document.getElementById('allGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...defaultGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
+  const grid = document.getElementById('allGamesGrid');
+  grid.innerHTML = '';
+  
+  const saved = JSON.parse(localStorage.getItem('customPresets') || '[]');
+  const starred = JSON.parse(localStorage.getItem('starredGames') || '[]');
+  let allGames = [...defaultGames, ...saved];
+  
+  const searchTerm = (document.getElementById('gameSearch')?.value || '').toLowerCase();
+  const showFavorites = document.getElementById('favoritesFilter')?.classList.contains('active');
+  const categoryFilter = document.getElementById('categoryFilter')?.dataset.filter || 'all';
+  
+  if (searchTerm) {
+    allGames = allGames.filter(game => 
+      game.name.toLowerCase().includes(searchTerm)
+    );
+  }
+  
+  if (showFavorites) {
+    allGames = allGames.filter(game => starred.includes(game.name));
+  }
+  
+  if (categoryFilter === 'puzzle') {
+    const puzzleGameNames = puzzleGames.map(g => g.name);
+    allGames = allGames.filter(game => puzzleGameNames.includes(game.name));
+  } else if (categoryFilter === 'sports') {
+    const sportsGameNames = sportsGames.map(g => g.name);
+    allGames = allGames.filter(game => sportsGameNames.includes(game.name));
+  } else if (categoryFilter === 'multiplayer') {
+    const multiGameNames = multiGames.map(g => g.name);
+    allGames = allGames.filter(game => multiGameNames.includes(game.name));
+  } else if (categoryFilter === 'obby') {
+    const obbyGameNames = obbyGames.map(g => g.name);
+    allGames = allGames.filter(game => obbyGameNames.includes(game.name));
+  }
+  
+  allGames.sort((a, b) => {
+    if (showFavorites) {
+      const aStar = starred.includes(a.name);
+      const bStar = starred.includes(b.name);
+      if (aStar && !bStar) return -1;
+      if (!aStar && bStar) return 1;
+    }
+    
+    return a.name.localeCompare(b.name);
   });
-
-  allGames.forEach((g, idx) => {
-    const card = createGameCard(g, idx, saved, starred, defaultGames.length, loadGamesPage);
-    grid.appendChild(card);
-  });
+  
+  if (allGames.length === 0) {
+    const noResults = document.createElement('div');
+    noResults.style.cssText = `
+      text-align: center;
+      color: var(--muted);
+      font-size: 18px;
+      padding: 40px;
+      grid-column: 1 / -1;
+    `;
+    noResults.innerHTML = searchTerm ? 
+      `🔍 No games found matching "${searchTerm}"` : 
+      '🎮 No games available';
+    grid.appendChild(noResults);
+  } else {
+    allGames.forEach((g, idx) => {
+      const card = createGameCard(g, idx, saved, starred, defaultGames.length, loadGamesPage);
+      grid.appendChild(card);
+    });
+  }
 }
 
-function loadpuzzleGamesPage(){
-  const grid=document.getElementById('puzzleGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...puzzleGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
-  });
-
-  allGames.forEach((g, idx) => {
-    const card = createGameCard(g, idx, saved, starred, puzzleGames.length, loadpuzzleGamesPage);
-    grid.appendChild(card);
-  });
+function initSearchAndFilters() {
+  const searchInput = document.getElementById('gameSearch');
+  const favoritesFilter = document.getElementById('favoritesFilter');
+  const categoryFilter = document.getElementById('categoryFilter');
+  
+  if (searchInput) {
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        loadGamesPage();
+      }, 300);
+    });
+    
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        searchInput.value = '';
+        loadGamesPage();
+        searchInput.blur();
+      }
+    });
+  }
+  
+  if (favoritesFilter) {
+    const favoritesFilterActive = localStorage.getItem('favoritesFilterActive') === 'true';
+    
+    if (favoritesFilterActive) {
+      favoritesFilter.classList.add('active');
+      favoritesFilter.style.background = 'var(--accent)';
+      favoritesFilter.style.color = 'white';
+      favoritesFilter.style.borderColor = 'var(--accent)';
+    } else {
+      favoritesFilter.classList.remove('active');
+      favoritesFilter.style.background = 'var(--bg)';
+      favoritesFilter.style.color = 'var(--text)';
+      favoritesFilter.style.borderColor = 'var(--muted)';
+    }
+    
+    favoritesFilter.addEventListener('click', () => {
+      favoritesFilter.classList.toggle('active');
+      const isActive = favoritesFilter.classList.contains('active');
+      
+      localStorage.setItem('favoritesFilterActive', isActive);
+      
+      if (isActive) {
+        favoritesFilter.style.background = 'var(--accent)';
+        favoritesFilter.style.color = 'white';
+        favoritesFilter.style.borderColor = 'var(--accent)';
+      } else {
+        favoritesFilter.style.background = 'var(--bg)';
+        favoritesFilter.style.color = 'var(--text)';
+        favoritesFilter.style.borderColor = 'var(--muted)';
+      }
+      loadGamesPage();
+    });
+  }
+  
+  if (categoryFilter) {
+    categoryFilter.addEventListener('click', () => {
+      const currentFilter = categoryFilter.dataset.filter || 'all';
+      const filters = ['all', 'puzzle', 'sports', 'multiplayer'];
+      const currentIndex = filters.indexOf(currentFilter);
+      const nextIndex = (currentIndex + 1) % filters.length;
+      const nextFilter = filters[nextIndex];
+      
+      categoryFilter.dataset.filter = nextFilter;
+      categoryFilter.textContent = nextFilter === 'all' ? 'All Games' : 
+        nextFilter.charAt(0).toUpperCase() + nextFilter.slice(1) + ' Games';
+      
+      loadGamesPage();
+    });
+  }
 }
 
-function loadobbyGamesPage(){
-  const grid=document.getElementById('obbyGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...obbyGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
-  });
-
-  allGames.forEach((g, idx) => {
-    const card = createGameCard(g, idx, saved, starred, obbyGames.length, loadobbyGamesPage);
-    grid.appendChild(card);
-  });
-}
-
-function loadsportsGamesPage(){
-  const grid=document.getElementById('sportsGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...sportsGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
-  });
-
-  allGames.forEach((g, idx) => {
-    const card = createGameCard(g, idx, saved, starred, sportsGames.length, loadsportsGamesPage);
-    grid.appendChild(card);
-  });
-}
-
-function loadmultiGamesPage(){
-  const grid=document.getElementById('multiGamesGrid');
-  grid.innerHTML='';
-  const saved=JSON.parse(localStorage.getItem('customPresets')||'[]');
-  const starred=JSON.parse(localStorage.getItem('starredGames')||'[]');
-  const allGames = [...multiGames,...saved];
-
-  allGames.sort((a,b)=>{
-    const aStar=starred.includes(a.name);
-    const bStar=starred.includes(b.name);
-    if(aStar && !bStar) return -1;
-    if(!aStar && bStar) return 1;
-    return 0;
-  });
-
-  allGames.forEach((g, idx) => {
-    const card = createGameCard(g, idx, saved, starred, multiGames.length, loadmultiGamesPage);
-    grid.appendChild(card);
-  });
-}
+const originalShowGamesPageIndex = window.showGamesPage;
+window.showGamesPage = function() {
+  originalShowGamesPageIndex();
+  setTimeout(initSearchAndFilters, 100);
+};
 
 function showGamesPage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
   home.style.opacity='1';
   games.style.display='flex';
-  multi.style.display='1';
   document.getElementById('infoShell').style.display = 'none';
-  puzzle.style.display='1';
-  obby.style.display='1';
   requestAnimationFrame(()=>{
     home.style.transition='opacity 0.5s';
     home.style.opacity='0';
@@ -2728,99 +2723,16 @@ function showGamesPage(){
   });
 }
 
-function showMultiGamesPage(){
-  const home=document.getElementById('homePage');
-  const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  home.style.opacity='1';
-  games.style.display='1';
-  multi.style.display='flex';
-  document.getElementById('infoShell').style.display = 'none';
-  puzzle.style.display='1';
-  obby.style.display='1';
-  requestAnimationFrame(()=>{
-    home.style.transition='opacity 0.5s';
-    home.style.opacity='0';
-    setTimeout(()=>{
-      home.style.display='none';
-      multi.classList.add('show');
-      loadmultiGamesPage();
-    },500);
-  });
-}
-
-function showPuzzleGamesPage(){
-  const home=document.getElementById('homePage');
-  const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  home.style.opacity='1';
-  games.style.display='1';
-  multi.style.display='1';
-  document.getElementById('infoShell').style.display = 'none';
-  puzzle.style.display='flex';
-  obby.style.display='1';
-  requestAnimationFrame(()=>{
-    home.style.transition='opacity 0.5s';
-    home.style.opacity='0';
-    setTimeout(()=>{
-      home.style.display='none';
-      puzzle.classList.add('show');
-      loadpuzzleGamesPage();
-    },500);
-  });
-}
-
-function showObbyGamesPage(){
-  const home=document.getElementById('homePage');
-  const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  const sports=document.getElementById('sportsgamesPage');
-  home.style.opacity='1';
-  games.style.display='1';
-  multi.style.display='1';
-  document.getElementById('infoShell').style.display = 'none';
-  puzzle.style.display='1';
-  sports.style.display='1';
-  obby.style.display='flex';
-  requestAnimationFrame(()=>{
-    home.style.transition='opacity 0.5s';
-    home.style.opacity='0';
-    setTimeout(()=>{
-      home.style.display='none';
-      obby.classList.add('show');
-      loadobbyGamesPage();
-    },500);
-  });
-}
-
 function showHomePage(){
   const home=document.getElementById('homePage');
   const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  const sports=document.getElementById('sportsgamesPage');
   games.classList.remove('show');
-  multi.classList.remove('show');
-  puzzle.classList.remove('show');
   
   const weatherEnabled = localStorage.getItem('kuppyWeatherEnabled') === 'true';
   document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : 'none';
   
-  obby.classList.remove('show');
-  sports.classList.remove('show');
   setTimeout(()=>{
     games.style.display='none';
-    multi.style.display='none';
-    puzzle.style.display='none';
-    obby.style.display='none';
-    sports.style.display='none';
     home.style.display='block';
     requestAnimationFrame(()=>{
       home.style.opacity='1';
@@ -2836,8 +2748,8 @@ document.getElementById('websiteInput').addEventListener('keydown', (event) => {
   }
 });
 
-const kuppycloakermaincoins = "13ad0b87d0b5d5b6e00564fdc589c6d33cbaf0acaf72aea144feff851c3e3c8a";
-const kuppycloakercoins ="693cf0cf044bea170fb9a015c44a2a0b3209ac623d56a03d727ee70d5ae88ceb";
+const kuppycloakercoins = "13ad0b87d0b5d5b6e00564fdc589c6d33cbaf0acaf72aea144feff851c3e3c8a";
+const kuppycloakermaincoins ="693cf0cf044bea170fb9a015c44a2a0b3209ac623d56a03d727ee70d5ae88ceb";
 
 async function hashCode(code) {
   const encoder = new TextEncoder();
@@ -2888,39 +2800,7 @@ document.getElementById('loginPassword').addEventListener('keydown', (event) => 
 });
 
 document.getElementById('allGamesBtn').onclick=showGamesPage;
-document.getElementById('multiGamesBtn').onclick=showMultiGamesPage;
-document.getElementById('puzzleGamesBtn').onclick=showPuzzleGamesPage;
-document.getElementById('obbyGamesBtn').onclick=showObbyGamesPage;
-document.getElementById('sportsGamesBtn').onclick=showSportsGamesPage;
 document.getElementById('backBtn').onclick=showHomePage;
-document.getElementById('multiBackBtn').onclick=showHomePage;
-document.getElementById('puzzleBackBtn').onclick=showHomePage;
-document.getElementById('obbyBackBtn').onclick=showHomePage;
-document.getElementById('sportsBackBtn').onclick=showHomePage;
-
-function showSportsGamesPage(){
-  const home=document.getElementById('homePage');
-  const games=document.getElementById('gamesPage');
-  const multi=document.getElementById('multigamesPage');
-  const puzzle=document.getElementById('puzzlegamesPage');
-  const obby=document.getElementById('obbygamesPage');
-  const sports=document.getElementById('sportsgamesPage');
-  home.style.opacity='0';
-  games.style.display='none';
-  multi.style.display='none';
-  document.getElementById('infoShell').style.display = 'none';
-  puzzle.style.display='none';
-  obby.style.display='none';
-  sports.style.display='flex';
-  requestAnimationFrame(()=>{
-    home.style.transition='opacity 0.5s';
-    setTimeout(()=>{
-      home.style.display='none';
-      sports.classList.add('show');
-      loadsportsGamesPage();
-    },500);
-  });
-}
 
 document.getElementById('lightToggle').onclick = () => {
   const isLight = document.body.classList.toggle('light');
@@ -3348,46 +3228,6 @@ loadGamesPage = function() {
   }, 300);
 };
 
-const originalLoadMultiGamesPage = loadmultiGamesPage;
-loadmultiGamesPage = function() {
-  const grid = document.getElementById('multiGamesGrid');
-  showSkeletonLoaders(grid, 8);
-  
-  setTimeout(() => {
-    originalLoadMultiGamesPage();
-  }, 300);
-};
-
-const originalLoadPuzzleGamesPage = loadpuzzleGamesPage;
-loadpuzzleGamesPage = function() {
-  const grid = document.getElementById('puzzleGamesGrid');
-  showSkeletonLoaders(grid, 8);
-  
-  setTimeout(() => {
-    originalLoadPuzzleGamesPage();
-  }, 300);
-};
-
-const originalLoadObbyGamesPage = loadobbyGamesPage;
-loadobbyGamesPage = function() {
-  const grid = document.getElementById('obbyGamesGrid');
-  showSkeletonLoaders(grid, 5);
-  
-  setTimeout(() => {
-    originalLoadObbyGamesPage();
-  }, 300);
-};
-
-const originalLoadSportsGamesPage = loadsportsGamesPage;
-loadsportsGamesPage = function() {
-  const grid = document.getElementById('sportsGamesGrid');
-  showSkeletonLoaders(grid, 7);
-  
-  setTimeout(() => {
-    originalLoadSportsGamesPage();
-  }, 300);
-};
-
 document.addEventListener('mousemove', (e) => {
   const cards = document.querySelectorAll('.card:not(.skeleton)');
   
@@ -3435,11 +3275,7 @@ const originalShowHomePage = showHomePage;
 showHomePage = function() {
   const home = document.getElementById('homePage');
   const pages = [
-    document.getElementById('gamesPage'),
-    document.getElementById('multigamesPage'),
-    document.getElementById('puzzlegamesPage'),
-    document.getElementById('obbygamesPage'),
-    document.getElementById('sportsgamesPage')
+    document.getElementById('gamesPage')
   ];
   
   pages.forEach(page => {
@@ -3469,35 +3305,6 @@ document.getElementById('infoShell').style.display = weatherEnabled ? 'flex' : '
   }, 500);
 };
 
-const categoryTransitions = [
-  { show: showMultiGamesPage, page: 'multigamesPage' },
-  { show: showPuzzleGamesPage, page: 'puzzlegamesPage' },
-  { show: showObbyGamesPage, page: 'obbygamesPage' },
-  { show: showSportsGamesPage, page: 'sportsgamesPage' }
-];
-
-categoryTransitions.forEach(({ show, page }) => {
-  const originalShow = window[show.name];
-  window[show.name] = function() {
-    const home = document.getElementById('homePage');
-    const targetPage = document.getElementById(page);
-    
-    home.style.transform = 'translateX(-100%)';
-    home.style.opacity = '0';
-    
-    setTimeout(() => {
-      home.style.display = 'none';
-      home.style.transform = '';
-      document.getElementById('infoShell').style.display = 'none';
-      targetPage.style.display = 'flex';
-      targetPage.classList.add('show');
-      
-      const loadFnName = 'load' + page.replace('Page', 'Page').replace('games', 'Games');
-      if (window[loadFnName]) window[loadFnName]();
-    }, 500);
-  };
-});
-
 const originalRandomBtn = document.getElementById('randomGameBtn').onclick;
 document.getElementById('randomGameBtn').onclick = function() {
   showToast('🎲 Selecting random game...', 'success');
@@ -3518,7 +3325,7 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 
-['allGamesGrid', 'multiGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+['allGamesGrid'].forEach(id => {
   const grid = document.getElementById(id);
   if (grid) {
     observer.observe(grid, { childList: true });
@@ -3863,38 +3670,11 @@ document.getElementById('allGamesBtn').addEventListener('click', () => {
   showToast('📚 Opening all games...', 'success');
 });
 
-document.getElementById('multiGamesBtn').addEventListener('click', () => {
-  showToast('🧑‍🤝‍🧑 Loading multiplayer games...', 'success');
-});
-
-document.getElementById('puzzleGamesBtn').addEventListener('click', () => {
-  showToast('🧩 Brain teasers loading...', 'success');
-});
-
-document.getElementById('obbyGamesBtn').addEventListener('click', () => {
-  showToast('🏃 Parkour time!', 'success');
-});
-
-document.getElementById('sportsGamesBtn').addEventListener('click', () => {
-  showToast('⚽ Sports games loading...', 'success');
-});
-
 document.getElementById('dailyGameBtn').addEventListener('click', () => {
   showToast('📅 Loading today\'s featured game...', 'success');
 });
 
-document.getElementById('recentGamesBtn').addEventListener('click', () => {
-  const recent = JSON.parse(localStorage.getItem('recentGame'));
-  if (recent) {
-    showToast(`🕓 Reopening ${recent.name}...`, 'success');
-  }
-});
-
-[document.getElementById('backBtn'), 
- document.getElementById('multiBackBtn'),
- document.getElementById('puzzleBackBtn'),
- document.getElementById('obbyBackBtn'),
- document.getElementById('sportsBackBtn')].forEach(btn => {
+[document.getElementById('backBtn')].forEach(btn => {
   btn?.addEventListener('click', () => {
     showToast('🏠 Returning home...', 'success');
   });
@@ -3962,7 +3742,7 @@ const cardObserver = new MutationObserver(() => {
   });
 });
 
-['allGamesGrid', 'multiGamesGrid', 'puzzleGamesGrid', 'obbyGamesGrid', 'sportsGamesGrid'].forEach(id => {
+['allGamesGrid'].forEach(id => {
   const grid = document.getElementById(id);
   if (grid) {
     cardObserver.observe(grid, { childList: true, subtree: true });
