@@ -1828,19 +1828,22 @@ body.shake {
 </div>
 <div class="shell" id="loginShell" style="display:flex; justify-content:center; align-items:center; height:100vh;">
 
-  <div class="login-card" style="background:var(--card); padding:30px; border-radius:16px; box-shadow:0 0 20px rgba(0,0,0,0.5); width:320px; text-align:center;">
+<div class="login-card" style="background:var(--card); padding:30px; border-radius:16px; box-shadow:0 0 20px rgba(0,0,0,0.5); width:320px; text-align:center;">
     <h1 style="color:var(--accent); margin-bottom:5px;">KuppyCloaker</h1>
     <p id="loginMsg" style="color:red; font-size:12px; height:16px;"></p>
     
-<div style="width: 80%; margin: 0 auto 10px auto; box-sizing: border-box;">
-  <input id="loginUsername" type="text" placeholder="Username"
-         style="width: 100%; padding:10px; margin-bottom:5px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
-</div>
+    <div style="width: 80%; margin: 0 auto 10px auto; box-sizing: border-box;">
+      <input id="loginUsername" type="text" placeholder="Username"
+             style="width: 100%; padding:10px; margin-bottom:5px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
+    </div>
 
-<div style="width: 80%; margin: 0 auto 20px auto; position: relative; box-sizing: border-box;">
-  <input id="loginPassword" type="password" placeholder="Access Code"
-         style="width: 100%; padding:10px 40px 10px 10px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
-  <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; user-select:none; color:var(--muted); font-size:16px;">👁️</span>
+    <div style="width: 80%; margin: 0 auto 20px auto; position: relative; box-sizing: border-box;">
+      <input id="loginPassword" type="password" placeholder="Access Code"
+             style="width: 100%; padding:10px 40px 10px 10px; border-radius:8px; border:none; outline:none; font-family: Inter, system-ui, sans-serif; box-sizing: border-box;" />
+      <span id="togglePassword" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; user-select:none; color:var(--muted); font-size:16px;">👁️</span>
+    </div>
+    
+    <button id="loginButton" class="btn" style="width: 80%; margin: 0 auto;">Login</button>
 </div>
 </div>
 </div>
@@ -1955,8 +1958,9 @@ const defaultGames = [
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec", img: "https://play-lh.googleusercontent.com/xDCBTMTXfhB6HKHVHZXOq06e3c_7d2Ehrdqh62IcCojuX5cAMaO2wIU9tX-J-HZjtT0"},
   {name: "Baldi's Basics", url: "https://reading.dinprima.ro/resources/semag/baldis-basics/index.html", img: "https://reading.dinprima.ro/resources/semag/baldis-basics/splash.png"},
   {name: "Basket Random", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_random/index.html", img: "https://play-lh.googleusercontent.com/gP8T5Z1O-ngxIloiwcBZzrzyLPYDp0R_1BDNKUDZboIRPVImeyWI8-7aExvB9gAGNKc"},
-  {name: "Basket Bros", url: "https://player-nation.anjumanallana.in/resources/semag/basketbros/index.html", img: "https://player-nation.anjumanallana.in/resources/semag/basketbros/thumb.jpg"},
-  {name: "Basketball Stars", url: "https://reading.dinprima.ro/resources/semag/basketball-stars/index.html", img: "https://cherrion.top/assets/img/games/bballstars.png"},
+  {name: "Baseball Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/baseball_bros/index.html", img: "https://play-lh.googleusercontent.com/VcGbWUSjYBWVBaPzYouOsICOIVcwBvqyyRYPkqHXdDalp1HAQKla2sFLsUzfYL8rqrLa"},
+  {name: "Basket Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_bros/index.html", img: "https://player-nation.anjumanallana.in/resources/semag/basketbros/thumb.jpg"},
+  {name: "Basketball Stars", url: "https://reading.dinprima.ro/resources/semag/basketball-stars/index.html", img: "https://reading.dinprima.ro/resources/semag/basketball-stars/icon.png"},
   {name: "BitLife", url: "https://reading.dinprima.ro/resources/semag/bitlife/index.html", img: "https://reading.dinprima.ro/resources/semag/bitlife/bitlife.png"},
   {name: "Block Blast", url: "https://classroomlesson.github.io/basic-ruffle-player/html/blocky_puzzle/index.html", img: "https://play-lh.googleusercontent.com/mBpKOJBdmZLHFEfIMT0s27O-jX4MyAXqX-vhugHlTE0FKj188WmFCRElxY-inKX1tMA"},
   {name: "Bloxors", url: "https://classroomlesson.github.io/basic-ruffle-player/html/bloxorz/index.html", img: "https://play-lh.googleusercontent.com/FZ0qdNb8S1h4iJ4X0pBviJbH7odiOB06BRa-hmrjGfq0S5CAvs8suU-FZllXNVbUZgtm=w240-h480-rw"},
@@ -1968,8 +1972,8 @@ const defaultGames = [
   {name: "Crazy Cattle 3D", url: "https://crazycattle.club/", img: "https://img02.symbaloo.com/XPUEyvCMeHSBnj1zo3b3Dw6a9YE=/0x7:245x252/fit-in/522x342/filters:no_upscale()/smarkImages%2Fv1%2Fd1%2Fd5%2F1cbad2544788a399975998b6a3afd8fbb336704132e64cd00edee0355012.png"},
   {name: "Doodle Jump", url: "https://raw.githack.com/skoolgq/Polaris-Assets/main/doodle-jump/index.html", img: "https://reading.dinprima.ro/resources/semag/doodlejump/icon.png"},
   {name: "Draw The Hill", url: "https://element-games-v5.vercel.app/g/source/draw-the-hill/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK8WYV2uyGpWXy2lKdzlsSWfdTCK9LcDs1ZQ&s"},
-  {name: "Drift Boss", url: "https://script.google.com/macros/s/AKfycbwAOi2tPbjzeWDkigfZMIPEGubYxz2la_qjxJyydNZyjwgbqsv9mv05g7tdmLHdvdaw/exec", img: "http://cherrion.top/assets/img/games/driftboss.png"},
-  {name: "Volley Random", url: "https://cherrion.top/stores/ucp-games/volleyrandom/", img: "https://cherrion.top/assets/img/games/volleyrandom.png"},
+  {name: "Drift Boss", url: "https://script.google.com/macros/s/AKfycbwAOi2tPbjzeWDkigfZMIPEGubYxz2la_qjxJyydNZyjwgbqsv9mv05g7tdmLHdvdaw/exec", img: "https://reading.dinprima.ro/resources/semag/drift-boss/icon.png"},
+  {name: "Volley Random", url: "https://reading.dinprima.ro/resources/semag/volleyrandom/index.html/", img: "https://reading.dinprima.ro/resources/semag/volleyrandom/cover.webp"},
   {name: "Save My Pet", url: "https://script.google.com/macros/s/AKfycbzzzBlqpi-UH1EolZkm_TwyvFbgdV6fuWz_IjtPNgQ8ZhiPtGODuz0NvWvNlMUVWoeS/exec", img: "https://play-lh.googleusercontent.com/GmjNSIdVoTumy_mps_Ia5U7rpIcaYh_ixhWZlLCcLKCRNOOKop3fFF2fOtEHcNfrthIa"},
   {name: "Drive Mad", url: "https://reading.dinprima.ro/resources/semag/drivemad/index.html", img: "https://play-lh.googleusercontent.com/V_egAxch0phxs10H_Z1QpWRrsH4phd8egT_5ZjYlFbXzXvwpUGpmJMn2h6HgbGkSlZSM"},
   {name: "Fireboy & Watergirl", url: "https://rawcdn.githack.com/lioxryt/lioxryt-assets/d16b2cb691af033a5f3da3a496cb691c81977fc9/other/fbwg1/index.html", img: "https://reading.dinprima.ro/resources/semag/fireboywatergirl/icon.png"},
@@ -1978,11 +1982,13 @@ const defaultGames = [
   {name: "Table Tennis World Tour", url: "https://g-mcb.github.io/public/assets/games/table-tennis-world-tour/", img: "https://g-mcb.github.io/public/assets/images/tabletennisworldtour.png"},
   {name: "Tomb Of The Mask", url: "https://a7k9-lq2d-v8r1-zx0c-mb6p-tn4g-wy3e-ju5h.github.io/AgicFiles183294-4/tomb/", img: "https://play-lh.googleusercontent.com/ATGr-U4JBK2VjFzKGK9eMMkrDxJaazadOUoz_7Yl0U5NrWSFcFUzEtNurWXYzVWc8uOO=w240-h480-rw"},
   {name: "Idle Mining Empire", url: "https://ubgwtf.gitlab.io/idle-mining-empire/", img: "https://unblocked-games.s3.amazonaws.com/media/posts/372/idle-mining-empire-512.jpg"},
+  {name: "Pokemon", url: "https://reading.dinprima.ro/resources/semag/pokemon/index.html", img: "https://reading.dinprima.ro/resources/semag/pokemon/logo.jpg"},
   {name: "Snake MLG", url: "https://ph4xus.github.io/Vafor_IT/snakemlg/", img: "https://ph4xus.github.io/assets/img/snakemlg.jfif"},
   {name: "State.io", url: "https://ph4xus.github.io/Vafor_IT/state-io/", img: "https://ph4xus.github.io/assets/img/state-io.png"},
   {name: "Amaze", url: "https://ph4xus.github.io/Vafor_IT/amaze/", img: "https://ph4xus.github.io/assets/img/amaze.png"},
   {name: "Geometry Dash", url: "https://g-mcb.github.io/public/assets/games/geometry-dash/", img: "https://math711.github.io/img/class-453.png"},
-  {name: "FNAF 3", url: "https://script.google.com/macros/s/AKfycbyVdPAG4aRGh5tmBwKEZthKmaqO12GTD-h-C1Do6ICbR3ZEj5ic1aJQ2e4Im2pxcWLf/exec", img: "https://cherrion.top/assets/img/games/fnaf3.png"},
+  {name: "FNAF 3", url: "https://reading.dinprima.ro/resources/semag/fnaf3/index.html", img: "https://reading.dinprima.ro/resources/semag/fnaf3/project/splash.webp"},
+  {name: "FNAF Sister Location", url: "https://script.google.com/macros/s/AKfycbyVdPAG4aRGh5tmBwKEZthKmaqO12GTD-h-C1Do6ICbR3ZEj5ic1aJQ2e4Im2pxcWLf/exec", img: "https://reading.dinprima.ro/resources/semag/fnaf-sl/logo.png"},
   {name: "Getaway Shootout", url: "https://games.proll.dev/g/getaway-shootout/", img: "https://reading.dinprima.ro/resources/semag/getawayshooter/Untitled.jpeg"},
   {name: "Helix Jump", url: "https://reading.dinprima.ro/resources/semag/helixjump/index.html", img: "https://play-lh.googleusercontent.com/e4Oq0lcZMGkoCTzl-J5HCahIED_9Q-nbBrMQ80MT3uEBf0gwDOh4EMEtkmdCr2Zsng"},
   {name: "Infinite Craft", url: "https://classroomlesson.github.io/basic-ruffle-player/html/nova_craft/index.html", img: "https://play-lh.googleusercontent.com/YJFHGSmrMGuUqyWZ0oZDgDtDErIU2jQY3yT_PG9IRL6s5dBLmKXrXQShM3n8HFoPhkM=w240-h480-rw"},
@@ -2012,7 +2018,7 @@ const defaultGames = [
   {name: "Papa's Tacomia", url: "https://reading.dinprima.ro/resources/semag/papastacomia/index.html", img: "https://reading.dinprima.ro/resources/semag/papastacomia/papastacomia.png"},
   {name: "Papa's Wingeria", url: "https://reading.dinprima.ro/resources/semag/papaswingeria/index.html", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZfK-B1alJVGqZQjFz__cCTuc4dn_ofLTJG8PpMDBjhw&s=10"},
   {name: "Paper.io 2", url: "https://games.proll.dev/g/paperio2/", img: "https://math711.github.io/img/class-505.png"},
-  {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html", img: "https://project-s0lace.onrender.com/thumbs/football-bros.jpeg"},
+  {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html", img: "https://reading.dinprima.ro/resources/semag/footballbros/assets/favicon.png"},
   {name: "Rise Higher", url: "https://reading.dinprima.ro/resources/semag/risehigher/index.html", img: "https://images.hellokids.com/_uploads/_tiny_galerie/20190624/vign-rise-higher-hk-eyc_424.jpg"},
   {name: "Roblox Obby", url: "https://script.google.com/macros/s/AKfycbx-uaFWRwY1q4Gv7pRrd9PR3zbbmsKV5PTGPQZ11-u3EWCiD4xeM2V3_1JBvmJQNxSshw/exec", img: "https://play-lh.googleusercontent.com/KAz3HyTAVv6kKFVIdDKoHtp0_QsfVfzozrbt8p-iSE6SHTVJikcXtPtYDDN3yqk4LjKJHCWO9UdBQn0QeYw4"},
   {name: "Retro Bowl", url: "https://games.proll.dev/g/retro-bowl/", img: "https://reading.dinprima.ro/resources/semag/retrobowl/img/icon.jpg"},
@@ -2097,12 +2103,13 @@ obbyGames.sort((a, b) => {
 const sportsGames = [
   {name: "Retro Bowl", url: "https://games.proll.dev/g/retro-bowl/"},
   {name: "Retro Bowl College", url: "https://classroomlesson.github.io/basic-ruffle-player/html/retro_bowl_college/index.html"},
-  {name: "Basket Bros", url: "https://player-nation.anjumanallana.in/resources/semag/basketbros/index.html"},
+  {name: "Basket Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_bros/index.html"},
   {name: "Basketball Stars", url: "https://reading.dinprima.ro/resources/semag/basketball-stars/index.html"},
+  {name: "Baseball Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/baseball_bros/index.html"},
   {name: "Football Bros", url: "https://classroomlesson.github.io/basic-ruffle-player/html/football_bros/index.html"},
   {name: "Basket Random", url: "https://classroomlesson.github.io/basic-ruffle-player/html/basket_random/index.html"},
   {name: "Boxing Random", url: "https://element-games-v5.vercel.app/g/source/boxing-random/index.html"},
-  {name: "Volley Random", url: "https://cherrion.top/stores/ucp-games/volleyrandom/"},
+  {name: "Volley Random", url: "https://reading.dinprima.ro/resources/semag/volleyrandom/index.html"},
   {name: "Backyard Baseball", url: "https://script.google.com/macros/s/AKfycbxCGoMs4wmjd_c08SeWaKuJKh9BoQlovbZIbPtzK03OLOQ6CmmImR9s6HpsxCtaHYbi/exec"},
   {name: "Backyard Basketball", url: "https://script.google.com/macros/s/AKfycbzutG_IKsHOQPExLK1OU1gKUy0FzeES71P13XgouwmJWvJaDi8U26ivFGRD_IHuFIDJ/exec"},
   {name: "Tap Tap Shots", url: "https://unblocked-games.s3.amazonaws.com/games/2023/q/1/tap-tap-shots/index.html"},
@@ -2937,6 +2944,17 @@ togglePassword.addEventListener('click', () => {
   const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
   passwordInput.setAttribute('type', type);
   togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+});
+
+const loginButton = document.getElementById('loginButton');
+if (loginButton) {
+  loginButton.onclick = handleLogin;
+}
+
+document.getElementById('loginUsername').addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    handleLogin();
+  }
 });
 
 const bgButton = document.getElementById('bgButton');
